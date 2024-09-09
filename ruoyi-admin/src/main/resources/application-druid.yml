@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+                url: jdbc:mysql://localhost:3306/ruoyi-mall?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
                 username: root
-                password: password
+                password: 123456
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -22,26 +22,22 @@ spring:
                 login-password: 123456
     # redis 配置
     redis:
-        # 地址
-        host:
-        # 端口，默认为6379
-        port:
-        # 数据库索引
-        database:
-        # 密码
-        password:
+        host: 192.144.226.59
+        port: 6379
+        database: 3
+        password: yyds123
 ruoyi:
     # 文件路径 示例（ Windows配置C:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-    profile: C:/ruoyi/uploadPath
+    profile: d:/ruoyi/uploadPath
 scheduling:
     enabled: false
 #操作oss需要的一些参数
 aliyun:
-    accessKeyId: 你的accessKeyId       # 阿里云的accessKeyId
-    secretAccessKey: 你的accessKey密码   # accessKey 密码
+    accessKeyId:        # 阿里云的accessKeyId
+    secretAccessKey:    # accessKey 密码
     oss:
-        endPoint: 你的endpoint     # Endpoint:在阿里云oss控制台查看自己使用的endpoint
-        bucketName: 你的bucketName   # bucket 名称
+        endPoint:      # Endpoint:在阿里云oss控制台查看自己使用的endpoint
+        bucketName:    # bucket 名称
 wechat:
     enabled: false
     appId: 你的微信服务号信息（h5的时候需要，小程序的时候不需要）
