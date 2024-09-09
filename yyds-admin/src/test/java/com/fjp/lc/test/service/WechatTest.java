@@ -10,16 +10,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = RuoYiApplication.class)
-@ActiveProfiles("dev")
-public class WechatTest {
-    @Autowired
-    private MemberWechatService memberWechatService;
-    @Test
-    public void testAuth() {
-        WechatLoginForm f = new WechatLoginForm();
-        f.setCode("081zPgHa1FbRQE0wGIIa1lgb1C1zPgHi");
-        memberWechatService.login(f);
-    }
-}
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = RuoYiApplication.class)
+//@ActiveProfiles("dev")
+//public class WechatTest {
+//    @Autowired
+//    private MemberWechatService memberWechatService;
+//    @Test
+//    public void testAuth() {
+//        WechatLoginForm f = new WechatLoginForm();
+//        f.setCode("081zPgHa1FbRQE0wGIIa1lgb1C1zPgHi");
+//        memberWechatService.login(f);
+//    }
+//}

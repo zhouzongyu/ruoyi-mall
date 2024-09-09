@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ruoyi</artifactId>
-        <groupId>com.ruoyi</groupId>
-        <version>3.7.0</version>
+        <groupId>com.yyds</groupId>
+        <artifactId>yaman</artifactId>
+        <version>1.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <artifactId>ruoyi-admin</artifactId>
+    <artifactId>yyds-admin</artifactId>
 
     <description>
         web服务入口
@@ -45,30 +45,43 @@
 
         <!-- 核心模块-->
         <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-framework</artifactId>
-            <version>${ruoyi.version}</version>
+            <groupId>com.yyds</groupId>
+            <artifactId>yyds-framework</artifactId>
+            <version>${yyds.version}</version>
         </dependency>
 
         <!-- 定时任务-->
         <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-quartz</artifactId>
-            <version>${ruoyi.version}</version>
+            <groupId>com.yyds</groupId>
+            <artifactId>yyds-quartz</artifactId>
+            <version>${yyds.version}</version>
         </dependency>
 
         <!-- 代码生成-->
         <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-generator</artifactId>
-            <version>${ruoyi.version}</version>
+            <groupId>com.yyds</groupId>
+            <artifactId>yyds-generator</artifactId>
+            <version>${yyds.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-mall</artifactId>
-            <version>${ruoyi.version}</version>
+            <groupId>com.yyds</groupId>
+            <artifactId>yyds-mall</artifactId>
+            <version>${yyds.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.yyds</groupId>
+            <artifactId>yyds-mall</artifactId>
+            <version>${yyds.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yyds</groupId>
+            <artifactId>yyds-yaman</artifactId>
+            <version>${yyds.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
