@@ -30,7 +30,6 @@ import com.cyl.manager.ums.service.FeedbackService;
  * @author zcc
  * @date 2024-02-26
  */
-@Api(description ="意见反馈接口列表")
 @RestController
 @RequestMapping("/ums/feedback")
 public class FeedbackController extends BaseController {

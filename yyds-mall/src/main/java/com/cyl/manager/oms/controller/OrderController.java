@@ -31,7 +31,6 @@ import java.util.List;
  * @author zcc
  * @date 2022-12-01
  */
-@Api(description ="订单表接口列表")
 @RestController
 @RequestMapping("/oms/order")
 @Slf4j

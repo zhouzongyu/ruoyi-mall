@@ -29,7 +29,6 @@ import com.cyl.manager.aws.service.SystemStatisticsService;
  * @author zcc
  * @date 2023-07-28
  */
-@Api(description ="系统数据统计接口列表")
 @RestController
 @RequestMapping("/aws/systemStatistics")
 public class SystemStatisticsController extends BaseController {

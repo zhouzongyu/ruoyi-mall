@@ -1,6 +1,11 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.CommonResult;
+import com.ruoyi.common.core.domain.TreeSelect;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -18,18 +23,16 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysMenu;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.service.ISysMenuService;
 
 /**
  * 菜单信息
  * 
- * @author ruoyi
  */
+@Api(tags = "权限管理-菜单管理")
 @RestController
 @RequestMapping("/system/menu")
-public class SysMenuController extends BaseController
-{
+public class SysMenuController extends BaseController {
     @Autowired
     private ISysMenuService menuService;
 
@@ -57,16 +60,19 @@ public class SysMenuController extends BaseController
     /**
      * 获取菜单下拉树列表
      */
+    @ApiOperation("获取菜单下拉树列表")
     @GetMapping("/treeselect")
-    public AjaxResult treeselect(SysMenu menu)
+    public CommonResult<List<TreeSelect>> treeselect()
     {
+        SysMenu menu = new SysMenu();
         List<SysMenu> menus = menuService.selectMenuList(menu, getUserId());
-        return AjaxResult.success(menuService.buildMenuTreeSelect(menus));
+        return CommonResult.data(menuService.buildMenuTreeSelect(menus));
     }
 
     /**
      * 加载对应角色菜单列表树
      */
+    @ApiOperation("加载对应角色菜单列表树")
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
     public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId)
     {
@@ -80,7 +86,6 @@ public class SysMenuController extends BaseController
     /**
      * 新增菜单
      */
-    @PreAuthorize("@ss.hasPermi('system:menu:add')")
     @Log(title = "菜单管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysMenu menu)
@@ -89,7 +94,7 @@ public class SysMenuController extends BaseController
         {
             return AjaxResult.error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
         }
-        else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !StringUtils.ishttp(menu.getPath()))
+        else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()))
         {
             return AjaxResult.error("新增菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
         }
@@ -100,7 +105,6 @@ public class SysMenuController extends BaseController
     /**
      * 修改菜单
      */
-    @PreAuthorize("@ss.hasPermi('system:menu:edit')")
     @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysMenu menu)
@@ -109,7 +113,7 @@ public class SysMenuController extends BaseController
         {
             return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
         }
-        else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !StringUtils.ishttp(menu.getPath()))
+        else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()))
         {
             return AjaxResult.error("修改菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
         }

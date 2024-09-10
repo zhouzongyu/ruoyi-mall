@@ -30,7 +30,6 @@ import com.cyl.manager.ums.service.MemberCartService;
  * @author zcc
  * @date 2022-11-29
  */
-@Api(description ="购物车接口列表")
 @RestController
 @RequestMapping("/ums/memberCart")
 public class MemberCartController extends BaseController {

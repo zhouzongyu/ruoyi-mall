@@ -30,7 +30,6 @@ import com.cyl.manager.pms.domain.vo.ProductCategoryVO;
  * @author zcc
  * @date 2022-11-28
  */
-@Api(description ="商品分类接口列表")
 @RestController
 @RequestMapping("/pms/productCategory")
 public class ProductCategoryController extends BaseController {

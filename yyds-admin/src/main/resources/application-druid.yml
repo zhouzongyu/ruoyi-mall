@@ -62,3 +62,8 @@ sms:
 aes:
   # aes的密钥(长度只能是16或24或32位)
   key: 1111111111111111
+knife4j:
+    basic:
+        enable: true
+        username: xmmry
+        password: xmmry

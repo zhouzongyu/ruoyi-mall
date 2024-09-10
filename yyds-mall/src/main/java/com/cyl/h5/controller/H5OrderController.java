@@ -8,7 +8,6 @@ import com.cyl.h5.service.H5OrderService;
 import com.cyl.manager.oms.domain.entity.Aftersale;
 import com.cyl.manager.oms.domain.entity.Order;
 import com.cyl.manager.oms.domain.form.DealWithAftersaleForm;
-import com.cyl.manager.oms.service.AftersaleService;
 import com.cyl.manager.oms.service.OrderService;
 import com.cyl.manager.ums.domain.entity.Member;
 import com.ruoyi.common.constant.Constants;
@@ -35,8 +34,6 @@ public class H5OrderController {
     private RedisService redisService;
     @Autowired
     private H5OrderService service;
-    @Autowired
-    private AftersaleService aftersaleService;
     @Autowired
     private OrderService orderService;
 
@@ -171,7 +168,7 @@ public class H5OrderController {
                 DealWithAftersaleForm req = new DealWithAftersaleForm();
                 req.setOrderId(applyRefundForm.getOrderId());
                 req.setOptType(1);
-                aftersaleService.dealWith(req, order.getMemberId(), "直接发起退款");
+               // aftersaleService.dealWith(req, order.getMemberId(), "直接发起退款");
             }
             return ResponseEntity.ok(true);
         }catch (Exception e){
@@ -222,7 +219,7 @@ public class H5OrderController {
         try {
             redisService.lock(redisKey, redisValue, 60);
             Order order = service.selectById(req.getOrderId());
-            Aftersale aftersale = aftersaleService.queryAfterSale(req.getOrderId());
+            Aftersale aftersale =  null;
             if(order == null || aftersale == null){
                 return AjaxResult.error("未查询到订单信息");
             }
@@ -236,7 +233,7 @@ public class H5OrderController {
             //更新退款单
             aftersale.setRefundWpCode(req.getDeliveryCompanyCode());
             aftersale.setRefundWaybillCode(req.getDeliverySn());
-            aftersaleService.update(aftersale);
+            // aftersaleService.update(aftersale);
 
             return AjaxResult.success();
         }catch (Exception e){

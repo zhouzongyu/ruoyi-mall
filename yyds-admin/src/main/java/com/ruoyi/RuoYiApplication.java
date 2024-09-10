@@ -1,11 +1,9 @@
 package com.ruoyi;
 
-import com.cyl.wechat.WechatPayData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -30,7 +28,7 @@ public class RuoYiApplication {
         Environment env = new SpringApplication(RuoYiApplication.class).run(args).getEnvironment();
         String port = env.getProperty("server.port");
         String context = env.getProperty("server.servlet.context-path");
-        String path = port + "" + context + "swagger-ui/index.html";
+        String path = port + "" + context + "doc.html";
         String externalAPI = InetAddress.getLocalHost().getHostAddress();
         log.info(
                 "Access URLs:\n----------------------------------------------------------\n\t"

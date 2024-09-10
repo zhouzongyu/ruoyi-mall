@@ -33,7 +33,6 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
  * @author zcc
  * @date 2024-03-01
  */
-@Api(description ="会员账户表接口列表")
 @RestController
 @RequestMapping("/ums/memberAccount")
 public class MemberAccountController extends BaseController {

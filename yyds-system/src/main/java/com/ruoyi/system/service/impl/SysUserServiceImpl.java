@@ -2,9 +2,16 @@ package com.ruoyi.system.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageHelper;
+import com.ruoyi.common.core.domain.query.SysUserPageParam;
+import com.ruoyi.common.core.page.CommonPageRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ruoyi.common.annotation.DataScope;
@@ -53,6 +60,18 @@ public class SysUserServiceImpl implements ISysUserService
 
     @Autowired
     private ISysConfigService configService;
+
+    @Override
+    @DataScope(deptAlias = "d", userAlias = "u")
+    public List<SysUser> selectUserPage(SysUserPageParam query, int pageNum, int pageSize) {
+         PageHelper.startPage(pageNum, pageSize);
+        SysUser sysUser = new SysUser();
+        if (StringUtils.isNotEmpty(query.getUserName())) {
+            sysUser.setUserName(query.getUserName());
+        }
+        return userMapper.selectUserList(sysUser);
+
+    }
 
     /**
      * 根据条件分页查询用户列表
@@ -260,8 +279,8 @@ public class SysUserServiceImpl implements ISysUserService
     {
         // 新增用户信息
         int rows = userMapper.insertUser(user);
-        // 新增用户岗位关联
-        insertUserPost(user);
+//        // 新增用户岗位关联
+//        insertUserPost(user);
         // 新增用户与角色管理
         insertUserRole(user);
         return rows;

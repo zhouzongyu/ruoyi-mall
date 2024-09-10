@@ -33,7 +33,6 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
  * @author zcc
  * @date 2022-12-01
  */
-@Api(description ="订单操作历史记录接口列表")
 @RestController
 @RequestMapping("/oms/orderOperateHistory")
 public class OrderOperateHistoryController extends BaseController {

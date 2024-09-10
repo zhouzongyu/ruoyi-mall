@@ -33,7 +33,6 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
  * @author zcc
  * @date 2022-12-29
  */
-@Api(description ="订单售后接口列表")
 @RestController
 @RequestMapping("/oms/aftersaleItem")
 public class AftersaleItemController extends BaseController {

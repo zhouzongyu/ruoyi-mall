@@ -30,7 +30,6 @@ import java.util.List;
  * @author zcc
  * @date 2022-11-28
  */
-@Api(description ="会员信息接口列表")
 @RestController
 public class MemberController extends BaseController {
     @Autowired

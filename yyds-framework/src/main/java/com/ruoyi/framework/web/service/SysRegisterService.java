@@ -45,7 +45,7 @@ public class SysRegisterService
         // 验证码开关
         if (captchaOnOff)
         {
-            validateCaptcha(username, registerBody.getCode(), registerBody.getUuid());
+           // validateCaptcha(username, registerBody.getCode(), registerBody.getUuid());
         }
 
         if (StringUtils.isEmpty(username))

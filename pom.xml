@@ -19,6 +19,8 @@
         <druid.version>1.2.6</druid.version>
         <bitwalker.version>1.21</bitwalker.version>
         <swagger.version>3.0.0</swagger.version>
+        <knife4j.version>3.0.3</knife4j.version>
+        <swagger-annotations.version>1.5.22</swagger-annotations.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
 		<mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
         <pagehelper.boot.version>1.3.1</pagehelper.boot.version>
@@ -96,6 +98,32 @@
                 <artifactId>jna-platform</artifactId>
                 <version>${jna.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>mapstruct</artifactId>
+                        <groupId>org.mapstruct</groupId> <!-- 避免冲突 -->
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>guava</artifactId>
+                        <groupId>com.google.guava</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>swagger-annotations</artifactId>
+                        <groupId>io.swagger</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+
 
             <!-- Swagger3依赖 -->
             <dependency>

@@ -28,7 +28,6 @@ import java.util.List;
  * @author zcc
  * @date 2023-07-26
  */
-@Api(description ="会员登录记录接口列表")
 @RestController
 @RequestMapping("/ums/memberLogininfor")
 public class MemberLogininforController extends BaseController {

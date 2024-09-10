@@ -33,7 +33,6 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
  * @author zcc
  * @date 2023-07-12
  */
-@Api(description ="微信订单表接口列表")
 @RestController
 @RequestMapping("/pms/omsWechatPaymentHistory")
 public class WechatPaymentHistoryController extends BaseController {

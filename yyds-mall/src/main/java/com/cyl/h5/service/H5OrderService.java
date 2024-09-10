@@ -12,9 +12,6 @@ import com.cyl.h5.domain.dto.OrderProductListDTO;
 import com.cyl.h5.domain.dto.PayNotifyMessageDTO;
 import com.cyl.h5.domain.form.*;
 import com.cyl.h5.domain.vo.*;
-import com.cyl.manager.act.domain.entity.MemberCoupon;
-import com.cyl.manager.act.service.IntegralHistoryService;
-import com.cyl.manager.act.service.MemberCouponService;
 import com.cyl.manager.oms.convert.AftersaleItemConvert;
 import com.cyl.manager.oms.convert.OrderItemConvert;
 import com.cyl.manager.oms.domain.entity.*;
@@ -119,12 +116,6 @@ public class H5OrderService {
     @Autowired
     private OrderItemConvert orderItemConvert;
 
-    @Autowired
-    private IntegralHistoryService integralHistoryService;
-
-    @Autowired
-    private MemberCouponService memberCouponService;
-
     @Transactional
     public Long submit(OrderSubmitForm form) {
         Member member = (Member) LocalDataUtil.getVar(Constants.MEMBER_INFO);
@@ -151,10 +142,10 @@ public class H5OrderService {
         //校验优惠券
         BigDecimal couponAmount = BigDecimal.ZERO;
         if (form.getMemberCouponId() != null) {
-            MemberCoupon coupon = memberCouponService.selectValidCoupon(form.getMemberCouponId());
-            if (coupon == null) {
-                throw new RuntimeException("优惠券未找到");
-            }
+//            MemberCoupon coupon = memberCouponService.selectValidCoupon(form.getMemberCouponId());
+//            if (coupon == null) {
+//                throw new RuntimeException("优惠券未找到");
+//            }
             //将sku转换成products
             Map<Long, Product> products = new HashMap<>();
             querySkuMap.forEach((k, v) -> {
@@ -172,10 +163,7 @@ public class H5OrderService {
                 }
                 products.put(k, product);
             });
-            if (!memberCouponService.judgeCouponCanUse(coupon, products.values())) {
-                throw new RuntimeException("优惠券未达到使用条件");
-            }
-            couponAmount = coupon.getCouponAmount();
+
         }
         //计算商品总额、订单总额（订单总金额=商品总金额，因为暂时没有运费等概念）
         BigDecimal productTotalAmount = BigDecimal.ZERO;
@@ -279,9 +267,7 @@ public class H5OrderService {
         }
         //当前订单id，接入支付后可返回payId
         //如果是使用了优惠券，更新优惠券状态
-        if (form.getMemberCouponId() != null) {
-            memberCouponService.updateCouponStatus(form.getMemberCouponId(), orderId);
-        }
+
         return payId;
     }
 
@@ -352,7 +338,7 @@ public class H5OrderService {
             }
             products.put(k, product);
         });
-        res.setCouponList(memberCouponService.getCanUseList(products.values()));
+//        res.setCouponList(memberCouponService.getCanUseList(products.values()));
         return res;
     }
 
@@ -555,7 +541,7 @@ public class H5OrderService {
         //判断是否使用优惠券，有的话，把优惠券还回去
         List<Long> couponIdList = orderList.stream().filter(it -> it.getMemberCouponId() != null).map(Order::getMemberCouponId).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(couponIdList)) {
-            memberCouponService.backCoupon(couponIdList);
+//            memberCouponService.backCoupon(couponIdList);
         }
         return "取消订单成功";
     }
@@ -708,7 +694,6 @@ public class H5OrderService {
                 orderOperateHistoryMapper.insert(optHistory);
 
                 //处理积分
-                integralHistoryService.handleIntegral(order.getId(), order.getPayAmount(), order.getMemberId());
             });
             UpdateWrapper<WechatPaymentHistory> paymentHistoryUpdateWrapper = new UpdateWrapper<>();
             paymentHistoryUpdateWrapper.eq("order_id", messageDTO.getOutTradeNo()).set("payment_id", messageDTO.getTradeNo())

@@ -1,7 +1,11 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.query.SysRolePageParam;
 import com.ruoyi.system.domain.SysUserRole;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Set;
@@ -13,12 +17,14 @@ import java.util.Set;
  */
 public interface ISysRoleService
 {
+
+    public List<SysRole> selectRoleList(SysRolePageParam query,Pageable pageable);
     /**
-     * 根据条件分页查询角色数据
-     * 
-     * @param role 角色信息
-     * @return 角色数据集合信息
-     */
+         * 根据条件分页查询角色数据
+         *
+         * @param role 角色信息
+         * @return 角色数据集合信息
+         */
     public List<SysRole> selectRoleList(SysRole role);
 
     /**

@@ -33,7 +33,6 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
  * @author zcc
  * @date 2022-11-28
  */
-@Api(description ="sku信息接口列表")
 @RestController
 @RequestMapping("/pms/sku")
 public class SkuController extends BaseController {

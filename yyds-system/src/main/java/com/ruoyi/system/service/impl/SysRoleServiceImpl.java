@@ -1,9 +1,14 @@
 package com.ruoyi.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageHelper;
 import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.query.SysRolePageParam;
+import com.ruoyi.common.core.page.CommonPageRequest;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -17,6 +22,7 @@ import com.ruoyi.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.system.mapper.SysUserRoleMapper;
 import com.ruoyi.system.service.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +34,7 @@ import java.util.*;
  * @author ruoyi
  */
 @Service
-public class SysRoleServiceImpl implements ISysRoleService
+public class SysRoleServiceImpl  implements ISysRoleService
 {
     @Autowired
     private SysRoleMapper roleMapper;
@@ -41,6 +47,15 @@ public class SysRoleServiceImpl implements ISysRoleService
 
     @Autowired
     private SysRoleDeptMapper roleDeptMapper;
+
+
+
+    @Override
+    public List<SysRole> selectRoleList(SysRolePageParam query, Pageable pageable) {
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        SysRole role = new SysRole();
+        return roleMapper.selectRoleList(role);
+    }
 
     /**
      * 根据条件分页查询角色数据

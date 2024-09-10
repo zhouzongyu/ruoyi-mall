@@ -4,10 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.cyl.h5.domain.dto.PayNotifyMessageDTO;
 import com.cyl.h5.service.H5OrderService;
-import com.cyl.manager.oms.service.AftersaleService;
 import com.cyl.wechat.WechatPayConfig;
 import com.wechat.pay.java.core.Config;
-import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.core.notification.NotificationConfig;
 import com.wechat.pay.java.core.notification.NotificationParser;
 import com.wechat.pay.java.core.notification.RequestParam;
@@ -23,13 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 订单表Controller
@@ -45,8 +39,6 @@ public class PayNotifyController {
 
     @Autowired
     private H5OrderService h5OrderService;
-    @Autowired
-    private AftersaleService aftersaleService;
 
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
@@ -134,9 +126,6 @@ public class PayNotifyController {
         // 初始化解析器 NotificationParser
         NotificationParser parser = new NotificationParser((NotificationConfig) config);
 
-        //获取退款回调的信息
-        RefundNotification refundInfo = parser.parse(requestParam, RefundNotification.class);
-        aftersaleService.refundOrderExc(refundInfo);
     }
 
 

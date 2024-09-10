@@ -33,7 +33,6 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
  * @author zcc
  * @date 2022-11-28
  */
-@Api(description ="用户微信信息接口列表")
 @RestController
 @RequestMapping("/ums/memberWechat")
 public class MemberWechatController extends BaseController {

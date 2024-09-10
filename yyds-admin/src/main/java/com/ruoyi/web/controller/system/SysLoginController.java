@@ -10,6 +10,10 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.framework.web.service.SysLoginService;
 import com.ruoyi.framework.web.service.SysPermissionService;
 import com.ruoyi.system.service.ISysMenuService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +28,7 @@ import java.util.Set;
  * 
  * @author ruoyi
  */
+@Api(tags = "登录")
 @RestController
 public class SysLoginController {
     @Autowired
@@ -39,29 +44,35 @@ public class SysLoginController {
      * @param loginBody 登录信息
      * @return 结果
      */
+    @ApiOperation("登录")
     @PostMapping("/login")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "登录成功", response = AjaxResult.class),
+            @ApiResponse(code = 400, message = "请求参数错误"),
+            @ApiResponse(code = 500, message = "服务器内部错误")
+    })
     public AjaxResult login(@RequestBody LoginBody loginBody) {
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
-        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-                loginBody.getUuid());
+        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), "",
+                "");
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
 
-    /**
-     * 使用手机号登陆
-     *
-     * @param loginBody 登录信息
-     * @return 结果
-     */
-    @PostMapping("/login/phone")
-    public AjaxResult login(@RequestBody PhoneLoginBody loginBody) {
-        AjaxResult ajax = AjaxResult.success();
-        SysUser user = loginService.phoneLogin(loginBody.getPhone(), loginBody.getCode(), loginBody.getUuid());
-        ajax.put(Constants.TOKEN, loginService.createToken(user));
-        return ajax;
-    }
+//    /**
+//     * 使用手机号登陆
+//     *
+//     * @param loginBody 登录信息
+//     * @return 结果
+//     */
+//    @PostMapping("/login/phone")
+//    public AjaxResult login(@RequestBody PhoneLoginBody loginBody) {
+//        AjaxResult ajax = AjaxResult.success();
+//        SysUser user = loginService.phoneLogin(loginBody.getPhone(), loginBody.getCode(), loginBody.getUuid());
+//        ajax.put(Constants.TOKEN, loginService.createToken(user));
+//        return ajax;
+//    }
 
     /**
      * 获取用户信息

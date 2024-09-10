@@ -1,10 +1,12 @@
 package com.ruoyi.web.core.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.ruoyi.common.config.RuoYiConfig;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -24,7 +26,9 @@ import java.util.List;
  * 
  * @author ruoyi
  */
+@EnableKnife4j
 @EnableSwagger2
+@ConditionalOnClass({Docket.class, ApiInfoBuilder.class})
 @Configuration
 public class SwaggerConfig
 {
@@ -111,7 +115,7 @@ public class SwaggerConfig
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 // 设置标题
-                .title("标题：宣美美容仪接口文档")
+                .title("宣美美容仪接口文档")
                 // 描述
                 .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
                 // 作者信息

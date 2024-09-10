@@ -10,14 +10,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Slf4j
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
-  @Bean
-  public H5MemberInterceptor memberInterceptor() {
-    return new H5MemberInterceptor();
-  }
+//  @Bean
+//  public H5MemberInterceptor memberInterceptor() {
+//    return new H5MemberInterceptor();
+//  }
 
 
-  @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(memberInterceptor());
-  }
+//  @Override
+//  public void addInterceptors(InterceptorRegistry registry) {
+//    registry.addInterceptor(memberInterceptor());
+//  }
 }

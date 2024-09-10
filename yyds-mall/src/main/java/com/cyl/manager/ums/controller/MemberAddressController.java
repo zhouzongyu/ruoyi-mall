@@ -33,7 +33,6 @@ import com.cyl.manager.ums.domain.vo.MemberAddressVO;
  * @author zcc
  * @date 2022-11-28
  */
-@Api(description ="会员收货地址接口列表")
 @RestController
 @RequestMapping("/ums/memberAddress")
 public class MemberAddressController extends BaseController {

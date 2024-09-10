@@ -1,7 +1,12 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.query.SysUserPageParam;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 用户 业务层
@@ -10,6 +15,13 @@ import com.ruoyi.common.core.domain.entity.SysUser;
  */
 public interface ISysUserService
 {
+
+    /**
+     * 根据条件分页查询用户列表
+     * @return
+     */
+    List<SysUser> selectUserPage(SysUserPageParam query, int pageNum, int pageSize);
+
     /**
      * 根据条件分页查询用户列表
      * 

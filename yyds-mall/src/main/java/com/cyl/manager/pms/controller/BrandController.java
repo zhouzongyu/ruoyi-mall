@@ -33,7 +33,6 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
  * @author zcc
  * @date 2022-11-28
  */
-@Api(description ="品牌管理接口列表")
 @RestController
 @RequestMapping("/pms/brand")
 public class BrandController extends BaseController {

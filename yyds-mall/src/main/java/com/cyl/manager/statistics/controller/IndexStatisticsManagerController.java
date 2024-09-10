@@ -25,7 +25,6 @@ import java.util.List;
  * @since 2023/05/15 13:53
  */
 @Slf4j
-@Api(tags = "管理端,首页统计数据接口")
 @RestController
 @RequestMapping("/dev/statistics/index")
 public class IndexStatisticsManagerController {

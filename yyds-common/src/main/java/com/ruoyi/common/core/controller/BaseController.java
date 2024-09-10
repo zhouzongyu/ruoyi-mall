@@ -86,6 +86,8 @@ public class BaseController
         rspData.setCode(HttpStatus.SUCCESS);
         rspData.setMsg("查询成功");
         rspData.setRows(list);
+        rspData.setData(list);
+
         rspData.setTotal(new PageInfo(list).getTotal());
         return rspData;
     }
@@ -95,6 +97,7 @@ public class BaseController
         rspData.setCode(HttpStatus.SUCCESS);
         rspData.setMsg("查询成功");
         rspData.setRows(page.getContent());
+        rspData.setData(page.getContent());
         rspData.setTotal(page.getTotalElements());
         return rspData;
     }
