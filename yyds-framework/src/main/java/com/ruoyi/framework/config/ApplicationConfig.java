@@ -16,7 +16,7 @@ import java.util.TimeZone;
 @Configuration
 // 表示通过aop框架暴露该代理对象,AopContext能够访问
 @EnableAspectJAutoProxy(exposeProxy = true)
-@MapperScan({"com.ruoyi.**.mapper", "com.cloudcrane.**.mapper", "com.cyl.**.mapper"})
+@MapperScan({"com.ruoyi.**.mapper", "com.yyds.**.mapper", "com.cyl.**.mapper"})
 public class ApplicationConfig
 {
     /**

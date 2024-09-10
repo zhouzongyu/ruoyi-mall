@@ -17,7 +17,7 @@ import java.net.UnknownHostException;
  */
 @SpringBootApplication(
         exclude = {DataSourceAutoConfiguration.class},
-        scanBasePackages = {"com.ruoyi", "com.cyl"}
+        scanBasePackages = {"com.ruoyi", "com.yyds"}
 )
 @Slf4j
 //@EnableConfigurationProperties(WechatPayData.class)
