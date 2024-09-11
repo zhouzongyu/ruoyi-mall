@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyds.yaman.mapper.MryMemberMapper">
+    
+    <resultMap type="com.yyds.yaman.domain.MryMember" id="MryMemberResult">
+        <result property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="phone" column="phone"/>
+        <result property="vipNumber" column="vip_number"/>
+        <result property="birthDate" column="birth_date"/>
+        <result property="gender" column="gender"/>
+        <result property="address" column="address"/>
+        <result property="skinType" column="skin_type"/>
+        <result property="remark" column="remark"/>
+        <result property="openId" column="open_id"/>
+        <result property="miniProgramOpenId" column="mini_program_open_id"/>
+        <result property="unionId" column="union_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectMryMemberVo">
+        select id, user_name, phone, vip_number, birth_date, gender, address, skin_type, remark, open_id, mini_program_open_id, union_id, create_time, update_time  from mry_member
+    </sql>
+
+    <select id="selectByEntity" parameterType="com.yyds.yaman.domain.MryMember" resultMap="MryMemberResult">
+        <include refid="selectMryMemberVo"/>
+        <where>  
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="vipNumber != null  and vipNumber != ''"> and vip_number = #{vipNumber}</if>
+            <if test="birthDate != null  and birthDate != ''"> and birth_date = #{birthDate}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="skinType != null "> and skin_type = #{skinType}</if>
+            <if test="openId != null  and openId != ''"> and open_id = #{openId}</if>
+            <if test="miniProgramOpenId != null  and miniProgramOpenId != ''"> and mini_program_open_id = #{miniProgramOpenId}</if>
+            <if test="unionId != null  and unionId != ''"> and union_id = #{unionId}</if>
+        </where>
+    </select>
+
+    <update id="updateDelFlagByIds">
+        update mry_member set delete_flag=1
+        <where>
+            id in <foreach collection="ids" open="(" item="it" close=")" separator=",">#{it}</foreach>
+        </where>
+    </update>
+</mapper>

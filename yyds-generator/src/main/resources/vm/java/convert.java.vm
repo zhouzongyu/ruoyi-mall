@@ -1,5 +1,4 @@
-package ${fullPackage};
-
+package ${packageName}.convert;
 import org.mapstruct.Mapper;
 import ${_fullClass.domain};
 import ${_fullClass.dto};

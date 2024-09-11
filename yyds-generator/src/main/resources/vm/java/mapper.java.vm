@@ -1,4 +1,4 @@
-package ${fullPackage};
+package ${packageName}.mappper;
 
 import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

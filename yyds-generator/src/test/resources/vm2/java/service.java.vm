@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import ${_fullClass.mapper};
-import #evaluate(${_fullClass.domain});
-import #evaluate(${_fullClass.query});
+import ${packageName}.mapper.${ClassName}Mapper;
 
 /**
  * ${functionName}Service业务层处理
@@ -29,7 +27,7 @@ import #evaluate(${_fullClass.query});
 @Service
 public class ${ClassName}Service {
     @Autowired
-    private ${_className.mapper} ${className}Mapper;
+    private ${packageName.mapper} ${className}Mapper;
 
     /**
      * 查询${functionName}

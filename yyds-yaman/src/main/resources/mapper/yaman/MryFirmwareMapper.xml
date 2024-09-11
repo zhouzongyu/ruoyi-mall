@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyds.yaman.mapper.MryFirmwareMapper">
+    
+    <resultMap type="com.yyds.yaman.domain.MryFirmware" id="MryFirmwareResult">
+        <result property="id" column="id"/>
+        <result property="version" column="version"/>
+        <result property="description" column="description"/>
+        <result property="filePath" column="file_path"/>
+        <result property="fileName" column="file_name"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectMryFirmwareVo">
+        select id, version, description, file_path, file_name, application_id, create_time  from mry_firmware
+    </sql>
+
+    <select id="selectByEntity" parameterType="com.yyds.yaman.domain.MryFirmware" resultMap="MryFirmwareResult">
+        <include refid="selectMryFirmwareVo"/>
+        <where>  
+            <if test="version != null  and version != ''"> and version = #{version}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="applicationId != null  and applicationId != ''"> and application_id = #{applicationId}</if>
+        </where>
+    </select>
+
+    <update id="updateDelFlagByIds">
+        update mry_firmware set del_flag=1
+        <where>
+            id in <foreach collection="ids" open="(" item="it" close=")" separator=",">#{it}</foreach>
+        </where>
+    </update>
+</mapper>

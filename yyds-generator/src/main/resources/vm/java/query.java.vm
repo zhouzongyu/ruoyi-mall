@@ -1,4 +1,4 @@
-package ${fullPackage};
+package ${packageName}.pojo.query;
 
 #foreach ($import in $importList)
 import ${import};
@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel(description="${functionName} 查询 对象")
 @Data
-public class ${_className.query} {
+public class ${ClassName}Query {
 #foreach($column in $columns)
 #if($column.query)
 ## 根据查询类型生成 EQ等于、NE不等于、GT大于、LT小于、LIKE模糊、BETWEEN范围

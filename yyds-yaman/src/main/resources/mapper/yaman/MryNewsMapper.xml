@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyds.yaman.mapper.MryNewsMapper">
+    
+    <resultMap type="com.yyds.yaman.domain.MryNews" id="MryNewsResult">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="sortNo" column="sort_no"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="videoUrl" column="video_url"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="clickCount" column="click_count"/>
+        <result property="zanCount" column="zan_count"/>
+    </resultMap>
+
+    <sql id="selectMryNewsVo">
+        select id, title, content, sort_no, pic_url, video_url, create_time, update_time, delete_flag, click_count, zan_count  from mry_news
+    </sql>
+
+    <select id="selectByEntity" parameterType="com.yyds.yaman.domain.MryNews" resultMap="MryNewsResult">
+        <include refid="selectMryNewsVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="sortNo != null "> and sort_no = #{sortNo}</if>
+            <if test="picUrl != null  and picUrl != ''"> and pic_url = #{picUrl}</if>
+            <if test="videoUrl != null  and videoUrl != ''"> and video_url = #{videoUrl}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+            <if test="clickCount != null "> and click_count = #{clickCount}</if>
+            <if test="zanCount != null "> and zan_count = #{zanCount}</if>
+        </where>
+    </select>
+
+    <update id="updateDelFlagByIds">
+        update mry_news set delete_flag=1
+        <where>
+            id in <foreach collection="ids" open="(" item="it" close=")" separator=",">#{it}</foreach>
+        </where>
+    </update>
+</mapper>
