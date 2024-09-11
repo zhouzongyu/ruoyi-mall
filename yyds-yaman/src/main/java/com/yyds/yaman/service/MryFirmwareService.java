@@ -47,27 +47,6 @@ public class MryFirmwareService {
             PageHelper.startPage(page.getPageNumber() + 1, page.getPageSize());
         }
         QueryWrapper<MryFirmware> qw = new QueryWrapper<>();
-        qw.eq("del_flag",0);
-        String version = query.getVersion();
-        if (!StringUtils.isEmpty(version)) {
-            qw.eq("version", version);
-        }
-        String description = query.getDescription();
-        if (!StringUtils.isEmpty(description)) {
-            qw.eq("description", description);
-        }
-        String filePath = query.getFilePath();
-        if (!StringUtils.isEmpty(filePath)) {
-            qw.eq("file_path", filePath);
-        }
-        String fileNameLike = query.getFileNameLike();
-        if (!StringUtils.isEmpty(fileNameLike)) {
-            qw.like("file_name", fileNameLike);
-        }
-        String applicationId = query.getApplicationId();
-        if (!StringUtils.isEmpty(applicationId)) {
-            qw.eq("application_id", applicationId);
-        }
         return mryFirmwareMapper.selectList(qw);
     }
 
@@ -98,7 +77,7 @@ public class MryFirmwareService {
      * @param ids 需要删除的 固件版本主键
      * @return 结果
      */
-    public int deleteByIds(String[] ids) {
+    public int deleteByIds(Long[] ids) {
         return mryFirmwareMapper.updateDelFlagByIds(ids);
     }
 
@@ -108,8 +87,7 @@ public class MryFirmwareService {
      * @param id  固件版本主键
      * @return 结果
      */
-    public int deleteById(String id) {
-        String[] ids = {id};
-        return mryFirmwareMapper.updateDelFlagByIds(ids);
+    public int deleteById(Long id) {
+        return mryFirmwareMapper.deleteById(id);
     }
 }

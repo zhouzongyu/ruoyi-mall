@@ -1,8 +1,11 @@
 package com.ruoyi.web.controller.common;
 
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.CommonResult;
+import com.ruoyi.common.core.domain.vo.FileUploadResultVo;
 import com.ruoyi.common.utils.OssUtils;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,20 +16,22 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@Api(tags = "OSS对象存储Controller")
+@Api(tags = "文件上传接口")
 @RequestMapping("/oss")
 public class OssController {
     @Autowired
     OssUtils ossUtils;
 
+    @ApiOperation("上传文件" )
     @PostMapping("upload")
-    public AjaxResult uploadFile(MultipartFile file) {
+    public CommonResult<FileUploadResultVo> uploadFile(MultipartFile file) {
         //返回上传oss的url
         String url = ossUtils.uploadOneFile(file);
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("fileName", file.getOriginalFilename());
-        ajax.put("url", url);
-        return ajax;
+
+        FileUploadResultVo resultVo = new FileUploadResultVo();
+        resultVo.setFileName(file.getOriginalFilename());
+        resultVo.setUrl(url);
+        return CommonResult.data(resultVo);
     }
 
     @PostMapping("uploadArrayFile")

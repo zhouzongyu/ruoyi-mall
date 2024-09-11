@@ -24,5 +24,5 @@ public interface MryFirmwareMapper extends BaseMapper<MryFirmware> {
      * @param ids
      * @return
     */
-    int updateDelFlagByIds(@Param("ids") String[] ids);
+    int updateDelFlagByIds(@Param("ids") Long[] ids);
 }

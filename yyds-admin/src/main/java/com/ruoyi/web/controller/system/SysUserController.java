@@ -69,8 +69,8 @@ public class SysUserController extends BaseController
             sysUserVo.setNickName(item.getNickName());
             sysUserVo.setPhone(item.getPhonenumber());
             sysUserVo.setRoleId(item.getRoleId());
-            sysUserVo.setRoleName(roleService.selectRoleById(item.getRoleId()).getRoleName());
-            sysUserVo.setMeuns(menuService.getMenuFunctionListByRoleId(item.getRoleId()));
+            sysUserVo.setRoleName(roleService.selectRoleById(1L).getRoleName());
+            sysUserVo.setMeuns(menuService.getMenuFunctionListByRoleId(1L));
             return sysUserVo;
         }).collect(Collectors.toList());
 

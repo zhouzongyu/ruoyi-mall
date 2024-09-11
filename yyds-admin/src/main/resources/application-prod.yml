@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/ruoyi-mall?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+                url: jdbc:mysql://localhost:3306/ruoyi-yaman?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
                 username: root
-                password: 123456
+                password: mDjs2022Pwd
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -18,17 +18,29 @@ spring:
                 password:
             statViewServlet:
                 # 控制台管理用户名和密码
-                login-username: ruoyi
-                login-password: 123456
+                login-username: root
+                login-password: mDjs2022Pwd
     # redis 配置
     redis:
-        host: 192.144.226.59
+        host: 127.0.0.1
+        # 端口，默认为6379
         port: 6379
-        database: 3
+        # 密码
         password: yyds123
+        timeout: 10s
+        lettuce:
+            pool:
+                # 连接池中的最小空闲连接
+                min-idle: 0
+                # 连接池中的最大空闲连接
+                max-idle: 8
+                # 连接池的最大数据库连接数
+                max-active: 8
+                # #连接池最大阻塞等待时间（使用负值表示没有限制）
+                max-wait: -1ms
 ruoyi:
     # 文件路径 示例（ Windows配置C:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-    profile: d:/ruoyi/uploadPath
+    profile: /home/ruoyi/uploadPath
 scheduling:
     enabled: false
 #操作oss需要的一些参数

@@ -11,40 +11,34 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * 
  * @author zzy
  */
-@ApiModel(description="应用管理对象")
+@ApiModel(description="平台资料配置实体类")
 @Data
 @TableName("mry_application")
 public class MryApplication {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("ID")
-    private String id;
+    private Integer id;
 
-    @ApiModelProperty("APP_NAME")
-    @Excel(name = "APP_NAME")
+    @ApiModelProperty("应用名称")
     private String appName;
 
-    @ApiModelProperty("ICON_URL")
-    @Excel(name = "ICON_URL")
+    @ApiModelProperty("小程序图标")
     private String iconUrl;
 
-    @ApiModelProperty("MP_APP_ID")
-    @Excel(name = "MP_APP_ID")
+    @ApiModelProperty("公众号APPID")
     private String mpAppId;
 
-    @ApiModelProperty("MP_APP_SECRET")
-    @Excel(name = "MP_APP_SECRET")
+    @ApiModelProperty("公众号AppSecret")
     private String mpAppSecret;
 
-    @ApiModelProperty("MINI_PROGRAM_APP_ID")
-    @Excel(name = "MINI_PROGRAM_APP_ID")
+    @ApiModelProperty("小程序APPID")
     private String miniProgramAppId;
 
-    @ApiModelProperty("MINI_PROGRAM_SECRET")
-    @Excel(name = "MINI_PROGRAM_SECRET")
+    @ApiModelProperty("小程序Secret")
     private String miniProgramSecret;
 
-    @ApiModelProperty("CREATE_TIME")
-    private LocalDateTime createTime;
+    @ApiModelProperty("更新时间")
+    private LocalDateTime updateTime;
 
 }

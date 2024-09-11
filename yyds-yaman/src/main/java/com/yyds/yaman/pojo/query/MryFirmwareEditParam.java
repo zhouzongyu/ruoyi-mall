@@ -1,25 +1,24 @@
-package com.yyds.yaman.pojo.vo;
+package com.yyds.yaman.pojo.query;
 
-import java.time.LocalDateTime;
-import com.ruoyi.common.annotation.Excel;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
 /**
- *  固件版本 数据视图对象
- * 
+ *  固件版本 查询 对象
+ *
  * @author zzy
  */
+@ApiModel(description="固件版本编辑实体类")
 @Data
-public class MryFirmwareVO  {
+public class MryFirmwareEditParam {
     @ApiModelProperty("ID")
     private Integer id;
 
     @ApiModelProperty("版本号")
-    @Excel(name = "版本号")
     private String version;
 
     @ApiModelProperty("版本描述")
-    @Excel(name = "版本描述")
     private String description;
 
     @ApiModelProperty("程序包下载地址")
@@ -28,7 +27,5 @@ public class MryFirmwareVO  {
     @ApiModelProperty("程序包名称")
     private String fileName;
 
-   /** 发布时间 */
-   @ApiModelProperty("发布时间")
-   private LocalDateTime createTime;
+
 }

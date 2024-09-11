@@ -29,7 +29,7 @@ import com.yyds.yaman.service.MryMemberService;
  * @author zzy
  * @date 2024-09-11
  */
-@Api(tags = "会员接口列表" )
+@Api(tags = "会员管理接口" )
 @RestController
 @RequestMapping("/yaman/member" )
 public class MryMemberController extends BaseController {
@@ -82,8 +82,8 @@ public class MryMemberController extends BaseController {
     @ApiOperation("删除会员" )
     @PreAuthorize("@ss.hasPermi('yaman:member:remove')" )
     @Log(title = "删除会员", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{ids}" )
-    public ResponseEntity<Integer> remove(@PathVariable String[] ids) {
-        return ResponseEntity.ok(service.deleteByIds(ids));
+    @DeleteMapping("/{id}" )
+    public ResponseEntity<Integer> remove(@PathVariable String ids) {
+        return ResponseEntity.ok(service.deleteById(ids));
     }
 }

@@ -23,66 +23,34 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.enums.BusinessType;
 import com.yyds.yaman.domain.MryApplication;
 import com.yyds.yaman.service.MryApplicationService;
-import com.ruoyi.common.utils.poi.ExcelUtil;
 /**
  * 应用管理Controller
  *
  * @author zzy
  * @date 2024-09-11
  */
-@Api(tags ="应用管理接口列表")
+@Api(tags ="平台基本资料配置管理")
 @RestController
-@RequestMapping("/yaman/mryApplication")
+@RequestMapping("/yaman/platform")
 public class MryApplicationController extends BaseController {
     @Autowired
     private MryApplicationService service;
 
-//    @ApiOperation("查询应用管理列表")
-//    @PreAuthorize("@ss.hasPermi('yaman:mryApplication:list')")
-//    @PostMapping("/list")
-//    public ResponseEntity<Page<MryApplication>> list(@RequestBody MryApplicationQuery query, Pageable page) {
-//        List<MryApplication> list = service.selectList(query, page);
-//        return ResponseEntity.ok(new PageImpl<>(list, page, ((com.github.pagehelper.Page)list).getTotal()));
-//    }
 
-//    @ApiOperation("导出应用管理列表")
-//    @PreAuthorize("@ss.hasPermi('yaman:mryApplication:export')")
-//    @Log(title = "应用管理", businessType = BusinessType.EXPORT)
-//    @GetMapping("/export")
-//    public ResponseEntity<String> export(MryApplicationQuery query) {
-//        List<MryApplication> list = service.selectList(query, null);
-//        ExcelUtil<${className.vo}> util = new ExcelUtil<>(${className.vo}.class);
-//        return ResponseEntity.ok(util.writeExcel(convert.dos2vos(list), "应用管理数据"));
-//    }
-
-    @ApiOperation("获取应用管理详细信息")
-    @PreAuthorize("@ss.hasPermi('yaman:mryApplication:query')")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<MryApplication> getInfo(@PathVariable("id") String id) {
-        return ResponseEntity.ok(service.selectById(id));
+    @ApiOperation("获取平台资料配置信息")
+    @PreAuthorize("@ss.hasPermi('yaman:firmware:list')")
+    @GetMapping("/configInfo")
+    public ResponseEntity<MryApplication> configInfo() {
+        return ResponseEntity.ok(service.queryApplicationSetting());
     }
 
-//    @ApiOperation("新增应用管理")
-//    @PreAuthorize("@ss.hasPermi('yaman:mryApplication:add')")
-//    @Log(title = "应用管理", businessType = BusinessType.INSERT)
-//    @PostMapping
-//    public ResponseEntity<Integer> add(@RequestBody MryApplication mryApplication) {
-//        return ResponseEntity.ok(service.insert(mryApplication));
-//    }
 
-    @ApiOperation("修改应用管理")
-    @PreAuthorize("@ss.hasPermi('yaman:mryApplication:edit')")
-    @Log(title = "应用管理", businessType = BusinessType.UPDATE)
+    @ApiOperation("修改系统资料配置信息")
+    @PreAuthorize("@ss.hasPermi('yaman:firmware:list')")
+    @Log(title = "修改系统资料配置信息", businessType = BusinessType.UPDATE)
     @PutMapping
     public ResponseEntity<Integer> edit(@RequestBody MryApplication mryApplication) {
-        return ResponseEntity.ok(service.update(mryApplication));
+        return ResponseEntity.ok(service.updateApplicationSetting(mryApplication));
     }
 
-    @ApiOperation("删除应用管理")
-    @PreAuthorize("@ss.hasPermi('yaman:mryApplication:remove')")
-    @Log(title = "应用管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public ResponseEntity<Integer> remove(@PathVariable String[] ids) {
-        return ResponseEntity.ok(service.deleteByIds(ids));
-    }
 }

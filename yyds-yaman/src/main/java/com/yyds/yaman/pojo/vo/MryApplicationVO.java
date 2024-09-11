@@ -3,6 +3,7 @@ package com.yyds.yaman.pojo.vo;
 import java.time.LocalDateTime;
 import com.ruoyi.common.annotation.Excel;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 /**
  * 应用管理 数据视图对象
@@ -11,26 +12,27 @@ import lombok.Data;
  */
 @Data
 public class MryApplicationVO  {
-   /** ID */
-    private String id;
-   /** APP_NAME */
-    @Excel(name = "APP_NAME")
+    @ApiModelProperty("ID")
+    private Integer id;
+
+    @ApiModelProperty("应用名称")
     private String appName;
-   /** ICON_URL */
-    @Excel(name = "ICON_URL")
+
+    @ApiModelProperty("小程序图标")
     private String iconUrl;
-   /** MP_APP_ID */
-    @Excel(name = "MP_APP_ID")
+
+    @ApiModelProperty("公众号APPID")
     private String mpAppId;
-   /** MP_APP_SECRET */
-    @Excel(name = "MP_APP_SECRET")
+
+    @ApiModelProperty("公众号AppSecret")
     private String mpAppSecret;
-   /** MINI_PROGRAM_APP_ID */
-    @Excel(name = "MINI_PROGRAM_APP_ID")
+
+    @ApiModelProperty("小程序APPID")
     private String miniProgramAppId;
-   /** MINI_PROGRAM_SECRET */
-    @Excel(name = "MINI_PROGRAM_SECRET")
+
+    @ApiModelProperty("小程序Secret")
     private String miniProgramSecret;
-   /** CREATE_TIME */
-    private LocalDateTime createTime;
+
+    @ApiModelProperty("更新时间")
+    private LocalDateTime updateTime;
 }
