@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.CommonResult;
 import com.ruoyi.common.core.domain.TreeSelect;
+import com.ruoyi.common.core.domain.vo.SysRoleMenuVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class SysMenuController extends BaseController {
     /**
      * 获取菜单下拉树列表
      */
-    @ApiOperation("获取菜单下拉树列表")
+    @ApiOperation("获取功能菜单下拉树列表")
     @GetMapping("/treeselect")
     public CommonResult<List<TreeSelect>> treeselect()
     {
@@ -74,13 +75,13 @@ public class SysMenuController extends BaseController {
      */
     @ApiOperation("加载对应角色菜单列表树")
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
-    public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId)
+    public CommonResult<SysRoleMenuVo> roleMenuTreeselect(@PathVariable("roleId") Long roleId)
     {
         List<SysMenu> menus = menuService.selectMenuList(getUserId());
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
-        ajax.put("menus", menuService.buildMenuTreeSelect(menus));
-        return ajax;
+        SysRoleMenuVo sysRoleMenuVo = new SysRoleMenuVo();
+        sysRoleMenuVo.setCheckedKeys(menuService.selectMenuListByRoleId(roleId));
+        sysRoleMenuVo.setMenus(menuService.buildMenuTreeSelect(menus));
+        return CommonResult.data(sysRoleMenuVo);
     }
 
     /**

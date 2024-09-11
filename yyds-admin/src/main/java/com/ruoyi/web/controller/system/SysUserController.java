@@ -11,6 +11,7 @@ import com.ruoyi.common.core.domain.query.SysUserPageParam;
 
 import com.ruoyi.common.core.domain.vo.SysUserVo;
 import com.ruoyi.common.core.page.PageVo;
+import com.ruoyi.system.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -50,6 +51,10 @@ public class SysUserController extends BaseController
     @Autowired
     private ISysPostService postService;
 
+    @Autowired
+    private ISysMenuService menuService;
+
+
     @ApiOperation("获取管理员列表")
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/list")
@@ -62,6 +67,10 @@ public class SysUserController extends BaseController
             sysUserVo.setUserId(item.getUserId());
             sysUserVo.setUserName(item.getUserName());
             sysUserVo.setNickName(item.getNickName());
+            sysUserVo.setPhone(item.getPhonenumber());
+            sysUserVo.setRoleId(item.getRoleId());
+            sysUserVo.setRoleName(roleService.selectRoleById(item.getRoleId()).getRoleName());
+            sysUserVo.setMeuns(menuService.getMenuFunctionListByRoleId(item.getRoleId()));
             return sysUserVo;
         }).collect(Collectors.toList());
 
@@ -200,17 +209,14 @@ public class SysUserController extends BaseController
      * 删除用户
      */
     @ApiOperation("删除用户")
-
     @PreAuthorize("@ss.hasPermi('system:user:remove')")
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{userIds}")
-    public AjaxResult remove(@PathVariable Long[] userIds)
-    {
-        if (ArrayUtils.contains(userIds, getUserId()))
-        {
+    @DeleteMapping("/{userId}")
+    public AjaxResult remove(@PathVariable Long userId)  {
+        if ( userId.longValue() == getUserId().longValue()) {
             return error("当前用户不能删除");
         }
-        return toAjax(userService.deleteUserByIds(userIds));
+        return toAjax(userService.deleteUserById(userId));
     }
 
     /**

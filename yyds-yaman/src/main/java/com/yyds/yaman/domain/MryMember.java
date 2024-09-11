@@ -18,7 +18,7 @@ public class MryMember {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("ID")
-    private Integer id;
+    private String id;
 
     @ApiModelProperty("用户名")
     @Excel(name = "用户名")

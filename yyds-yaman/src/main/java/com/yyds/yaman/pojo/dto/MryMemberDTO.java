@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class MryMemberDTO {
-    private Integer id;
+    private String id;
     private String userName;
     private String phone;
     private String vipNumber;

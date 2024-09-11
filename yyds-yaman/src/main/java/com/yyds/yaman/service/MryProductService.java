@@ -49,7 +49,7 @@ public class MryProductService {
         }
         QueryWrapper<MryProduct> qw = new QueryWrapper<>();
         qw.eq("del_flag",0);
-        String nameLike = query.getNameLike();
+        String nameLike = query.getName();
         if (!StringUtils.isEmpty(nameLike)) {
             qw.like("name", nameLike);
         }
@@ -57,34 +57,7 @@ public class MryProductService {
         if (type != null) {
             qw.eq("type", type);
         }
-        Integer model = query.getModel();
-        if (model != null) {
-            qw.eq("model", model);
-        }
-        Integer communication = query.getCommunication();
-        if (communication != null) {
-            qw.eq("communication", communication);
-        }
-        Integer networking = query.getNetworking();
-        if (networking != null) {
-            qw.eq("networking", networking);
-        }
-        String gear = query.getGear();
-        if (!StringUtils.isEmpty(gear)) {
-            qw.eq("gear", gear);
-        }
-        String function = query.getFunction();
-        if (!StringUtils.isEmpty(function)) {
-            qw.eq("function", function);
-        }
-        String spec = query.getSpec();
-        if (!StringUtils.isEmpty(spec)) {
-            qw.eq("spec", spec);
-        }
-        String picUrl = query.getPicUrl();
-        if (!StringUtils.isEmpty(picUrl)) {
-            qw.eq("pic_url", picUrl);
-        }
+
         return mryProductMapper.selectList(qw);
     }
 

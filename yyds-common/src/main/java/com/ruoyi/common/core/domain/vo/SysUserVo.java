@@ -4,21 +4,19 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 public class SysUserVo {
 
     private static final long serialVersionUID = 1L;
 
-
+    @ApiModelProperty(value = "用户Id")
     private Long userId;
 
-    @NotBlank(message = "账号名不能为空")
     @ApiModelProperty(value = "账号名")
     private String userName;
 
-//    @ApiModelProperty(value = "登录密码")
-//    private String password;
 
     @NotBlank(message = "用户名称不能为空")
     @ApiModelProperty(value = "用户名称")
@@ -28,7 +26,13 @@ public class SysUserVo {
     @ApiModelProperty(value = "角色ID")
     private Long roleId;
 
+    @ApiModelProperty(value = "角色名称")
+    private String roleName;
+
     @ApiModelProperty(value = "手机号码")
     private String phone;
+
+    @ApiModelProperty(value = "权限菜单列表")
+    private List<SysMenuVo> meuns;
 
 }

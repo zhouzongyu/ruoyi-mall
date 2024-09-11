@@ -49,7 +49,7 @@ public class MryMemberService {
         }
         QueryWrapper<MryMember> qw = new QueryWrapper<>();
         qw.eq("delete_flag", 0);
-        String userNameLike = query.getUserNameLike();
+        String userNameLike = query.getUserName();
         if (!StringUtils.isEmpty(userNameLike)) {
             qw.like("user_name", userNameLike);
         }
@@ -61,34 +61,7 @@ public class MryMemberService {
         if (!StringUtils.isEmpty(vipNumber)) {
             qw.eq("vip_number", vipNumber);
         }
-        String birthDate = query.getBirthDate();
-        if (!StringUtils.isEmpty(birthDate)) {
-            qw.eq("birth_date", birthDate);
-        }
-        Integer gender = query.getGender();
-        if (gender != null) {
-            qw.eq("gender", gender);
-        }
-        String address = query.getAddress();
-        if (!StringUtils.isEmpty(address)) {
-            qw.eq("address", address);
-        }
-        Integer skinType = query.getSkinType();
-        if (skinType != null) {
-            qw.eq("skin_type", skinType);
-        }
-        String openId = query.getOpenId();
-        if (!StringUtils.isEmpty(openId)) {
-            qw.eq("open_id", openId);
-        }
-        String miniProgramOpenId = query.getMiniProgramOpenId();
-        if (!StringUtils.isEmpty(miniProgramOpenId)) {
-            qw.eq("mini_program_open_id", miniProgramOpenId);
-        }
-        String unionId = query.getUnionId();
-        if (!StringUtils.isEmpty(unionId)) {
-            qw.eq("union_id", unionId);
-        }
+
         return mryMemberMapper.selectList(qw);
     }
 

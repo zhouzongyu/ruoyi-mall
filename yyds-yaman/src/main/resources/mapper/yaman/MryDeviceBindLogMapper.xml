@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyds.yaman.mapper.MryDeviceBindLogMapper">
+    
+    <resultMap type="com.yyds.yaman.domain.MryDeviceBindLog" id="MryDeviceBindLogResult">
+        <result property="id" column="id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="action" column="action"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectMryDeviceBindLogVo">
+        select id, device_id, action, user_id, user_name, create_time  from mry_device_bind_log
+    </sql>
+
+    <select id="selectByEntity" parameterType="com.yyds.yaman.domain.MryDeviceBindLog" resultMap="MryDeviceBindLogResult">
+        <include refid="selectMryDeviceBindLogVo"/>
+        <where>  
+            <if test="deviceId != null  and deviceId != ''"> and device_id = #{deviceId}</if>
+            <if test="action != null "> and action = #{action}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+        </where>
+    </select>
+
+    <update id="updateDelFlagByIds">
+        update mry_device_bind_log set del_flag=1
+        <where>
+            id in <foreach collection="ids" open="(" item="it" close=")" separator=",">#{it}</foreach>
+        </where>
+    </update>
+</mapper>

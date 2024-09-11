@@ -1,11 +1,11 @@
 # 项目相关配置
 ruoyi:
   # 名称
-  name: RuoYi
+  name: zzy
   # 版本
-  version: 3.7.0
+  version: 1.0.0
   # 版权年份
-  copyrightYear: 2022
+  copyrightYear: 2024
   # 实例演示开关
   demoEnabled: true
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
@@ -169,9 +169,9 @@ http-pool:
   max-total: 200
 gen:
   # 作者
-  author: zcc
+  author: zzy
   # 默认生成包路径 system 需改成自己的模块名称 如 system monitor tool
-  packageName: com.cyl.mall
+  packageName: com.yyds.yaman
   # 自动去除表前缀，默认是false
   autoRemovePre: true
   # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）

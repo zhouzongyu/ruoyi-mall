@@ -1,6 +1,5 @@
 package com.yyds.yaman.pojo.query;
 
-import java.time.LocalDateTime;
 import lombok.Data;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,37 +9,25 @@ import io.swagger.annotations.ApiModelProperty;
  *
  * @author zzy
  */
-@ApiModel(description="会员 查询 对象")
+@ApiModel(description="会员对象")
 @Data
 public class MryMemberQuery {
-    @ApiModelProperty("用户名 精确匹配")
-    private String userNameLike;
+    @ApiModelProperty("用户名")
+    private String userName;
 
-    @ApiModelProperty("手机号 精确匹配")
+    @ApiModelProperty("手机号")
     private String phone;
 
-    @ApiModelProperty("会员号 精确匹配")
+    @ApiModelProperty("会员号")
     private String vipNumber;
 
-    @ApiModelProperty("出生日期 精确匹配")
-    private String birthDate;
+    @ApiModelProperty("设备SN")
+    private String deviceSn;
 
-    @ApiModelProperty("性别 精确匹配")
-    private Integer gender;
+    @ApiModelProperty("产品型号")
+    private String productMode;
 
-    @ApiModelProperty("居住地区 精确匹配")
-    private String address;
-
-    @ApiModelProperty("用户肤质 精确匹配")
-    private Integer skinType;
-
-    @ApiModelProperty("公众号openId 精确匹配")
-    private String openId;
-
-    @ApiModelProperty("小程序openId 精确匹配")
-    private String miniProgramOpenId;
-
-    @ApiModelProperty("unionid 精确匹配")
-    private String unionId;
+    @ApiModelProperty("设备状态  1-已绑定 0-未绑定设备")
+    private String deviceStatus;
 
 }
