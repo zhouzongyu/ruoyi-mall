@@ -1,15 +1,20 @@
 package com.ruoyi.common.constant;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * 返回状态码
  * 
  * @author ruoyi
  */
+@ApiModel(description="状态码")
 public class HttpStatus
 {
     /**
      * 操作成功
      */
+    @ApiModelProperty(value = "操作成功")
     public static final int SUCCESS = 200;
 
     /**
@@ -50,11 +55,13 @@ public class HttpStatus
     /**
      * 未授权
      */
+    @ApiModelProperty(value = "未授权,请重新登录")
     public static final int UNAUTHORIZED = 401;
 
     /**
      * 访问受限，授权过期
      */
+    @ApiModelProperty(value = "访问受限，授权过期")
     public static final int FORBIDDEN = 403;
 
     /**
@@ -70,6 +77,7 @@ public class HttpStatus
     /**
      * 资源冲突，或者资源被锁
      */
+    @ApiModelProperty(value = "资源冲突，或者资源被锁")
     public static final int CONFLICT = 409;
 
     /**
@@ -80,6 +88,7 @@ public class HttpStatus
     /**
      * 系统内部错误
      */
+    @ApiModelProperty(value = "系统内部错误")
     public static final int ERROR = 500;
 
     /**

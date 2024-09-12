@@ -2,13 +2,17 @@ package com.ruoyi.web.controller.system;
 
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.CommonResult;
 import com.ruoyi.common.core.domain.entity.SysMenu;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginBody;
 import com.ruoyi.common.core.domain.model.PhoneLoginBody;
+import com.ruoyi.common.core.domain.vo.LoginResultVo;
+import com.ruoyi.common.core.domain.vo.SysUserInfoVo;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.framework.web.service.SysLoginService;
 import com.ruoyi.framework.web.service.SysPermissionService;
+import com.ruoyi.system.domain.vo.RouterVo;
 import com.ruoyi.system.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +32,7 @@ import java.util.Set;
  * 
  * @author ruoyi
  */
-@Api(tags = "登录")
+@Api(tags = "登录接口")
 @RestController
 public class SysLoginController {
     @Autowired
@@ -48,16 +52,17 @@ public class SysLoginController {
     @PostMapping("/login")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "登录成功", response = AjaxResult.class),
-            @ApiResponse(code = 400, message = "请求参数错误"),
+            @ApiResponse(code = 400, message = "未授权"),
+            @ApiResponse(code = 401, message = "请求参数错误"),
             @ApiResponse(code = 500, message = "服务器内部错误")
     })
-    public AjaxResult login(@RequestBody LoginBody loginBody) {
-        AjaxResult ajax = AjaxResult.success();
+    public CommonResult<LoginResultVo> login(@RequestBody LoginBody loginBody) {
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), "",
                 "");
-        ajax.put(Constants.TOKEN, token);
-        return ajax;
+        LoginResultVo loginResultVo = new LoginResultVo();
+        loginResultVo.setToken(token);
+        return CommonResult.data(loginResultVo);
     }
 
 //    /**
@@ -79,18 +84,23 @@ public class SysLoginController {
      *
      * @return 用户信息
      */
-    @GetMapping("getInfo")
-    public AjaxResult getInfo() {
+    @ApiOperation("获取用户信息")
+    @GetMapping("getUserInfo")
+    public CommonResult<SysUserInfoVo> getInfo() {
         SysUser user = SecurityUtils.getLoginUser().getUser();
         // 角色集合
-        Set<String> roles = permissionService.getRolePermission(user);
+       // Set<String> roles = permissionService.getRolePermission(user);
         // 权限集合
         Set<String> permissions = permissionService.getMenuPermission(user);
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", user);
-        ajax.put("roles", roles);
-        ajax.put("permissions", permissions);
-        return ajax;
+        SysUserInfoVo sysUserInfoVo = new SysUserInfoVo();
+        sysUserInfoVo.setUserId(user.getUserId());
+        sysUserInfoVo.setUserName(user.getUserName());
+        sysUserInfoVo.setNickName(user.getNickName());
+        sysUserInfoVo.setPhone(user.getPhonenumber());
+        sysUserInfoVo.setRoleId(1L);
+        sysUserInfoVo.setRoleName("管理员");
+        sysUserInfoVo.setPermissions(permissions);
+        return CommonResult.data(sysUserInfoVo);
     }
 
     /**
@@ -98,11 +108,11 @@ public class SysLoginController {
      * 
      * @return 路由信息
      */
+    @ApiOperation("获取路由信息")
     @GetMapping("getRouters")
-    public AjaxResult getRouters()
-    {
+    public CommonResult<List<RouterVo>> getRouters(){
         Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
-        return AjaxResult.success(menuService.buildMenus(menus));
+        return CommonResult.data(menuService.buildMenus(menus));
     }
 }
