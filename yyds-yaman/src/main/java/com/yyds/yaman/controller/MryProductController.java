@@ -45,7 +45,7 @@ public class MryProductController extends BaseController {
 
     @ApiOperation("查询产品管理列表")
     @PreAuthorize("@ss.hasPermi('yaman:product:list')")
-    @PostMapping("/list")
+    @GetMapping("/list")
     public CommonResult<PageVo<MryProductVO>> list(MryProductQuery query,
                                                    @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){

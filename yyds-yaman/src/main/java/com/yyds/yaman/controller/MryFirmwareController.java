@@ -40,7 +40,7 @@ public class MryFirmwareController extends BaseController {
 
     @ApiOperation("分页查询固件版本列表" )
     @PreAuthorize("@ss.hasPermi('yaman/firmware:list')" )
-    @PostMapping("/list" )
+    @GetMapping("/list" )
     public CommonResult<PageVo<MryFirmwareVO>> list(@RequestParam(value = "pageNum", defaultValue = "1" ) int pageNum,
                                                     @RequestParam(value = "pageSize", defaultValue = "10" ) int pageSize) {
         //  List<MryMember> list = service.selectList(query, page);

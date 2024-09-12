@@ -52,10 +52,6 @@ public class SysLoginService {
     @Autowired
     private ISysUserService userService;
     @Autowired
-    private ISysConfigService configService;
-    @Autowired
-    private PhoneCodeService phoneCodeService;
-    @Autowired
     private SysPermissionService permissionService;
     @Autowired
     private ISysRoleService sysRoleService;
@@ -80,7 +76,7 @@ public class SysLoginService {
         // 用户验证
         Authentication authentication = null;
         try {
-            // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
+
             authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(username, password));
         }

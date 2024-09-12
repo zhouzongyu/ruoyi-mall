@@ -7,6 +7,9 @@ import com.ruoyi.common.constant.HttpStatus;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.exception.ServiceException;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * 安全服务工具类
  * 
@@ -104,6 +107,41 @@ public class SecurityUtils
     {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    /**
+     * 验证原始密码与编码后的密码是否匹配。
+     *
+     * @param rawPassword      原始密码
+     * @param encodedPassword  编码后的密码
+     * @return 如果匹配则返回 true，否则返回 false
+     */
+    public static boolean matchesMd5Password(String rawPassword, String encodedPassword) {
+        if (rawPassword == null || encodedPassword == null) {
+            throw new IllegalArgumentException("Both rawPassword and encodedPassword must not be null");
+        }
+        String hashedRawPassword = md5EncryptPassword(rawPassword);
+        return hashedRawPassword.equals(encodedPassword);
+    }
+
+    public static String md5EncryptPassword(String input)  {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : messageDigest) {
+                String hex = Integer.toHexString(0xFF & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException("md5EncryptPassword cannot be null");
+        }
+
     }
 
     /**

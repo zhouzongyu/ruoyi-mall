@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
 import java.io.IOException;
+
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,28 +89,27 @@ public class SysProfileController extends BaseController
         return AjaxResult.error("修改个人信息异常，请联系管理员");
     }
 
-    /**
-     * 重置密码
-     */
-    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @ApiOperation("修改登录密码")
+    @Log(title = "修改登录密码", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
-    public AjaxResult updatePwd(String oldPassword, String newPassword)
-    {
+    public AjaxResult updatePwd(
+            @RequestParam(value = "oldPassword", required = true)  String oldPassword,
+            @RequestParam(value = "newPassword", required = true) String newPassword) {
         LoginUser loginUser = getLoginUser();
         String userName = loginUser.getUsername();
         String password = loginUser.getPassword();
-        if (!SecurityUtils.matchesPassword(oldPassword, password))
+        if (!SecurityUtils.matchesMd5Password(oldPassword, password))
         {
             return AjaxResult.error("修改密码失败，旧密码错误");
         }
-        if (SecurityUtils.matchesPassword(newPassword, password))
+        if (SecurityUtils.matchesMd5Password(newPassword, password))
         {
             return AjaxResult.error("新密码不能与旧密码相同");
         }
-        if (userService.resetUserPwd(userName, SecurityUtils.encryptPassword(newPassword)) > 0)
+        if (userService.resetUserPwd(userName, SecurityUtils.md5EncryptPassword(newPassword)) > 0)
         {
             // 更新缓存用户密码
-            loginUser.getUser().setPassword(SecurityUtils.encryptPassword(newPassword));
+            loginUser.getUser().setPassword(SecurityUtils.md5EncryptPassword(newPassword));
             tokenService.setLoginUser(loginUser);
             return AjaxResult.success();
         }

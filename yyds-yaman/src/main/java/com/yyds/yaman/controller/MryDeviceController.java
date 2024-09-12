@@ -36,7 +36,7 @@ public class MryDeviceController extends BaseController {
 
 
     @ApiOperation("查询设备使用记录" )
-    @PostMapping("/getDeviceUsageRecords" )
+    @GetMapping("/getDeviceUsageRecords" )
     public CommonResult<PageVo<MryDeviceUsageRecordVO>> usageRecords(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         //  List<MryMember> list = service.selectList(query, page);
@@ -44,7 +44,7 @@ public class MryDeviceController extends BaseController {
     }
     @ApiOperation("查询设备绑定记录" )
     @PreAuthorize("@ss.hasPermi('yaman:ban:list')" )
-    @PostMapping("/getDeviceBindRecords" )
+    @GetMapping("/getDeviceBindRecords" )
     public CommonResult<PageVo<MryDeviceBindLogVO>> getDeviceBindRecords(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         //  List<MryMember> list = service.selectList(query, page);

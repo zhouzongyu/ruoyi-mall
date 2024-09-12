@@ -38,7 +38,7 @@ public class MryMemberController extends BaseController {
 
     @ApiOperation("查询会员列表" )
     @PreAuthorize("@ss.hasPermi('yaman:member:list')" )
-    @PostMapping("/list" )
+    @GetMapping("/list" )
     public CommonResult<PageVo<MryMemberVO>> list(MryMemberQuery query,
                                                   @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                   @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {

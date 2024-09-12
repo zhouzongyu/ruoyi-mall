@@ -39,7 +39,7 @@ public class MryNewsController extends BaseController {
 
     @ApiOperation("查询资讯文章列表")
     @PreAuthorize("@ss.hasPermi('yaman:news:list')")
-    @PostMapping("/list")
+    @GetMapping("/list")
     public ResponseEntity<Page<MryNews>> list(@RequestBody MryNewsQuery query, Pageable page) {
         List<MryNews> list = service.selectList(query, page);
         return ResponseEntity.ok(new PageImpl<>(list, page, ((com.github.pagehelper.Page)list).getTotal()));
