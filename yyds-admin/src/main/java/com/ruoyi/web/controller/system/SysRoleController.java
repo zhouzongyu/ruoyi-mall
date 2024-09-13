@@ -57,6 +57,20 @@ public class SysRoleController extends BaseController
     @Autowired
     private ISysMenuService menuService;
 
+    @ApiOperation("获取下拉用户角色列表")
+    @PreAuthorize("@ss.hasPermi('system:user:query')")
+    @GetMapping("/roleSelect")
+    public CommonResult<List<SysRoleVo>> roleSelect() {
+        List<SysRole> roles = roleService.selectRoleAll();
+        List<SysRoleVo> roleList = roles.stream().map(item -> {
+            SysRoleVo sysRoleVo = new SysRoleVo();
+            sysRoleVo.setRoleId(item.getRoleId());
+            sysRoleVo.setRoleName(item.getRoleName());
+            return sysRoleVo;
+        }).collect(Collectors.toList());
+        return CommonResult.data(roleList);
+    }
+
     @ApiOperation("获取角色列表")
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/list")
@@ -102,10 +116,18 @@ public class SysRoleController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping(value = "/{roleId}")
-    public AjaxResult getInfo(@PathVariable Long roleId)
+    public CommonResult getInfo(@PathVariable Long roleId)
     {
         roleService.checkRoleDataScope(roleId);
-        return AjaxResult.success(roleService.selectRoleById(roleId));
+        SysRole sysRole = roleService.selectRoleById(roleId);
+        if (sysRole == null)
+        {
+            return CommonResult.error("角色不存在或已被删除");
+        }
+        SysRoleVo sysRoleVo = new SysRoleVo();
+        sysRoleVo.setRoleId(roleId);
+        sysRoleVo.setRoleName(sysRole.getRoleName());
+        return CommonResult.data(sysRoleVo);
     }
 
     /**
@@ -121,6 +143,8 @@ public class SysRoleController extends BaseController
         role.setRoleName(sysRoleBody.getRoleName());
         role.setMenuIds(sysRoleBody.getMenuIds());
         role.setDelFlag("0");
+        role.setStatus("0");
+        role.setRoleSort("10");
         if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
         {
             return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
@@ -146,7 +170,7 @@ public class SysRoleController extends BaseController
         if(sysRoleBody.getRoleId() == null) {
             return AjaxResult.error("修改角色失败，角色ID为空");
         }
-        SysRole role = new SysRole();
+        SysRole role = roleService.selectRoleById(sysRoleBody.getRoleId());
         role.setRoleId(sysRoleBody.getRoleId());
         role.setRoleName(sysRoleBody.getRoleName());
         role.setMenuIds(sysRoleBody.getMenuIds());

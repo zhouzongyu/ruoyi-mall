@@ -69,8 +69,8 @@ public class SysUserController extends BaseController
             sysUserVo.setNickName(item.getNickName());
             sysUserVo.setPhone(item.getPhonenumber());
             sysUserVo.setRoleId(item.getRoleId());
-            sysUserVo.setRoleName(roleService.selectRoleById(1L).getRoleName());
-            sysUserVo.setMeuns(menuService.getMenuFunctionListByRoleId(1L));
+            sysUserVo.setRoleName(roleService.selectRoleById(item.getRoleId()).getRoleName());
+            sysUserVo.setMeuns(menuService.getMenuFunctionListByRoleId(item.getRoleId()));
             return sysUserVo;
         }).collect(Collectors.toList());
 
@@ -131,21 +131,28 @@ public class SysUserController extends BaseController
      */
     @ApiOperation("用户详细信息")
     @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @GetMapping(value = { "/", "/{userId}" })
-    public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
+    @GetMapping(value = {  "/{userId}" })
+    public CommonResult<SysUserVo> getInfo(@PathVariable(value = "userId", required = true) Long userId)
     {
         userService.checkUserDataScope(userId);
-        AjaxResult ajax = AjaxResult.success();
-        List<SysRole> roles = roleService.selectRoleAll();
-        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-        ajax.put("posts", postService.selectPostAll());
-        if (StringUtils.isNotNull(userId))
-        {
-            ajax.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
-            ajax.put("postIds", postService.selectPostListByUserId(userId));
-            ajax.put("roleIds", roleService.selectRoleListByUserId(userId));
-        }
-        return ajax;
+//        AjaxResult ajax = AjaxResult.success();
+//        List<SysRole> roles = roleService.selectRoleAll();
+//        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
+//        ajax.put("posts", postService.selectPostAll());
+//        if (StringUtils.isNotNull(userId))
+//        {
+//            ajax.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
+//            ajax.put("postIds", postService.selectPostListByUserId(userId));
+//            ajax.put("roleIds", roleService.selectRoleListByUserId(userId));
+//        }
+        SysUser sysUser = userService.selectUserById(userId);
+        SysUserVo sysUserVo = new SysUserVo();
+        sysUserVo.setUserId(sysUser.getUserId());
+        sysUserVo.setUserName(sysUser.getUserName());
+        sysUserVo.setPhone(sysUser.getPhonenumber());
+        sysUserVo.setRoleId(sysUser.getRoleId());
+        sysUserVo.setRoleName(roleService.selectRoleById(sysUser.getRoleId()).getRoleName());
+        return CommonResult.data(sysUserVo);
     }
 
     /**
@@ -158,20 +165,21 @@ public class SysUserController extends BaseController
     public AjaxResult add(@Validated @RequestBody SysUserAddParam sysUserAddParam)
     {
 
+        SysUser user = new SysUser();
+        user.setPhonenumber(sysUserAddParam.getPhone());
+        user.setUserName(sysUserAddParam.getUserName());
+
         if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(sysUserAddParam.getUserName())))
         {
             return AjaxResult.error("新增用户'" + sysUserAddParam.getUserName() + "'失败，登录账号已存在");
         }
-//        else if (StringUtils.isNotEmpty(sysUserBody.getPhone())
-//                && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
-//        {
-//            return AjaxResult.error("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
-//        }
-
-        SysUser user = new SysUser();
-        user.setUserName(sysUserAddParam.getUserName());
-        user.setPassword(SecurityUtils.encryptPassword(sysUserAddParam.getPassword()));
-        user.setUserName(sysUserAddParam.getNickName());
+        else if (StringUtils.isNotEmpty(sysUserAddParam.getPhone())
+                && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
+        {
+            return AjaxResult.error("新增用户'" + sysUserAddParam.getUserName() + "'失败，手机号码已存在");
+        }
+        user.setPassword(SecurityUtils.md5EncryptPassword(sysUserAddParam.getPassword()));
+        user.setNickName(sysUserAddParam.getNickName());
         user.setDelFlag("0");
         user.setRoleId(sysUserAddParam.getRoleId());
         user.setCreateBy(getUserId());
@@ -196,11 +204,6 @@ public class SysUserController extends BaseController
                 && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
             return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
-        }
-        else if (StringUtils.isNotEmpty(user.getEmail())
-                && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user)))
-        {
-            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
         user.setUpdateBy(getUserId());
         return toAjax(userService.updateUser(user));

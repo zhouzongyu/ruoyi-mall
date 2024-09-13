@@ -40,6 +40,8 @@ public interface SysMenuMapper
      * @param userId 用户ID
      * @return 权限列表
      */
+    public List<String> selectMenuPermsByAdminId();
+
     public List<String> selectMenuPermsByUserId(Long userId);
 
     /**
