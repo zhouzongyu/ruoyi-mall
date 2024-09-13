@@ -1,6 +1,9 @@
 package com.yyds.yaman.domain;
 
 import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,6 +20,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class MryNews {
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
     @ApiModelProperty("ID")
     private String id;
 

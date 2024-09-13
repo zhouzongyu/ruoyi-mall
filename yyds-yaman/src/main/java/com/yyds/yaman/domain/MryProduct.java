@@ -1,6 +1,9 @@
 package com.yyds.yaman.domain;
 
 import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,6 +20,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class MryProduct {
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     @ApiModelProperty("产品ID")
     private String id;
 
@@ -30,7 +34,7 @@ public class MryProduct {
 
     @ApiModelProperty("产品型号")
     @Excel(name = "产品型号")
-    private Integer model;
+    private String model;
 
     @ApiModelProperty("通信方式")
     @Excel(name = "通信方式")
@@ -46,7 +50,7 @@ public class MryProduct {
 
     @ApiModelProperty("产品功能（多选）")
     @Excel(name = "产品功能", readConverterExp = "多=选")
-    private String function;
+    private String functionType;
 
     @ApiModelProperty("规格参数")
     @Excel(name = "规格参数")

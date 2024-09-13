@@ -55,7 +55,7 @@ public class MryProductDetailVo {
      * 产品功能（多选）
      */
     @ApiModelProperty(value = "产品功能")
-    private String function;
+    private String functionType;
     /**
      * 规格参数
      */

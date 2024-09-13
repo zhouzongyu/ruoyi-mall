@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="communication" column="communication"/>
         <result property="networking" column="networking"/>
         <result property="gear" column="gear"/>
-        <result property="function" column="function"/>
+        <result property="functionType" column="function_type"/>
         <result property="spec" column="spec"/>
         <result property="picUrl" column="pic_url"/>
         <result property="createTime" column="create_time"/>
@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectMryProductVo">
-        select id, name, type, model, communication, networking, gear, function, spec, pic_url, create_time, update_time, delete_flag  from mry_product
+        select id, name, type, model, communication, networking, gear, function_type, spec, pic_url, create_time, update_time, delete_flag  from mry_product
     </sql>
 
     <select id="selectByEntity" parameterType="com.yyds.yaman.domain.MryProduct" resultMap="MryProductResult">
@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="communication != null "> and communication = #{communication}</if>
             <if test="networking != null "> and networking = #{networking}</if>
             <if test="gear != null  and gear != ''"> and gear = #{gear}</if>
-            <if test="function != null  and function != ''"> and function = #{function}</if>
+            <if test="functionType != null  and functionType != ''"> and function_type = #{functionType}</if>
             <if test="spec != null  and spec != ''"> and spec = #{spec}</if>
             <if test="picUrl != null  and picUrl != ''"> and pic_url = #{picUrl}</if>
             <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>

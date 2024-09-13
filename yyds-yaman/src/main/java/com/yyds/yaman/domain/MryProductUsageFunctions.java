@@ -1,5 +1,7 @@
 package com.yyds.yaman.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +18,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class MryProductUsageFunctions {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("ID")
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    @ApiModelProperty("说明记录ID，新增的话值为空, 否则不能为空")
     private String id;
 
     @ApiModelProperty("内容")

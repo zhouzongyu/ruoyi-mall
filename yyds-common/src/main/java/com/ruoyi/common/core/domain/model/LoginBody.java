@@ -24,7 +24,7 @@ public class LoginBody
      * 用户密码
      */
     @NotBlank(message = "用户密码不能为空")
-    @ApiModelProperty(value = "用户密码")
+    @ApiModelProperty(value = "用户密码,MD5加密")
     private String password;
 //
 //    /**
