@@ -10,12 +10,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="description" column="description"/>
         <result property="filePath" column="file_path"/>
         <result property="fileName" column="file_name"/>
-        <result property="applicationId" column="application_id"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
 
     <sql id="selectMryFirmwareVo">
-        select id, version, description, file_path, file_name, application_id, create_time  from mry_firmware
+        select id, version, description, file_path, file_name, create_time  from mry_firmware
     </sql>
 
     <select id="selectByEntity" parameterType="com.yyds.yaman.domain.MryFirmware" resultMap="MryFirmwareResult">
@@ -25,7 +24,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="description != null  and description != ''"> and description = #{description}</if>
             <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
             <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
-            <if test="applicationId != null  and applicationId != ''"> and application_id = #{applicationId}</if>
         </where>
     </select>
 

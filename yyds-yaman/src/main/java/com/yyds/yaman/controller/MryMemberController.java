@@ -1,11 +1,13 @@
 package com.yyds.yaman.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ruoyi.common.core.domain.CommonResult;
 import com.ruoyi.common.core.page.PageVo;
 import com.yyds.yaman.pojo.query.MryMemberQuery;
 import com.yyds.yaman.pojo.query.MryProductQuery;
+import com.yyds.yaman.pojo.vo.MryFirmwareVO;
 import com.yyds.yaman.pojo.vo.MryMemberVO;
 import com.yyds.yaman.pojo.vo.MryProductVO;
 import io.swagger.annotations.Api;
@@ -42,8 +44,31 @@ public class MryMemberController extends BaseController {
     public CommonResult<PageVo<MryMemberVO>> list(MryMemberQuery query,
                                                   @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                   @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        //  List<MryMember> list = service.selectList(query, page);
-        return CommonResult.ok();
+        List<MryMember> list = service.selectList(query, pageNum, pageSize);
+        list.parallelStream().forEach(this::getMemberDevices);
+
+        List<MryMemberVO> firmwareList = list.stream().map(item -> {
+            MryMemberVO mryMemberVO = new MryMemberVO();
+            mryMemberVO.setCreateTime(item.getCreateTime());
+            mryMemberVO.setId(item.getId());
+            mryMemberVO.setPhone(item.getPhone());
+            mryMemberVO.setUserName(item.getUserName());
+            mryMemberVO.setVipNumber(item.getVipNumber());
+            mryMemberVO.setRemark(item.getRemark());
+            // mryMemberVO.setDeviceStatus();
+            return mryMemberVO;
+        }).collect(Collectors.toList());
+
+        PageVo<MryMemberVO> resultPage = new PageVo<>();
+        resultPage.setRecords(firmwareList);
+        resultPage.setCurrent(pageNum);
+        resultPage.setSize(pageSize);
+        if (list instanceof com.github.pagehelper.Page) {
+            com.github.pagehelper.Page<?> page = (com.github.pagehelper.Page<?>) list;
+            resultPage.setTotal(page.getTotal());
+            resultPage.setPages(page.getPages());
+        }
+        return CommonResult.data(resultPage);
     }
 
 //    @ApiOperation("导出会员列表")
@@ -56,10 +81,15 @@ public class MryMemberController extends BaseController {
 //        return ResponseEntity.ok(util.writeExcel(convert.dos2vos(list), "会员数据"));
 //    }
 
+    private void getMemberDevices(MryMember mryMember) {
+
+    }
+
+
     @ApiOperation("获取会员详细信息" )
     @PreAuthorize("@ss.hasPermi('yaman:member:query')" )
     @GetMapping(value = "/{id}" )
-    public ResponseEntity<MryMember> getInfo(@PathVariable("id" ) Integer id) {
+    public ResponseEntity<MryMember> getInfo(@PathVariable("id" ) String id) {
         return ResponseEntity.ok(service.selectById(id));
     }
 
@@ -83,7 +113,12 @@ public class MryMemberController extends BaseController {
     @PreAuthorize("@ss.hasPermi('yaman:member:remove')" )
     @Log(title = "删除会员", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}" )
-    public ResponseEntity<Integer> remove(@PathVariable String ids) {
-        return ResponseEntity.ok(service.deleteById(ids));
+    public CommonResult remove(@PathVariable String id) {
+        MryMember mryMember = service.selectById(id);
+        if(mryMember == null) {
+            return CommonResult.error("会员不存在");
+        }
+        int rows = service.deleteUser(mryMember);
+        return rows > 0 ? CommonResult.ok("删除成功") : CommonResult.error("删除失败");
     }
 }

@@ -3,6 +3,7 @@ package com.yyds.yaman.domain;
 import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModel;
@@ -75,5 +76,8 @@ public class MryMember {
     private LocalDateTime updateTime;
 
     private Integer deleteFlag;
+
+//    @TableField(exist = false)
+//    private List<MryDevice> deviceList;
 
 }

@@ -36,9 +36,6 @@ public class MryFirmware {
     @Excel(name = "版本文件名称")
     private String fileName;
 
-    @ApiModelProperty("应用ID")
-    @Excel(name = "应用ID")
-    private String applicationId;
 
     @ApiModelProperty("发布时间")
     private LocalDateTime createTime;

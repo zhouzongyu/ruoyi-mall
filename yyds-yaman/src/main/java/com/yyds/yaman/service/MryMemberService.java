@@ -32,7 +32,7 @@ public class MryMemberService {
      * @param id 会员主键
      * @return 会员
      */
-    public MryMember selectById(Integer id) {
+    public MryMember selectById(String id) {
         return mryMemberMapper.selectById(id);
     }
 
@@ -43,12 +43,11 @@ public class MryMemberService {
      * @param page  分页条件
      * @return 会员
      */
-    public List<MryMember> selectList(MryMemberQuery query, Pageable page) {
-        if (page != null) {
-            PageHelper.startPage(page.getPageNumber() + 1, page.getPageSize());
-        }
+    public List<MryMember> selectList(MryMemberQuery query, Integer pageNo, Integer pageSize) {
+        PageHelper.startPage(pageNo,pageSize);
+
         QueryWrapper<MryMember> qw = new QueryWrapper<>();
-        qw.eq("delete_flag", 0);
+        qw.lambda().eq(MryMember::getDeleteFlag, 0);
         String userNameLike = query.getUserName();
         if (!StringUtils.isEmpty(userNameLike)) {
             qw.like("user_name", userNameLike);
@@ -61,7 +60,6 @@ public class MryMemberService {
         if (!StringUtils.isEmpty(vipNumber)) {
             qw.eq("vip_number", vipNumber);
         }
-
         return mryMemberMapper.selectList(qw);
     }
 
@@ -103,8 +101,9 @@ public class MryMemberService {
      * @param id 会员主键
      * @return 结果
      */
-    public int deleteById(String id) {
-        String[] ids = {id};
-        return mryMemberMapper.updateDelFlagByIds(ids);
+    public int deleteUser(MryMember mryMember) {
+        mryMember.setDeleteFlag(1);
+        mryMember.setUpdateTime(LocalDateTime.now());
+        return mryMemberMapper.updateById(mryMember);
     }
 }

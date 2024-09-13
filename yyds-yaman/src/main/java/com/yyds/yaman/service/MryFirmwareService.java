@@ -42,10 +42,8 @@ public class MryFirmwareService {
      * @param page 分页条件
      * @return  固件版本
      */
-    public List<MryFirmware> selectList(MryFirmwareQuery query, Pageable page) {
-        if (page != null) {
-            PageHelper.startPage(page.getPageNumber() + 1, page.getPageSize());
-        }
+    public List<MryFirmware> selectList(MryFirmwareQuery query, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<MryFirmware> qw = new QueryWrapper<>();
         return mryFirmwareMapper.selectList(qw);
     }

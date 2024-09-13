@@ -1,8 +1,11 @@
 package com.yyds.yaman.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.ruoyi.common.core.domain.CommonResult;
 import com.yyds.yaman.pojo.query.MryApplicationQuery;
+import com.yyds.yaman.pojo.vo.MryApplicationVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -49,8 +53,18 @@ public class MryApplicationController extends BaseController {
     @PreAuthorize("@ss.hasPermi('yaman:firmware:list')")
     @Log(title = "修改系统资料配置信息", businessType = BusinessType.UPDATE)
     @PutMapping
-    public ResponseEntity<Integer> edit(@RequestBody MryApplication mryApplication) {
-        return ResponseEntity.ok(service.updateApplicationSetting(mryApplication));
+    public CommonResult edit(@Validated  @RequestBody MryApplicationVO applicationVO) {
+        MryApplication mryApplication = new MryApplication();
+        mryApplication.setId(applicationVO.getId());
+        mryApplication.setAppName(applicationVO.getAppName());
+        mryApplication.setIconUrl(applicationVO.getIconUrl());
+        mryApplication.setMpAppId(applicationVO.getMpAppId());
+        mryApplication.setMpAppSecret(applicationVO.getMpAppSecret());
+        mryApplication.setMiniProgramAppId(applicationVO.getMiniProgramAppId());
+        mryApplication.setMiniProgramSecret(applicationVO.getMiniProgramSecret());
+        mryApplication.setUpdateTime(LocalDateTime.now());
+        int rows = service.updateApplicationSetting(mryApplication);
+        return rows > 0 ? CommonResult.ok("更新成功") : CommonResult.error("更新失败");
     }
 
 }
