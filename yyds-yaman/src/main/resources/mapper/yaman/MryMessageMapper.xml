@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyds.yaman.mapper.MryMessageMapper">
+    
+    <resultMap type="com.yyds.yaman.domain.MryMessage" id="MryMessageResult">
+        <result property="id" column="id"/>
+        <result property="msgTitle" column="msg_title"/>
+        <result property="msgContent" column="msg_content"/>
+        <result property="msgStatus" column="msg_status"/>
+        <result property="areas" column="areas"/>
+        <result property="createTime" column="create_time"/>
+        <result property="publishTime" column="publish_time"/>
+        <result property="deleteFlag" column="delete_flag"/>
+    </resultMap>
+
+    <sql id="selectMryMessageVo">
+        select id, msg_title, msg_content, msg_status, areas, create_time, publish_time, delete_flag  from mry_message
+    </sql>
+
+    <select id="selectByEntity" parameterType="com.yyds.yaman.domain.MryMessage" resultMap="MryMessageResult">
+        <include refid="selectMryMessageVo"/>
+        <where>  
+            <if test="msgTitle != null  and msgTitle != ''"> and msg_title = #{msgTitle}</if>
+            <if test="msgContent != null  and msgContent != ''"> and msg_content = #{msgContent}</if>
+            <if test="msgStatus != null "> and msg_status = #{msgStatus}</if>
+            <if test="areas != null  and areas != ''"> and areas = #{areas}</if>
+            <if test="publishTime != null "> and publish_time = #{publishTime}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+
+    <update id="updateDelFlagByIds">
+        update mry_message set delete_flag=1
+        <where>
+            id in <foreach collection="ids" open="(" item="it" close=")" separator=",">#{it}</foreach>
+        </where>
+    </update>
+</mapper>
