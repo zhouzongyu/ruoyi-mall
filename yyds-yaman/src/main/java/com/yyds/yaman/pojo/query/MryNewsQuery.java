@@ -1,40 +1,32 @@
 package com.yyds.yaman.pojo.query;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 资讯文章 查询 对象
  *
  * @author zzy
  */
-@ApiModel(description="资讯文章 查询 对象")
+@ApiModel(description="资讯文章")
 @Data
 public class MryNewsQuery {
-    @ApiModelProperty(" 标题 精确匹配")
+    @ApiModelProperty(value = "标题", required = false)
     private String title;
 
-    @ApiModelProperty("正文 精确匹配")
-    private String content;
+    @ApiModelProperty(name = "startTime", value = "开始时间", required = false, dataType = "Date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startTime;
 
-    @ApiModelProperty("排序 精确匹配")
-    private Integer sortNo;
-
-    @ApiModelProperty("图片 精确匹配")
-    private String picUrl;
-
-    @ApiModelProperty("视频 精确匹配")
-    private String videoUrl;
-
-    @ApiModelProperty("删除标识 精确匹配")
-    private Integer deleteFlag;
-
-    @ApiModelProperty("阅读数 精确匹配")
-    private Integer clickCount;
-
-    @ApiModelProperty("赞数 精确匹配")
-    private Integer zanCount;
-
+    @ApiModelProperty(name = "endTime", value = "结束时间", required = false, dataType = "Date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endTime;
 }
