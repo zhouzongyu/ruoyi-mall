@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyds.yaman.mapper.MryDeviceMapper">
+
+    <resultMap type="com.yyds.yaman.domain.MryDevice" id="MryDeviceResult">
+        <result property="id" column="id"/>
+        <result property="sn" column="sn"/>
+        <result property="model" column="model"/>
+        <result property="productId" column="product_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="usgeProvice" column="usge_provice"/>
+        <result property="usgeCity" column="usge_city"/>
+        <result property="usgeArea" column="usge_area"/>
+    </resultMap>
+
+    <sql id="selectMryDeviceVo">
+        select id, sn, model, product_id, create_time, usge_provice, usge_city, usge_area  from mry_device
+    </sql>
+
+    <select id="selectByEntity" parameterType="com.yyds.yaman.domain.MryDevice" resultMap="MryDeviceResult">
+        <include refid="selectMryDeviceVo"/>
+        <where>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="model != null  and model != ''"> and model = #{model}</if>
+            <if test="productId != null  and productId != ''"> and product_id = #{productId}</if>
+        </where>
+    </select>
+
+    <select id="selectDeviceListByUserId" resultType="com.yyds.yaman.pojo.vo.MryMemberDeviceVo">
+       select md.device_id,d.sn,p.name as product_name,p.model as product_mode
+       from  mry_member_device_relation as md
+       LEFT JOIN mry_device d  on md.device_id=d.id
+       LEFT JOIN mry_product p on d.product_id = p.id where md.user_id = #{userId}
+    </select>
+
+    <select id="selectDeviceDetailListByUserId" resultType="com.yyds.yaman.pojo.vo.MryMemberDeviceDetailVo">
+        select md.device_id,d.sn,p.name as product_name,p.model as product_mode,p.type, p.communication,p.networking,p.pic_url,p.spec
+        from  mry_member_device_relation as md
+                  LEFT JOIN mry_device d  on md.device_id=d.id
+                  LEFT JOIN mry_product p on d.product_id = p.id where md.user_id = #{userId}
+    </select>
+
+
+    <select id="selectDeviceListByUserIds" resultType="com.yyds.yaman.pojo.dto.MryDeviceDTO">
+        select md.user_id, md.device_id,d.sn,p.name as product_name,p.model as product_mode
+        from  mry_member_device_relation as md
+              LEFT JOIN mry_device d  on md.device_id=d.id
+              LEFT JOIN mry_product p on d.product_id = p.id
+        <where>
+            md.user_id in <foreach collection="userIds" open="(" item="it" close=")" separator=",">#{it}</foreach>
+        </where>
+    </select>
+    <update id="updateDelFlagByIds">
+        update mry_device set del_flag=1
+        <where>
+            id in <foreach collection="ids" open="(" item="it" close=")" separator=",">#{it}</foreach>
+        </where>
+    </update>
+</mapper>

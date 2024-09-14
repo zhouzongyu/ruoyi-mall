@@ -18,13 +18,11 @@ public class MryDeviceBindLogVO {
     private Long id;
 
 
-    @ApiModelProperty("1：绑定  2：解绑" )
-    @Excel(name = "1：绑定  2：解绑" )
+    @ApiModelProperty("操作类型 1：绑定  2：解绑" )
     private Integer action;
 
 
     @ApiModelProperty("操作用户" )
-    @Excel(name = "操作用户" )
     private String userName;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss" )

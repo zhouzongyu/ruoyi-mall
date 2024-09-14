@@ -27,18 +27,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectByEntity" parameterType="com.yyds.yaman.domain.MryMember" resultMap="MryMemberResult">
         <include refid="selectMryMemberVo"/>
-        <where>  
+        <where>
+            m.delete_flag = 0
             <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
             <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
             <if test="vipNumber != null  and vipNumber != ''"> and vip_number = #{vipNumber}</if>
-            <if test="birthDate != null  and birthDate != ''"> and birth_date = #{birthDate}</if>
-            <if test="gender != null "> and gender = #{gender}</if>
-            <if test="address != null  and address != ''"> and address = #{address}</if>
             <if test="skinType != null "> and skin_type = #{skinType}</if>
             <if test="openId != null  and openId != ''"> and open_id = #{openId}</if>
             <if test="miniProgramOpenId != null  and miniProgramOpenId != ''"> and mini_program_open_id = #{miniProgramOpenId}</if>
             <if test="unionId != null  and unionId != ''"> and union_id = #{unionId}</if>
         </where>
+    </select>
+
+
+    <select id="queryUserList" parameterType="com.yyds.yaman.pojo.query.MryMemberQuery" resultMap="MryMemberResult">
+        select distinct m.id, m.user_name, m.phone, m.vip_number, m.birth_date, m.gender, m.address, m.skin_type, m.remark, m.create_time, m.update_time
+        from mry_member as m
+        LEFT JOIN  mry_member_device_relation as md  on md.user_id= m.id
+        LEFT JOIN mry_device d  on md.device_id=d.id
+        LEFT JOIN mry_product p on d.product_id = p.id
+        <where>
+            m.delete_flag = 0
+            <if test="userName != null  and userName != ''"> and m.user_name like concat('%', #{userName}, '%')</if>
+            <if test="phone != null  and phone != ''"> and m.phone = #{phone}</if>
+            <if test="deviceStatus != null  and deviceStatus != ''"> and m.has_bind_device = #{deviceStatus}</if>
+            <if test="vipNumber != null  and vipNumber != ''"> and m.vip_number = #{vipNumber}</if>
+            <if test="deviceSn != null  and deviceSn != '' "> and d.sn = #{deviceSn}</if>
+            <if test="productMode != null  and productMode != ''"> and p.model = #{productMode}</if>
+        </where>
+         order by m.create_time desc
     </select>
 
     <update id="updateDelFlagByIds">

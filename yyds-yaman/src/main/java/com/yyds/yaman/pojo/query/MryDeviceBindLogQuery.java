@@ -19,10 +19,5 @@ public class MryDeviceBindLogQuery {
     @ApiModelProperty("1：绑定  2：解绑 精确匹配")
     private Integer action;
 
-    @ApiModelProperty("用户编号 精确匹配")
-    private String userId;
-
-    @ApiModelProperty("用户名称 精确匹配")
-    private String userNameLike;
 
 }

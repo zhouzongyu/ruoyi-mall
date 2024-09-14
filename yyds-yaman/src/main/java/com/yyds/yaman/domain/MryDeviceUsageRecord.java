@@ -18,7 +18,7 @@ public class MryDeviceUsageRecord {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("ID")
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty("用户id")
     @Excel(name = "用户id")

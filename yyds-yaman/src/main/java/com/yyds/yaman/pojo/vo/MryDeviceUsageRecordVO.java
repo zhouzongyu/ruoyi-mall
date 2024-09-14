@@ -37,6 +37,6 @@ public class MryDeviceUsageRecordVO {
     /**
      * 档位
      */
-    @Excel(name = "档位" )
+    @ApiModelProperty("档位" )
     private String gear;
 }

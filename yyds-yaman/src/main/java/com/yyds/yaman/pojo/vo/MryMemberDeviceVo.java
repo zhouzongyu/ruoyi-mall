@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class MryMemberDeviceVo {
-    @ApiModelProperty("用户ID" )
+    @ApiModelProperty("设备ID" )
     private String deviceId;
 
     @ApiModelProperty("设备序号" )

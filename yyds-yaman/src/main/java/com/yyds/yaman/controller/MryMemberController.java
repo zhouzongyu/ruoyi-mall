@@ -1,17 +1,22 @@
 package com.yyds.yaman.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.ruoyi.common.core.domain.CommonResult;
 import com.ruoyi.common.core.page.PageVo;
+import com.yyds.yaman.convert.MryDeviceConvert;
+import com.yyds.yaman.pojo.dto.MryDeviceDTO;
 import com.yyds.yaman.pojo.query.MryMemberQuery;
+import com.yyds.yaman.pojo.query.MryMemberUpdateParam;
 import com.yyds.yaman.pojo.query.MryProductQuery;
-import com.yyds.yaman.pojo.vo.MryFirmwareVO;
-import com.yyds.yaman.pojo.vo.MryMemberVO;
-import com.yyds.yaman.pojo.vo.MryProductVO;
+import com.yyds.yaman.pojo.vo.*;
+import com.yyds.yaman.service.MryDeviceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +43,12 @@ public class MryMemberController extends BaseController {
     @Autowired
     private MryMemberService service;
 
+    @Autowired
+    private MryDeviceService deviceService;
+
+    @Autowired
+    private MryDeviceConvert mryDeviceConvert;
+
     @ApiOperation("查询会员列表" )
     @PreAuthorize("@ss.hasPermi('yaman:member:list')" )
     @GetMapping("/list" )
@@ -45,22 +56,37 @@ public class MryMemberController extends BaseController {
                                                   @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                   @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         List<MryMember> list = service.selectList(query, pageNum, pageSize);
-        list.parallelStream().forEach(this::getMemberDevices);
+        List<MryMemberVO> userList = new ArrayList<>();
+        if(list!= null && list.size() > 0) {
+            List<String> userIds = list.stream().map(item->item.getId()).collect(Collectors.toList());
+            List<MryDeviceDTO> deviceListByUserIds = deviceService.getDeviceListByUserIds(userIds);
+            Map<String, List<MryDeviceDTO>> mapDeviceListByUserId = deviceListByUserIds.stream().collect(Collectors.groupingBy(MryDeviceDTO::getUserId));
 
-        List<MryMemberVO> firmwareList = list.stream().map(item -> {
-            MryMemberVO mryMemberVO = new MryMemberVO();
-            mryMemberVO.setCreateTime(item.getCreateTime());
-            mryMemberVO.setId(item.getId());
-            mryMemberVO.setPhone(item.getPhone());
-            mryMemberVO.setUserName(item.getUserName());
-            mryMemberVO.setVipNumber(item.getVipNumber());
-            mryMemberVO.setRemark(item.getRemark());
-            // mryMemberVO.setDeviceStatus();
-            return mryMemberVO;
-        }).collect(Collectors.toList());
+                userList = list.parallelStream().map(item -> {
+                MryMemberVO mryMemberVO = new MryMemberVO();
+                mryMemberVO.setCreateTime(item.getCreateTime());
+                mryMemberVO.setId(item.getId());
+                mryMemberVO.setPhone(item.getPhone());
+                mryMemberVO.setUserName(item.getUserName());
+                mryMemberVO.setVipNumber(item.getVipNumber());
+                mryMemberVO.setRemark(item.getRemark());
+                mryMemberVO.setDeviceStatus(0);
+                if(mapDeviceListByUserId.containsKey(item.getId())) {
+                    mryMemberVO.setDeviceStatus(1);
+                    mryMemberVO.setDevices(mryDeviceConvert.dos2vos(mapDeviceListByUserId.get(item.getId())));
+                }
+//            mryMemberVO.setDevices(deviceService.getDeviceListByUserId(mryMemberVO.getId()));
+//            if(mryMemberVO.getDevices()!= null && !mryMemberVO.getDevices().isEmpty()) {
+//                mryMemberVO.setDeviceStatus(1);
+//            }else {
+//                mryMemberVO.setDeviceStatus(0);
+//            }
+                return mryMemberVO;
+            }).collect(Collectors.toList());
+        }
 
         PageVo<MryMemberVO> resultPage = new PageVo<>();
-        resultPage.setRecords(firmwareList);
+        resultPage.setRecords(userList);
         resultPage.setCurrent(pageNum);
         resultPage.setSize(pageSize);
         if (list instanceof com.github.pagehelper.Page) {
@@ -81,32 +107,35 @@ public class MryMemberController extends BaseController {
 //        return ResponseEntity.ok(util.writeExcel(convert.dos2vos(list), "会员数据"));
 //    }
 
-    private void getMemberDevices(MryMember mryMember) {
-
-    }
-
-
     @ApiOperation("获取会员详细信息" )
     @PreAuthorize("@ss.hasPermi('yaman:member:query')" )
     @GetMapping(value = "/{id}" )
-    public ResponseEntity<MryMember> getInfo(@PathVariable("id" ) String id) {
-        return ResponseEntity.ok(service.selectById(id));
+    public CommonResult<MryMemberDetailVo> getInfo(@PathVariable("id" ) String id) {
+        return CommonResult.data(service.getUserInfo(id));
     }
 
-//    @ApiOperation("新增会员")
-//    @PreAuthorize("@ss.hasPermi('yaman:mryMember:add')")
-//    @Log(title = "新增会员", businessType = BusinessType.INSERT)
-//    @PostMapping
-//    public ResponseEntity<Integer> add(@RequestBody MryMember mryMember) {
-//        return ResponseEntity.ok(service.insert(mryMember));
-//    }
 
-    @ApiOperation("修改会员" )
+    @ApiOperation("修改会员信息(如备注或会员号)" )
     @PreAuthorize("@ss.hasPermi('yaman:member:edit')" )
     @Log(title = "修改会员", businessType = BusinessType.UPDATE)
     @PutMapping
-    public ResponseEntity<Integer> edit(@RequestBody MryMember mryMember) {
-        return ResponseEntity.ok(service.update(mryMember));
+    public CommonResult edit(@RequestBody MryMemberUpdateParam mryMemberUpdateParam) {
+        MryMember mryMember = service.selectById(mryMemberUpdateParam.getId());
+        if(mryMember == null) {
+            return CommonResult.error("会员不存在");
+        }
+        mryMember.setRemark(mryMemberUpdateParam.getRemark());
+        mryMember.setVipNumber(mryMemberUpdateParam.getVipNumber());
+
+        if(StringUtils.isNotEmpty(mryMemberUpdateParam.getVipNumber())) {
+            MryMember otherMember = service.getByVipNumber(mryMember.getVipNumber());
+            if(otherMember != null && !otherMember.getId().equals(mryMember.getId())) {
+                return CommonResult.error("会员号重复");
+            }
+        }
+
+        int rows = service.update(mryMember);
+        return rows > 0 ? CommonResult.ok("修改成功") : CommonResult.error("修改失败");
     }
 
     @ApiOperation("删除会员" )
@@ -118,6 +147,7 @@ public class MryMemberController extends BaseController {
         if(mryMember == null) {
             return CommonResult.error("会员不存在");
         }
+
         int rows = service.deleteUser(mryMember);
         return rows > 0 ? CommonResult.ok("删除成功") : CommonResult.error("删除失败");
     }

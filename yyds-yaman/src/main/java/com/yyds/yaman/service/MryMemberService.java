@@ -8,13 +8,17 @@ import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
+import com.ruoyi.common.exception.ServiceException;
 import com.yyds.yaman.domain.MryMember;
 import com.yyds.yaman.pojo.query.MryMemberQuery;
+import com.yyds.yaman.pojo.vo.MryMemberDetailVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import com.yyds.yaman.mapper.MryMemberMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 会员Service业务层处理
@@ -26,6 +30,12 @@ public class MryMemberService {
     @Autowired
     private MryMemberMapper mryMemberMapper;
 
+    @Autowired
+    private MryDeviceService deviceService;
+
+    @Autowired
+    private MryMemberDeviceRelationService memberDeviceRelationService;
+
     /**
      * 查询会员
      *
@@ -35,32 +45,34 @@ public class MryMemberService {
     public MryMember selectById(String id) {
         return mryMemberMapper.selectById(id);
     }
+    public MryMemberDetailVo getUserInfo(String id) {
+        MryMember mryMember = selectById(id);
+        if((mryMember == null)) {
+            throw new ServiceException("会员不存在");
+        }
+        MryMemberDetailVo mryMemberDetailVo = new MryMemberDetailVo();
+        mryMemberDetailVo.setId(mryMember.getId());
+        mryMemberDetailVo.setUserName(mryMember.getUserName());
+        mryMemberDetailVo.setBirthDate(mryMember.getBirthDate());
+        mryMemberDetailVo.setGender(mryMember.getGender());
+        mryMemberDetailVo.setAddress(mryMember.getAddress());
+        mryMemberDetailVo.setPhone(mryMember.getPhone());
+        mryMemberDetailVo.setVipNumber(mryMember.getVipNumber());
+        mryMemberDetailVo.setRemark(mryMember.getRemark());
+        mryMemberDetailVo.setDevices(deviceService.selectDeviceDetailListByUserId(mryMember.getId()));
+
+        return mryMemberDetailVo;
+    }
 
     /**
      * 查询会员列表
      *
-     * @param query 查询条件
-     * @param page  分页条件
+     * @param pageNo 查询条件
      * @return 会员
      */
     public List<MryMember> selectList(MryMemberQuery query, Integer pageNo, Integer pageSize) {
         PageHelper.startPage(pageNo,pageSize);
-
-        QueryWrapper<MryMember> qw = new QueryWrapper<>();
-        qw.lambda().eq(MryMember::getDeleteFlag, 0);
-        String userNameLike = query.getUserName();
-        if (!StringUtils.isEmpty(userNameLike)) {
-            qw.like("user_name", userNameLike);
-        }
-        String phone = query.getPhone();
-        if (!StringUtils.isEmpty(phone)) {
-            qw.eq("phone", phone);
-        }
-        String vipNumber = query.getVipNumber();
-        if (!StringUtils.isEmpty(vipNumber)) {
-            qw.eq("vip_number", vipNumber);
-        }
-        return mryMemberMapper.selectList(qw);
+        return mryMemberMapper.queryUserList(query);
     }
 
     /**
@@ -98,12 +110,22 @@ public class MryMemberService {
     /**
      * 删除会员信息
      *
-     * @param id 会员主键
      * @return 结果
      */
+    @Transactional
     public int deleteUser(MryMember mryMember) {
         mryMember.setDeleteFlag(1);
         mryMember.setUpdateTime(LocalDateTime.now());
-        return mryMemberMapper.updateById(mryMember);
+        if(mryMemberMapper.updateById(mryMember)> 0) {
+            //删除设备
+            return memberDeviceRelationService.deleteByUserId(mryMember.getId());
+        }
+        return 1;
+    }
+
+    public MryMember getByVipNumber(String vipNumber) {
+        QueryWrapper<MryMember> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("vip_number", vipNumber);
+        return mryMemberMapper.selectOne(queryWrapper);
     }
 }

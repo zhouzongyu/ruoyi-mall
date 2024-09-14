@@ -39,14 +39,14 @@ public class MryDeviceUsageRecordService {
      * 查询设备使用记录列表
      *
      * @param query 查询条件
-     * @param page  分页条件
      * @return 设备使用记录
      */
-    public List<MryDeviceUsageRecord> selectList(MryDeviceUsageRecordQuery query, Pageable page) {
-        if (page != null) {
-            PageHelper.startPage(page.getPageNumber() + 1, page.getPageSize());
-        }
+    public List<MryDeviceUsageRecord> selectList(MryDeviceUsageRecordQuery query, Integer pageNo, Integer pageSize) {
+        PageHelper.startPage(pageNo, pageSize);
+
         QueryWrapper<MryDeviceUsageRecord> qw = new QueryWrapper<>();
+        qw.lambda().eq(MryDeviceUsageRecord::getDeviceId, query.getDeviceId());
+        qw.orderByDesc("usage_time");
         return mryDeviceUsageRecordMapper.selectList(qw);
     }
 

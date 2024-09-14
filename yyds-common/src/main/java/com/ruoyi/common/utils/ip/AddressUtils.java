@@ -31,7 +31,7 @@ public class AddressUtils
         {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled())
+        if (RuoYiConfig.isAddressEnabled() || true)
         {
             try
             {
@@ -39,8 +39,11 @@ public class AddressUtils
                 if (StringUtils.isEmpty(rspStr))
                 {
                     log.error("获取地理位置异常 {}", ip);
-                    return UNKNOWN;
+                    return getRealAddressByIPOther(ip);
                 }
+
+                //{"ip":"101.42.38.187","pro":"北京市","proCode":"110000","city":"北京市","cityCode":"110000","region":"","regionCode":"0","addr":"北京市 国创富盛通信技术有限公司","regionNames":"","err":""}
+
                 JSONObject obj = JSONObject.parseObject(rspStr);
                 String region = obj.getString("pro");
                 String city = obj.getString("city");
@@ -55,7 +58,22 @@ public class AddressUtils
         return address;
     }
 
+    public static String getRealAddressByIPOther(String ip){
+        String rspStr = HttpUtils.sendGet("http://www.svlik.com/t/ipapi/ip.php", "ip=" + ip , Constants.UTF8);
+        if (StringUtils.isEmpty(rspStr))
+        {
+            log.error("获取地理位置异常 {}", ip);
+            return UNKNOWN;
+        }else{
+            JSONObject obj = JSONObject.parseObject(rspStr);
+            String country = obj.getString("country");
+            String area = obj.getString("area");
+            return String.format("%s|%s", country, area);
+
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println("地址：" + getRealAddressByIP("14.125.8.236"));
+        System.out.println("地址：" + getRealAddressByIP("112.23.49.91"));
     }
 }

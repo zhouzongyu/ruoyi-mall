@@ -14,5 +14,6 @@ import io.swagger.annotations.ApiModelProperty;
 @Data
 public class MryDeviceUsageRecordQuery {
 
-
+    @ApiModelProperty("设备ID 精确匹配")
+    private String deviceId;
 }

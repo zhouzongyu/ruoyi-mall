@@ -1,7 +1,11 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ruoyi.common.core.domain.vo.SysDictDataVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +33,7 @@ import com.ruoyi.system.service.ISysDictTypeService;
  * 
  * @author ruoyi
  */
+@Api(tags = "数据字典信息")
 @RestController
 @RequestMapping("/system/dict/data")
 public class SysDictDataController extends BaseController
@@ -61,6 +66,7 @@ public class SysDictDataController extends BaseController
     /**
      * 查询字典数据详细
      */
+
     @PreAuthorize("@ss.hasPermi('system:dict:query')")
     @GetMapping(value = "/{dictCode}")
     public AjaxResult getInfo(@PathVariable Long dictCode)
@@ -71,31 +77,42 @@ public class SysDictDataController extends BaseController
     /**
      * 根据字典类型查询字典数据信息
      */
+    @ApiOperation("根据字典类型查询字典数据信息")
     @GetMapping(value = "/type/{dictType}")
-    public AjaxResult dictType(@PathVariable String dictType)
+    public AjaxResult<SysDictDataVo> dictType(@PathVariable String dictType)
     {
         List<SysDictData> data = dictTypeService.selectDictDataByType(dictType);
-        if (StringUtils.isNull(data))
-        {
-            data = new ArrayList<SysDictData>();
-        }
-        return AjaxResult.success(data);
+        List<SysDictDataVo> sysDictDatas = data.stream().map(item -> {
+            SysDictDataVo sysDictDataVo = new SysDictDataVo();
+            sysDictDataVo.setDictType(item.getDictType());
+            sysDictDataVo.setDictCode(item.getDictCode());
+            sysDictDataVo.setDictLabel(item.getDictLabel());
+            sysDictDataVo.setDictValue(item.getDictValue());
+            return sysDictDataVo;
+        }).collect(Collectors.toList());
+        return AjaxResult.success(sysDictDatas);
     }
 
     /**
      * 根据字典类型查询字典数据信息
      */
-    @PostMapping(value = "/all-by-types")
-    public AjaxResult allByTypes(@RequestBody List<String> dictTypes)
+    @ApiOperation("查询全部字典数据信息")
+    @GetMapping(value = "/all-by-types")
+    public AjaxResult<SysDictDataVo> allByTypes()
     {
         SysDictData query = new SysDictData();
-        query.getParams().put("dictTypes", dictTypes);
+        query.setStatus("0");
         List<SysDictData> data = dictDataService.selectDictDataList(query);
-        if (StringUtils.isNull(data))
-        {
-            data = new ArrayList<>();
-        }
-        return AjaxResult.success(data);
+
+        List<SysDictDataVo> sysDictDatas = data.stream().map(item -> {
+            SysDictDataVo sysDictDataVo = new SysDictDataVo();
+            sysDictDataVo.setDictType(item.getDictType());
+            sysDictDataVo.setDictCode(item.getDictCode());
+            sysDictDataVo.setDictLabel(item.getDictLabel());
+            sysDictDataVo.setDictValue(item.getDictValue());
+            return sysDictDataVo;
+        }).collect(Collectors.toList());
+        return AjaxResult.success(sysDictDatas);
     }
 
     /**

@@ -12,6 +12,8 @@ public class MryMemberDeviceDetailVo {
     @ApiModelProperty("设备序号" )
     private String sn;
 
+
+
     @ApiModelProperty("产品名称" )
     private String productName;
 
@@ -23,11 +25,6 @@ public class MryMemberDeviceDetailVo {
      */
     @ApiModelProperty(value = "产品类型 1-美容仪")
     private Integer type;
-    /**
-     * 产品型号
-     */
-    @ApiModelProperty(value = "产品型号")
-    private String model;
 
     /**
      * 主图
@@ -45,6 +42,9 @@ public class MryMemberDeviceDetailVo {
      */
     @ApiModelProperty(value = "配网方式")
     private Integer networking;
+
+    @ApiModelProperty("产品规格参数")
+    private String spec;
 
 
 
