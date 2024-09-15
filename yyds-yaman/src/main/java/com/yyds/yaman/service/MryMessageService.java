@@ -1,15 +1,19 @@
 package com.yyds.yaman.service;
 
 
- import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
- import com.yyds.yaman.domain.MryMessage;
- import com.yyds.yaman.pojo.query.MryMessageQuery;
- import org.springframework.beans.factory.annotation.Autowired;
+import com.ruoyi.common.exception.ServiceException;
+import com.yyds.yaman.domain.MryMessage;
+import com.yyds.yaman.pojo.query.MryMessageQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -18,13 +22,14 @@ import com.yyds.yaman.mapper.MryMessageMapper;
 /**
  * 【请填写功能名称】Service业务层处理
  *
- *
  * @author zzy
  */
 @Service
 public class MryMessageService {
     @Autowired
     private MryMessageMapper mryMessageMapper;
+
+
     /**
      * 查询【请填写功能名称】
      *
@@ -38,7 +43,7 @@ public class MryMessageService {
     /**
      * 查询【请填写功能名称】列表
      *
-     * @param query 查询条件
+     * @param query   查询条件
      * @param pageNum 分页条件
      * @return 【请填写功能名称】
      */
@@ -46,7 +51,7 @@ public class MryMessageService {
         PageHelper.startPage(pageNum, pageSize);
 
         QueryWrapper<MryMessage> qw = new QueryWrapper<>();
-        qw.eq("delete_flag",0);
+        qw.eq("delete_flag", 0);
         String msgTitle = query.getMsgTitle();
         if (!StringUtils.isEmpty(msgTitle)) {
             qw.like("msg_title", msgTitle);
@@ -55,7 +60,17 @@ public class MryMessageService {
         if (!StringUtils.isEmpty(msgContent)) {
             qw.eq("msg_content", msgContent);
         }
+        if (query.getStartTime() != null && query.getEndTime() != null) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime startTime = LocalDateTime.parse(query.getStartTime()  + " 00:00:00", formatter);
+                LocalDateTime endTime = LocalDateTime.parse(query.getEndTime()  + " 23:59:59", formatter);
+                qw.between("create_time", startTime, endTime);
+            } catch (Exception exception) {
+                 throw new ServiceException("时间格式参数错误");
+            }
 
+        }
         return mryMessageMapper.selectList(qw);
     }
 
@@ -91,5 +106,8 @@ public class MryMessageService {
         return mryMessageMapper.updateDelFlagByIds(ids);
     }
 
+    public int deleteById(Integer id) {
+        return mryMessageMapper.deleteById(id);
+    }
 
 }

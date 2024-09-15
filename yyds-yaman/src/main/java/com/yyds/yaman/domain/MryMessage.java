@@ -34,13 +34,17 @@ public class MryMessage {
 
     @ApiModelProperty("接收消息区域")
     @Excel(name = "接收消息区域")
-    private String areas;
+    private String areaCodes;
+
+    @ApiModelProperty("接收消息区域")
+    @Excel(name = "接收消息区域")
+    private String areaNames;
+
 
     @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 
     @ApiModelProperty("发布时间")
-    @Excel(name = "发布时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime publishTime;
 
     @ApiModelProperty("删除标识")

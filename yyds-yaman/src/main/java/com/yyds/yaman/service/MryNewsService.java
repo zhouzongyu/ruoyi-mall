@@ -1,11 +1,14 @@
 package com.yyds.yaman.service;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
+import com.ruoyi.common.exception.ServiceException;
 import com.yyds.yaman.domain.MryNews;
 import com.yyds.yaman.pojo.query.MryNewsQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +52,16 @@ public class MryNewsService {
             qw.like("title", title);
         }
 
-        if(query.getStartTime() != null && query.getEndTime() != null) {
-            qw.between("create_time", query.getStartTime(), query.getEndTime());
+        if (query.getStartTime() != null && query.getEndTime() != null) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime startTime = LocalDateTime.parse(query.getStartTime()  + " 00:00:00", formatter);
+                LocalDateTime endTime = LocalDateTime.parse(query.getEndTime()  + " 23:59:59", formatter);
+                qw.between("create_time", startTime, endTime);
+            } catch (Exception exception) {
+                throw new ServiceException("时间格式参数错误");
+            }
+
         }
         return mryNewsMapper.selectList(qw);
     }

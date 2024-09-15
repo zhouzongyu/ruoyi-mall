@@ -20,13 +20,13 @@ public class MryNewsQuery {
     @ApiModelProperty(value = "标题", required = false)
     private String title;
 
-    @ApiModelProperty(name = "startTime", value = "开始时间", required = false, dataType = "Date")
+    @ApiModelProperty(name = "startTime", value = "开始时间,格式:yyyy-MM-dd", required = false, dataType = "String")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startTime;
+    private String startTime;
 
-    @ApiModelProperty(name = "endTime", value = "结束时间", required = false, dataType = "Date")
+    @ApiModelProperty(name = "endTime", value = "结束时间,格式:yyyy-MM-dd", required = false, dataType = "String")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endTime;
+    private String endTime;
 }

@@ -78,9 +78,8 @@ public class MryAdsService {
      * @param ids 需要删除的推广链接主键
      * @return 结果
      */
-    public int deleteByIds(Integer[] ids) {
-        return mryAdsMapper.updateDelFlagByIds(ids);
+    public int deleteById(Integer id) {
+        return mryAdsMapper.deleteById(id);
     }
-
 
 }
