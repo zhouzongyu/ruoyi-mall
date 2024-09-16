@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -181,4 +183,30 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
 
         return Arrays.asList(LocalDateTime.of(firstDayOfLastMonth, LocalTime.MIN),LocalDateTime.of(lastDayOfLastMonth, LocalTime.MAX));
     }
+
+    public static List<String> getDateTimeRange(String beginTime, String endTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        LocalDate startDate = LocalDate.parse(beginTime, formatter);
+        LocalDate endDate = LocalDate.parse(endTime, formatter);
+
+        List<String> dateList = new ArrayList<>();
+
+        // Iterate from start date to end date and add each date to the list
+        LocalDate currentDate = startDate;
+        while (!currentDate.isAfter(endDate)) {
+            dateList.add(currentDate.format(formatter));
+            currentDate = currentDate.plusDays(1);
+        }
+        return dateList;
+
+    }
+
+    public static void main(String[] args) {
+        List<String> list = getDateTimeRange("2024-09-01","2024-09-17");
+        list.stream().forEach(item->{
+            System.out.println(item);
+        });
+    }
 }
+

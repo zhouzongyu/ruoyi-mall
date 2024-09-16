@@ -1,7 +1,7 @@
 package com.ruoyi.web.controller.common;
 
-import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.CommonResult;
+import com.ruoyi.common.core.domain.model.FileUploadParam;
 import com.ruoyi.common.core.domain.vo.FileUploadResultVo;
 import com.ruoyi.common.utils.OssUtils;
 import io.swagger.annotations.Api;
@@ -17,19 +17,19 @@ import java.util.List;
 
 @RestController
 @Api(tags = "文件上传接口")
-@RequestMapping("/oss")
+@RequestMapping("/sys/file")
 public class OssController {
     @Autowired
     OssUtils ossUtils;
 
     @ApiOperation("上传文件" )
     @PostMapping("upload")
-    public CommonResult<FileUploadResultVo> uploadFile(MultipartFile file) {
+    public CommonResult<FileUploadResultVo> uploadFile(FileUploadParam fileUploadParam) {
         //返回上传oss的url
-        String url = ossUtils.uploadOneFile(file);
+        String url = ossUtils.uploadOneFile(fileUploadParam.getFile());
 
         FileUploadResultVo resultVo = new FileUploadResultVo();
-        resultVo.setFileName(file.getOriginalFilename());
+        resultVo.setFileName(fileUploadParam.getFile().getOriginalFilename());
         resultVo.setUrl(url);
         return CommonResult.data(resultVo);
     }

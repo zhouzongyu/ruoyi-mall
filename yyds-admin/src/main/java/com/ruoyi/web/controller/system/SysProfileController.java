@@ -2,7 +2,9 @@ package com.ruoyi.web.controller.system;
 
 import java.io.IOException;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +33,7 @@ import com.ruoyi.system.service.ISysUserService;
  * 
  * @author ruoyi
  */
+@Api(tags = "修改密码")
 @RestController
 @RequestMapping("/system/user/profile")
 public class SysProfileController extends BaseController

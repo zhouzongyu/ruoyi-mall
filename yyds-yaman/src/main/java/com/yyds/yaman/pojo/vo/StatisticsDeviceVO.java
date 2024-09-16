@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class DeviceStatisticsVO {
+public class StatisticsDeviceVO {
 
     @ApiModelProperty("设备总数")
     private Integer deviceCount;

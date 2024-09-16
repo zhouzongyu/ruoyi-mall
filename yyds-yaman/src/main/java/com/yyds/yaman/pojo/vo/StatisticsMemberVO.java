@@ -4,11 +4,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class MemberStatisticsVO {
+public class StatisticsMemberVO {
 
     @ApiModelProperty("年龄或地区")
-    private String title;
+    private String name;
 
     @ApiModelProperty("人数")
-    private Integer value;
+    private Integer count;
 }

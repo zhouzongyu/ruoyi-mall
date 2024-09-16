@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyds.yaman.mapper.IndexStatisticsMapper">
+
+    <select id="newMemberStatistics" resultType="com.yyds.yaman.pojo.vo.StatisticsNewMemberVO">
+        SELECT DATE_FORMAT(create_time, '%Y-%m-%d') AS day, COUNT(*) AS count
+        FROM mry_member
+        where  delete_flag=0  and  DATE (create_time) between DATE (#{beginTime})
+          AND DATE (#{endTime})
+        GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')
+    </select>
+
+    <select id="selectMemberActiveStatisticsByHour" resultType="com.yyds.yaman.pojo.vo.StatisticsMemberActiveStatsVo">
+        SELECT HOUR(create_time) AS time, COUNT(DISTINCT user_id) AS count
+        FROM mry_member_oper_log
+        <where>
+            <if test="beginTime != null and beginTime != ''">
+                and create_time >= #{beginTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and create_time <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        GROUP BY HOUR(create_time)
+    </select>
+    <select id="selectMemberActiveStatisticsByDay" resultType="com.yyds.yaman.pojo.vo.StatisticsMemberActiveStatsVo">
+        SELECT DATE_FORMAT(create_time, '%Y-%m-%d') AS time, COUNT(DISTINCT user_id) AS count
+        FROM mry_member_oper_log
+        <where>
+            <if test="beginTime != null and beginTime != ''">
+                and create_time >= #{beginTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and create_time <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')
+    </select>
+    <select id="selectMemberStatisticsByArea" resultType="com.yyds.yaman.pojo.vo.StatisticsMemberVO">
+        select province as name, count(*) as count from mry_member where delete_flag=0 and has_bind_device=1 GROUP BY province
+    </select>
+
+    <select id="totalMemberStatisticsByBirthDate" resultType="Integer">
+        SELECT COUNT(*) AS count
+        FROM mry_member
+        <where>
+            delete_flag=0
+            <if test="beginTime != null and beginTime != ''">
+                and birth_date >= #{beginTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                and birth_date <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="totalDeviceStatistics" resultType="Integer">
+        select count(1)
+        from mry_device
+    </select>
+    <select id="totalProductStatistics" resultType="Integer">
+        select count(1)
+        from mry_product
+        where delete_flag = 0
+    </select>
+
+    <select id="totalDeviceBindStatistics" resultType="Integer">
+        select count(d.id)
+        from mry_device d,
+             mry_member_device_relation md
+        where d.id = md.device_id
+    </select>
+</mapper>
