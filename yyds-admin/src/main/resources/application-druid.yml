@@ -63,6 +63,9 @@ aes:
   # aes的密钥(长度只能是16或24或32位)
   key: 1111111111111111
 knife4j:
+    enable: true
+    # 开启生产环境屏蔽
+    production: false
     basic:
         enable: true
         username: xmmry

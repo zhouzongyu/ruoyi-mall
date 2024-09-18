@@ -40,7 +40,7 @@ spring:
                 max-wait: -1ms
 ruoyi:
     # 文件路径 示例（ Windows配置C:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-    profile: /home/ruoyi/uploadPath
+    profile: /data/uploadPath
 scheduling:
     enabled: false
 #操作oss需要的一些参数
@@ -75,6 +75,9 @@ aes:
     # aes的密钥(长度只能是16或24或32位)
     key: 1111111111111111
 knife4j:
+    enable: true
+    # 开启生产环境屏蔽
+    production: false
     basic:
         enable: true
         username: xmmry
