@@ -317,6 +317,11 @@ public class SysMenuServiceImpl implements ISysMenuService {
         return UserConstants.UNIQUE;
     }
 
+    @Override
+    public List<Long> getParentMenuList(List<Long> childIds) {
+        return menuMapper.selectParentMenuList(childIds);
+    }
+
     /**
      * 获取路由名称
      *

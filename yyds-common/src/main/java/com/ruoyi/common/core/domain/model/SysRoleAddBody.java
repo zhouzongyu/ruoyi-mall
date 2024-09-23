@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 public class SysRoleAddBody {
@@ -16,6 +17,6 @@ public class SysRoleAddBody {
 
     @ApiModelProperty(value = "菜单ID（包括菜单和按钮）")
     @NotEmpty(message = "菜单不能为空")
-    private Long[] menuIds;
+    private List<Long> menuIds;
 
 }

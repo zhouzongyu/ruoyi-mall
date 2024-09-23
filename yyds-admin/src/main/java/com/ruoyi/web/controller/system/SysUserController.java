@@ -69,6 +69,7 @@ public class SysUserController extends BaseController
             sysUserVo.setNickName(item.getNickName());
             sysUserVo.setPhone(item.getPhonenumber());
             sysUserVo.setRoleId(item.getRoleId());
+            sysUserVo.setStatus(item.getStatus());
             sysUserVo.setRoleName(roleService.selectRoleById(item.getRoleId()).getRoleName());
             sysUserVo.setMeuns(menuService.getMenuFunctionListByRoleId(item.getRoleId()));
             return sysUserVo;
@@ -178,7 +179,7 @@ public class SysUserController extends BaseController
         {
             return AjaxResult.error("新增用户'" + sysUserAddParam.getUserName() + "'失败，手机号码已存在");
         }
-        user.setPassword(SecurityUtils.md5EncryptPassword(sysUserAddParam.getPassword()));
+        user.setPassword(sysUserAddParam.getPassword());
         user.setNickName(sysUserAddParam.getNickName());
         user.setDelFlag("0");
         user.setRoleId(sysUserAddParam.getRoleId());
@@ -205,6 +206,8 @@ public class SysUserController extends BaseController
         {
             return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
         }
+        user.setNickName(sysUserEditParam.getNickName());
+        user.setRoleId(sysUserEditParam.getRoleId());
         user.setUpdateBy(getUserId());
         return toAjax(userService.updateUser(user));
     }

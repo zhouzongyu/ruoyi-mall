@@ -49,7 +49,7 @@ public class MryMember {
     @Excel(name = "居住地区")
     private String address;
 
-    @ApiModelProperty("用户肤质")
+    @ApiModelProperty("用户肤质 1-混油肤质 2-混干肤质 3-敏感肤质 4-中性肤质")
     @Excel(name = "用户肤质")
     private Integer skinType;
 

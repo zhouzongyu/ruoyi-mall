@@ -16,9 +16,9 @@ public class SysUserEditParam {
     @ApiModelProperty(value = "账号名", required = true)
     private String userName;
 
-    @NotBlank(message = "登录密码不能为空")
-    @ApiModelProperty(value = "登录密码", required = true)
-    private String password;
+//    @NotBlank(message = "登录密码不能为空")
+//    @ApiModelProperty(value = "登录密码", required = true)
+//    private String password;
 
     @NotBlank(message = "员工姓名不能为空")
     @ApiModelProperty(value = "用户名称", required = true)

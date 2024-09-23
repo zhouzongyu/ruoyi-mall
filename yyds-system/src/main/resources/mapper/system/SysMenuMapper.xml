@@ -206,4 +206,11 @@
 	    delete from sys_menu where menu_id = #{menuId}
 	</delete>
 
+	<select id="selectParentMenuList" resultType="long">
+		select DISTINCT parent_id from sys_menu where  visible=0 and  menu_id in
+		<foreach collection="menuIds" item="menuId" open="(" separator="," close=")">
+			#{menuId}
+		</foreach>
+	</select>
+
 </mapper> 

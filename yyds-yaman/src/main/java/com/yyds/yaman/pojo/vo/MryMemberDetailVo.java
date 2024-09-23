@@ -35,7 +35,7 @@ public class MryMemberDetailVo {
     @Excel(name = "居住地区")
     private String address;
 
-    @ApiModelProperty("用户肤质")
+    @ApiModelProperty("用户肤质 1-油性肌肤 2-混合性肌肤 3-中性肌肤 4-干性肌肤 5-敏感性肌肤 ")
     @Excel(name = "用户肤质")
     private Integer skinType;
 

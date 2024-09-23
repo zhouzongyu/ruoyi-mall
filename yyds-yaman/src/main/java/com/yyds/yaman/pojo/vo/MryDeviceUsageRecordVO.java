@@ -32,7 +32,7 @@ public class MryDeviceUsageRecordVO {
     /**
      * 模式
      */
-    @ApiModelProperty("美容模式" )
+    @ApiModelProperty("功能, Clean, Hot, Cool, RV, MOIST, ACNE" )
     private String mode;
     /**
      * 档位

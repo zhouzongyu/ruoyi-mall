@@ -32,6 +32,9 @@ public class SysUserVo {
     @ApiModelProperty(value = "手机号码")
     private String phone;
 
+    @ApiModelProperty(value = "用户状态 0=正常,1=停用")
+    private String status;
+
     @ApiModelProperty(value = "权限菜单列表")
     private List<SysMenuVo> meuns;
 

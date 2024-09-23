@@ -1,8 +1,12 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.ruoyi.common.core.domain.CommonResult;
 import com.ruoyi.common.core.domain.model.SysRoleAddBody;
 import com.ruoyi.common.core.domain.model.SysRoleEditBody;
@@ -34,23 +38,22 @@ import com.ruoyi.system.service.ISysUserService;
 
 /**
  * 角色信息
- * 
+ *
  * @author ruoyi
  */
 @Api(tags = "权限管理-角色管理")
 @RestController
 @RequestMapping("/system/role")
-public class SysRoleController extends BaseController
-{
+public class SysRoleController extends BaseController {
     @Autowired
     private ISysRoleService roleService;
 
     @Autowired
     private TokenService tokenService;
-    
+
     @Autowired
     private SysPermissionService permissionService;
-    
+
     @Autowired
     private ISysUserService userService;
 
@@ -76,8 +79,8 @@ public class SysRoleController extends BaseController
     @GetMapping("/list")
     public CommonResult<PageVo<SysRoleVo>> list(SysRolePageParam sysRolePageParam,
                                                 @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
-        Pageable pageable =  PageRequest.of(pageNum, pageSize);
+                                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
         List<SysRole> list = roleService.selectRoleList(sysRolePageParam, pageable);
         List<SysRoleVo> roles = list.stream().map(item -> {
             SysRoleVo sysRoleVo = new SysRoleVo();
@@ -116,12 +119,10 @@ public class SysRoleController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping(value = "/{roleId}")
-    public CommonResult getInfo(@PathVariable Long roleId)
-    {
+    public CommonResult getInfo(@PathVariable Long roleId) {
         roleService.checkRoleDataScope(roleId);
         SysRole sysRole = roleService.selectRoleById(roleId);
-        if (sysRole == null)
-        {
+        if (sysRole == null) {
             return CommonResult.error("角色不存在或已被删除");
         }
         SysRoleVo sysRoleVo = new SysRoleVo();
@@ -137,25 +138,32 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:add')")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysRoleAddBody sysRoleBody)
-    {
-        SysRole role  = new SysRole();
+    public AjaxResult add(@Validated @RequestBody SysRoleAddBody sysRoleBody) {
+        //查询父级
+        SysRole role = new SysRole();
         role.setRoleName(sysRoleBody.getRoleName());
-        role.setMenuIds(sysRoleBody.getMenuIds());
+
+        List<Long> menuIds = sysRoleBody.getMenuIds();
+        List<Long> parentMenuIds = menuService.getParentMenuList(menuIds);
+        if (parentMenuIds != null && !parentMenuIds.isEmpty()) {
+            menuIds.addAll(parentMenuIds); // 合并父菜单ID
+            // 获取祖父菜单ID列表
+            List<Long> firstMenuIds = menuService.getParentMenuList(parentMenuIds);
+            if (firstMenuIds != null && !firstMenuIds.isEmpty()) {
+                menuIds.addAll(firstMenuIds); // 合并祖父菜单ID
+            }
+        }
+        role.setMenuIds(menuIds.toArray(new Long[0]));
         role.setDelFlag("0");
         role.setStatus("0");
         role.setRoleSort("10");
-        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
-        {
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
             return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        }
-        else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role)))
-        {
+        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
             return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setCreateBy(getUserId());
         return toAjax(roleService.insertRole(role));
-
     }
 
     /**
@@ -165,32 +173,39 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysRoleEditBody sysRoleBody)
-    {
-        if(sysRoleBody.getRoleId() == null) {
+    public AjaxResult edit(@Validated @RequestBody SysRoleEditBody sysRoleBody) {
+        if (sysRoleBody.getRoleId() == null) {
             return AjaxResult.error("修改角色失败，角色ID为空");
         }
         SysRole role = roleService.selectRoleById(sysRoleBody.getRoleId());
         role.setRoleId(sysRoleBody.getRoleId());
         role.setRoleName(sysRoleBody.getRoleName());
-        role.setMenuIds(sysRoleBody.getMenuIds());
-        roleService.checkRoleAllowed(role);
-        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role)))
-        {
-            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+
+        List<Long> menuIds = sysRoleBody.getMenuIds();
+        List<Long> parentMenuIds = menuService.getParentMenuList(menuIds);
+        if (parentMenuIds != null && !parentMenuIds.isEmpty()) {
+            menuIds.addAll(parentMenuIds); // 合并父菜单ID
+            // 获取祖父菜单ID列表
+            List<Long> firstMenuIds = menuService.getParentMenuList(parentMenuIds);
+            if (firstMenuIds != null && !firstMenuIds.isEmpty()) {
+                menuIds.addAll(firstMenuIds); // 合并祖父菜单ID
+            }
         }
-        else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role)))
-        {
+        role.setMenuIds(menuIds.toArray(new Long[0]));
+
+
+        roleService.checkRoleAllowed(role);
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
+            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
             return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setUpdateBy(getUserId());
-        
-        if (roleService.updateRole(role) > 0)
-        {
+
+        if (roleService.updateRole(role) > 0) {
             // 更新缓存用户权限
             LoginUser loginUser = getLoginUser();
-            if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin())
-            {
+            if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin()) {
                 loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
                 loginUser.setUser(userService.selectUserByUserName(loginUser.getUser().getUserName()));
                 tokenService.setLoginUser(loginUser);
@@ -206,8 +221,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping("/dataScope")
-    public AjaxResult dataScope(@RequestBody SysRole role)
-    {
+    public AjaxResult dataScope(@RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
         return toAjax(roleService.authDataScope(role));
     }
@@ -218,8 +232,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
-    public AjaxResult changeStatus(@RequestBody SysRole role)
-    {
+    public AjaxResult changeStatus(@RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
         role.setUpdateBy(getUserId());
         return toAjax(roleService.updateRoleStatus(role));
@@ -232,8 +245,7 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:remove')")
     @Log(title = "角色管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{roleIds}")
-    public AjaxResult remove(@PathVariable Long[] roleIds)
-    {
+    public AjaxResult remove(@PathVariable Long[] roleIds) {
         return toAjax(roleService.deleteRoleByIds(roleIds));
     }
 
@@ -242,8 +254,7 @@ public class SysRoleController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping("/optionselect")
-    public AjaxResult optionselect()
-    {
+    public AjaxResult optionselect() {
         return AjaxResult.success(roleService.selectRoleAll());
     }
 

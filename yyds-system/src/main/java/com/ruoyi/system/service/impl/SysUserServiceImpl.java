@@ -64,10 +64,25 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUserPage(SysUserPageParam query, int pageNum, int pageSize) {
-         PageHelper.startPage(pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         SysUser sysUser = new SysUser();
         if (StringUtils.isNotEmpty(query.getUserName())) {
             sysUser.setUserName(query.getUserName());
+        }
+
+        if (StringUtils.isNotEmpty(query.getNickName())) {
+            sysUser.setNickName(query.getNickName());
+        }
+
+        if (StringUtils.isNotEmpty(query.getStatus())) {
+            sysUser.setStatus(query.getStatus());
+        }
+        if (StringUtils.isNotEmpty(query.getPhone())) {
+            sysUser.setPhonenumber(query.getPhone());
+        }
+
+        if (query.getRoleId() != null) {
+            sysUser.setRoleId(query.getRoleId());
         }
         return userMapper.selectUserList(sysUser);
 
@@ -311,12 +326,6 @@ public class SysUserServiceImpl implements ISysUserService
         Long userId = user.getUserId();
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
-        // 新增用户与角色管理
-        insertUserRole(user);
-        // 删除用户与岗位关联
-        userPostMapper.deleteUserPostByUserId(userId);
-        // 新增用户与岗位管理
-        insertUserPost(user);
         return userMapper.updateUser(user);
     }
 
