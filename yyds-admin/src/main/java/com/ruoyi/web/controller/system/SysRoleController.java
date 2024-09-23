@@ -244,9 +244,9 @@ public class SysRoleController extends BaseController {
     @ApiOperation("删除角色")
     @PreAuthorize("@ss.hasPermi('system:role:remove')")
     @Log(title = "角色管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{roleIds}")
-    public AjaxResult remove(@PathVariable Long[] roleIds) {
-        return toAjax(roleService.deleteRoleByIds(roleIds));
+    @DeleteMapping("/{roleId}")
+    public AjaxResult remove(@PathVariable Long roleId) {
+        return toAjax(roleService.deleteRoleById(roleId));
     }
 
     /**

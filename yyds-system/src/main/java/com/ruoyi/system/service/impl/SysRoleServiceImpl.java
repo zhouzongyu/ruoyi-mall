@@ -353,10 +353,13 @@ public class SysRoleServiceImpl  implements ISysRoleService
     @Transactional
     public int deleteRoleById(Long roleId)
     {
+
+        if (countUserRoleByRoleId(roleId) > 0) {
+            SysRole role = selectRoleById(roleId);
+            throw new ServiceException(String.format("%1$s已分配,不能删除", role.getRoleName()));
+        }
         // 删除角色与菜单关联
         roleMenuMapper.deleteRoleMenuByRoleId(roleId);
-        // 删除角色与部门关联
-        roleDeptMapper.deleteRoleDeptByRoleId(roleId);
         return roleMapper.deleteRoleById(roleId);
     }
 
@@ -381,8 +384,6 @@ public class SysRoleServiceImpl  implements ISysRoleService
         }
         // 删除角色与菜单关联
         roleMenuMapper.deleteRoleMenu(roleIds);
-        // 删除角色与部门关联
-        roleDeptMapper.deleteRoleDept(roleIds);
         return roleMapper.deleteRoleByIds(roleIds);
     }
 

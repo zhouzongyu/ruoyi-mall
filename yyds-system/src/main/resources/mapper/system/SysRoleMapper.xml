@@ -139,7 +139,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<delete id="deleteRoleById" parameterType="Long">
-		update sys_role set del_flag = '2' where role_id = #{roleId}
+		delete from sys_role where role_id = #{roleId}
  	</delete>
  	
  	<delete id="deleteRoleByIds" parameterType="Long">
