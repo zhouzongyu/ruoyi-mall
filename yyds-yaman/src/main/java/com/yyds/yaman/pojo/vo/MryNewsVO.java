@@ -47,4 +47,10 @@ public class MryNewsVO {
     @ApiModelProperty("赞数")
     @Excel(name = "赞数")
     private Integer zanCount;
+
+    /**
+     * 状态 0-正常 1-禁用
+     */
+    @ApiModelProperty("是否禁用 0-正常 1-禁用")
+    private String status;
 }

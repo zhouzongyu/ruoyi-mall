@@ -62,4 +62,7 @@ public class MryNews {
     @Excel(name = "赞数")
     private Integer zanCount;
 
+    @ApiModelProperty("是否禁用 0-正常 1-禁用")
+    private String status;
+
 }

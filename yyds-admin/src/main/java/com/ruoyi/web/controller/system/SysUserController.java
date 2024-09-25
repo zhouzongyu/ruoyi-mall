@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.ruoyi.common.core.domain.CommonResult;
 import com.ruoyi.common.core.domain.model.SysUserAddParam;
 import com.ruoyi.common.core.domain.model.SysUserEditParam;
+import com.ruoyi.common.core.domain.query.ChangeUserStatusParam;
 import com.ruoyi.common.core.domain.query.SysUserPageParam;
 
 import com.ruoyi.common.core.domain.vo.SysUserVo;
@@ -248,14 +249,14 @@ public class SysUserController extends BaseController
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus/{userId}")
     public AjaxResult changeStatus(@PathVariable("userId") Long userId,
-                                   @ApiParam(value = "状态 1-启动 2-停用") @RequestParam(value = "status", required = true) String status)
+                                   @RequestBody ChangeUserStatusParam changeUserStatusParam)
     {
-        if (!"1".equalsIgnoreCase(status) && !"2".equalsIgnoreCase(status)) {
-            return AjaxResult.error("状态值错误 1-启动 2-停用");
+        if (!"1".equalsIgnoreCase(changeUserStatusParam.getStatus()) && !"0".equalsIgnoreCase(changeUserStatusParam.getStatus())) {
+            return AjaxResult.error("状态值错误 1-启动 0-停用");
         }
         SysUser user = userService.selectUserById(userId);
         userService.checkUserAllowed(user);
-        user.setStatus(status);
+        user.setStatus(changeUserStatusParam.getStatus());
         user.setUpdateBy(getUserId());
         return toAjax(userService.updateUserStatus(user));
     }

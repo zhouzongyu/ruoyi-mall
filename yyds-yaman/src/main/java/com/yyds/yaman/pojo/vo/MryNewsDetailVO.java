@@ -50,4 +50,7 @@ public class MryNewsDetailVO {
     @ApiModelProperty("赞数")
     @Excel(name = "赞数")
     private Integer zanCount;
+
+    @ApiModelProperty(value = "状态 0=正常,1=停用")
+    private String status;
 }

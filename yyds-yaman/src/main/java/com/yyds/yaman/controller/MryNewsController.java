@@ -4,7 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.CommonResult;
+import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.core.domain.query.ChangeUserStatusParam;
 import com.ruoyi.common.core.page.PageVo;
 import com.yyds.yaman.pojo.query.MryNewsAddParam;
 import com.yyds.yaman.pojo.query.MryNewsEditParam;
@@ -57,6 +60,7 @@ public class MryNewsController extends BaseController {
             newsVO.setPicUrl(item.getPicUrl());
             newsVO.setSortNo(item.getSortNo());
             newsVO.setCreateTime(item.getCreateTime());
+            newsVO.setStatus(item.getStatus());
             return newsVO;
         }).collect(Collectors.toList());
 
@@ -104,6 +108,7 @@ public class MryNewsController extends BaseController {
         MryNews mryNews = new MryNews();
         BeanUtils.copyProperties(mryNewsAddParam, mryNews);
         mryNews.setDeleteFlag(0);
+        mryNews.setStatus("0");
         mryNews.setCreateTime(LocalDateTime.now());
         mryNews.setUpdateTime(LocalDateTime.now());
         mryNews.setClickCount(0);
@@ -141,5 +146,25 @@ public class MryNewsController extends BaseController {
         mryNews.setDeleteFlag(1);
         return newsService.update(mryNews) > 0 ? CommonResult.ok("删除成功") : CommonResult.error("删除失败");
 
+    }
+
+    @ApiOperation("修改状态")
+    @PreAuthorize("@ss.hasPermi('system:user:edit')")
+    @Log(title = "资讯文章", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus/{id}")
+    public CommonResult changeStatus(@PathVariable("id") String id,
+                                   @RequestBody ChangeUserStatusParam changeUserStatusParam)
+    {
+        if (!"1".equalsIgnoreCase(changeUserStatusParam.getStatus()) && !"0".equalsIgnoreCase(changeUserStatusParam.getStatus())) {
+            return CommonResult.error("状态值错误 1-启动 0-停用");
+        }
+        MryNews mryNews = newsService.selectById(id);
+        if (mryNews == null) {
+            return CommonResult.error("数据不存在");
+        }
+        mryNews.setStatus(changeUserStatusParam.getStatus());
+        mryNews.setUpdateTime(LocalDateTime.now());
+        int rows = newsService.update(mryNews);
+        return rows > 0 ? CommonResult.ok("操作成功") : CommonResult.error("操作失败");
     }
 }
