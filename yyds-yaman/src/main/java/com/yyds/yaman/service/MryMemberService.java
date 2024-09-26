@@ -75,6 +75,9 @@ public class MryMemberService {
         return mryMemberMapper.queryUserList(query);
     }
 
+    public List<MryMember> selectList(MryMemberQuery query) {
+        return mryMemberMapper.queryUserList(query);
+    }
     /**
      * 新增会员
      *

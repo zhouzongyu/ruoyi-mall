@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.CommonResult;
 import com.ruoyi.common.core.page.PageVo;
+import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.yyds.yaman.convert.MryDeviceConvert;
 import com.yyds.yaman.pojo.dto.MryDeviceDTO;
 import com.yyds.yaman.pojo.query.MryMemberQuery;
@@ -29,6 +32,8 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.enums.BusinessType;
 import com.yyds.yaman.domain.MryMember;
 import com.yyds.yaman.service.MryMemberService;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 会员Controller
@@ -70,7 +75,7 @@ public class MryMemberController extends BaseController {
                 mryMemberVO.setUserName(item.getUserName());
                 mryMemberVO.setVipNumber(item.getVipNumber());
                 mryMemberVO.setRemark(item.getRemark());
-                mryMemberVO.setDeviceStatus(0);
+                mryMemberVO.setDeviceStatus(0); //回头更新
                 if(mapDeviceListByUserId.containsKey(item.getId())) {
                     mryMemberVO.setDeviceStatus(1);
                     mryMemberVO.setDevices(mryDeviceConvert.dos2vos(mapDeviceListByUserId.get(item.getId())));
@@ -97,15 +102,45 @@ public class MryMemberController extends BaseController {
         return CommonResult.data(resultPage);
     }
 
-//    @ApiOperation("导出会员列表")
-//    @PreAuthorize("@ss.hasPermi('yaman:mryMember:export')")
-//    @Log(title = "会员", businessType = BusinessType.EXPORT)
-//    @GetMapping("/export")
-//    public ResponseEntity<String> export(MryMemberQuery query) {
-//        List<MryMember> list = service.selectList(query, null);
-//        ExcelUtil<MryMemberVo}> util = new ExcelUtil<>(MryMemberVo}.class);
-//        return ResponseEntity.ok(util.writeExcel(convert.dos2vos(list), "会员数据"));
-//    }
+    @ApiOperation("导出会员列表")
+    // @PreAuthorize("@ss.hasPermi('yaman:member:export')")
+    @GetMapping("/export")
+    public void export(HttpServletResponse response, MryMemberQuery query) {
+        List<MryMember> memberList = service.selectList(query);
+
+        try {
+            List<MryMemberExportVO> memberVoList = new ArrayList<>();
+            if(memberList != null && memberList.size() > 0 ){
+                List<String> userIds = memberList.stream().map(item->item.getId()).collect(Collectors.toList());
+                List<MryDeviceDTO> deviceListByUserIds = deviceService.getDeviceListByUserIds(userIds);
+                Map<String, List<MryDeviceDTO>> mapDeviceListByUserId = deviceListByUserIds.stream().collect(Collectors.groupingBy(MryDeviceDTO::getUserId));
+                memberVoList = memberList.stream().map(item->{
+                    MryMemberExportVO mryMemberVO = new MryMemberExportVO();
+                    mryMemberVO.setPhone(item.getPhone());
+                    mryMemberVO.setUserName(item.getUserName());
+                    mryMemberVO.setVipNumber(item.getVipNumber());
+                    mryMemberVO.setRemark(item.getRemark());
+                    mryMemberVO.setDeviceStatus("未绑定");
+
+                    if(mapDeviceListByUserId.containsKey(item.getId())) {
+                        mryMemberVO.setDeviceStatus("已绑定");
+                        List<MryDeviceDTO> list =  mapDeviceListByUserId.get(item.getId());
+                        mryMemberVO.setProductName(list.stream().map(i -> i.getProductName()).collect(Collectors.joining(",")));
+                        mryMemberVO.setProductMode(list.stream().map(i -> i.getProductMode()).collect(Collectors.joining(",")));
+                        mryMemberVO.setSn(list.stream().map(i -> i.getSn()).collect(Collectors.joining(",")));
+                    }
+                    return mryMemberVO;
+                }).collect(Collectors.toList());
+
+            }
+
+            ExcelUtil<MryMemberExportVO> util = new ExcelUtil<MryMemberExportVO>(MryMemberExportVO.class);
+            util.exportExcel(response, memberVoList, "会员数据");
+        }catch (Exception ex) {
+            throw new ServiceException("导出失败！");
+        }
+
+    }
 
     @ApiOperation("获取会员详细信息" )
     @PreAuthorize("@ss.hasPermi('yaman:member:query')" )

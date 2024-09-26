@@ -454,6 +454,8 @@ public class ExcelUtil<T>
     public void exportExcel(HttpServletResponse response, List<T> list, String sheetName, String title) throws IOException
     {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename="+encodingFilename(sheetName) +".xlsx");
+
         response.setCharacterEncoding("utf-8");
         this.init(list, sheetName, title, Type.EXPORT);
         exportExcel(response.getOutputStream());

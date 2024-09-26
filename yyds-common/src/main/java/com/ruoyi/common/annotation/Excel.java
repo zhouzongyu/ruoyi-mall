@@ -121,6 +121,8 @@ public @interface Excel
      */
     public String[] args() default {};
 
+    public String mergeLine() default "";
+
     public enum Align
     {
         AUTO(0), LEFT(1), CENTER(2), RIGHT(3);

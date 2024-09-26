@@ -126,7 +126,9 @@ public class FileUploadUtils
 
         File desc = getAbsoluteFile(baseDir, fileName);
         long size = file.getSize();
+
         if (scale && size > ONE_M) {
+            //压缩图片
             Img.from(file.getInputStream())
                     //压缩比率
                     .setQuality(ONE_M * 1.0 / size)
