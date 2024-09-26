@@ -28,6 +28,9 @@ public class MryFirmware {
     @Excel(name = "版本描述")
     private String description;
 
+    @ApiModelProperty("CRC32")
+    private String crc32;
+
     @ApiModelProperty("版本文件地址")
     @Excel(name = "版本文件地址")
     private String filePath;

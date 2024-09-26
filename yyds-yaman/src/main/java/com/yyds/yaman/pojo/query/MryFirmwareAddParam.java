@@ -15,6 +15,9 @@ public class MryFirmwareAddParam {
     @ApiModelProperty("版本号")
     private String version;
 
+    @ApiModelProperty("CRC32")
+    private String crc32;
+
     @ApiModelProperty("版本描述")
     private String description;
 

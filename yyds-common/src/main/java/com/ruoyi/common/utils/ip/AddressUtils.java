@@ -23,7 +23,7 @@ public class AddressUtils
     // 未知地址
     public static final String UNKNOWN = "XX XX";
 
-    public static String getRealAddressByIP(String ip)
+    public static String getRealAddressByIPOther(String ip)
     {
         String address = UNKNOWN;
         // 内网不查询
@@ -58,7 +58,7 @@ public class AddressUtils
         return address;
     }
 
-    public static String getRealAddressByIPOther(String ip){
+    public static String getRealAddressByIP(String ip){
         String rspStr = HttpUtils.sendGet("http://www.svlik.com/t/ipapi/ip.php", "ip=" + ip , Constants.UTF8);
         if (StringUtils.isEmpty(rspStr))
         {

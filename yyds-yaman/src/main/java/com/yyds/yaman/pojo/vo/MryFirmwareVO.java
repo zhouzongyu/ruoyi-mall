@@ -28,6 +28,8 @@ public class MryFirmwareVO  {
     @ApiModelProperty("程序包名称")
     private String fileName;
 
+    @ApiModelProperty("CRC32")
+    private String crc32;
    /** 发布时间 */
    @ApiModelProperty("发布时间")
    private LocalDateTime createTime;

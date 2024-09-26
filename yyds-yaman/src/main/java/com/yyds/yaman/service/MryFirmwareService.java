@@ -39,7 +39,6 @@ public class MryFirmwareService {
      * 查询 固件版本列表
      *
      * @param query 查询条件
-     * @param page 分页条件
      * @return  固件版本
      */
     public List<MryFirmware> selectList(MryFirmwareQuery query, Integer pageNum, Integer pageSize) {
@@ -85,7 +84,7 @@ public class MryFirmwareService {
      * @param id  固件版本主键
      * @return 结果
      */
-    public int deleteById(Long id) {
+    public int deleteById(Integer id) {
         return mryFirmwareMapper.deleteById(id);
     }
 }

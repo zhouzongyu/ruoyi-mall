@@ -57,6 +57,7 @@ public class MryFirmwareController extends BaseController {
             mryProductVO.setDescription(item.getDescription());
             mryProductVO.setFilePath(item.getFilePath());
             mryProductVO.setFileName(item.getFileName());
+            mryProductVO.setCrc32(item.getCrc32());
             mryProductVO.setCreateTime(item.getCreateTime());
             return mryProductVO;
         }).collect(Collectors.toList());
@@ -99,6 +100,7 @@ public class MryFirmwareController extends BaseController {
         mryFirmwareEntity.setFileName(mryFirmwareAddParam.getFileName());
         mryFirmwareEntity.setFilePath(mryFirmwareAddParam.getFilePath());
         mryFirmwareEntity.setVersion(mryFirmwareAddParam.getVersion());
+        mryFirmwareEntity.setCrc32(mryFirmwareAddParam.getCrc32());
         mryFirmwareEntity.setDescription(mryFirmwareAddParam.getDescription());
         mryFirmwareEntity.setCreateTime(LocalDateTime.now());
         int rows = service.insert(mryFirmwareEntity);
@@ -114,6 +116,7 @@ public class MryFirmwareController extends BaseController {
         if(mryFirmware == null) {
             return CommonResult.error("固件版本记录不存在或已被删除");
         }
+        mryFirmware.setCrc32(mryFirmwareEditParam.getCrc32());
         mryFirmware.setVersion(mryFirmwareEditParam.getVersion());
         mryFirmware.setDescription(mryFirmwareEditParam.getDescription());
         mryFirmware.setFilePath(mryFirmwareEditParam.getFilePath());
@@ -126,7 +129,9 @@ public class MryFirmwareController extends BaseController {
     @PreAuthorize("@ss.hasPermi('yaman/firmware:remove')" )
     @Log(title = "删除固件版本", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}" )
-    public ResponseEntity<Integer> remove(@PathVariable Long id) {
-        return ResponseEntity.ok(service.deleteById(id));
+    public CommonResult remove(@PathVariable Integer id) {
+        int rows = service.deleteById(id);
+        return rows > 0 ? CommonResult.data("删除成功") : CommonResult.error("删除失败");
+
     }
 }

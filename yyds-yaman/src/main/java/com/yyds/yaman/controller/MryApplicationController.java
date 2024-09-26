@@ -44,8 +44,8 @@ public class MryApplicationController extends BaseController {
     @ApiOperation("获取平台资料配置信息")
     @PreAuthorize("@ss.hasPermi('yaman:firmware:list')")
     @GetMapping("/configInfo")
-    public ResponseEntity<MryApplication> configInfo() {
-        return ResponseEntity.ok(service.queryApplicationSetting());
+    public CommonResult<MryApplication> configInfo() {
+        return CommonResult.data(service.queryApplicationSetting());
     }
 
 

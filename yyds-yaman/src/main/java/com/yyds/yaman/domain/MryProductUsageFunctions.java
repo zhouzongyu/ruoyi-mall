@@ -31,8 +31,7 @@ public class MryProductUsageFunctions {
     private String title;
 
     @ApiModelProperty("主图")
-    @Excel(name = "PICS")
-    private String pics;
+    private String picUrl;
 
     @ApiModelProperty("产品Id")
     @Excel(name = "产品Id")

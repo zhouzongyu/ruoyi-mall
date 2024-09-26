@@ -100,6 +100,7 @@ public class MryProductController extends BaseController {
         }
         MryProductDetailVo mryProductDetailVo = new MryProductDetailVo();
         BeanUtils.copyProperties(mryProduct, mryProductDetailVo);
+        mryProductDetailVo.setSpec(mryProduct.getSpec());
 
         List<MryProductUsageFunctions> usageFunctions = productUsageFunctionsService.getUsageFunctionsByProductId(id);
         List<MryProductUsageFunctionEditParam> usageList = usageFunctions.stream().filter(item -> item.getType() == 1).map(item -> {
