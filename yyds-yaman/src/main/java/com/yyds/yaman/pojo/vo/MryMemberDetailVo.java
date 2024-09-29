@@ -27,7 +27,7 @@ public class MryMemberDetailVo {
     @Excel(name = "出生日期")
     private String birthDate;
 
-    @ApiModelProperty("性别")
+    @ApiModelProperty("性别 1-男 2-女")
     @Excel(name = "性别")
     private Integer gender;
 

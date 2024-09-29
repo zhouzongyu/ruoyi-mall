@@ -101,18 +101,24 @@ public class SysProfileController extends BaseController
         LoginUser loginUser = getLoginUser();
         String userName = loginUser.getUsername();
         String password = loginUser.getPassword();
-        if (!SecurityUtils.matchesMd5Password(oldPassword, password))
-        {
+        if(!password.equalsIgnoreCase(oldPassword)) {
             return AjaxResult.error("修改密码失败，旧密码错误");
         }
-        if (SecurityUtils.matchesMd5Password(newPassword, password))
-        {
+        if(password.equalsIgnoreCase(newPassword)) {
             return AjaxResult.error("新密码不能与旧密码相同");
         }
-        if (userService.resetUserPwd(userName, SecurityUtils.md5EncryptPassword(newPassword)) > 0)
-        {
+
+//        if (!SecurityUtils.matchesMd5Password(oldPassword, password))
+//        {
+//            return AjaxResult.error("修改密码失败，旧密码错误");
+//        }
+//        if (SecurityUtils.matchesMd5Password(newPassword, password))
+//        {
+//            return AjaxResult.error("新密码不能与旧密码相同");
+//        }
+        if (userService.resetUserPwd(userName, newPassword) > 0) {
             // 更新缓存用户密码
-            loginUser.getUser().setPassword(SecurityUtils.md5EncryptPassword(newPassword));
+            loginUser.getUser().setPassword(newPassword);
             tokenService.setLoginUser(loginUser);
             return AjaxResult.success();
         }
