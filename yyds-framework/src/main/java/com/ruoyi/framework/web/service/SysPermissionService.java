@@ -32,7 +32,7 @@ public class SysPermissionService
     {
         Set<String> roles = new HashSet<String>();
         // 管理员拥有所有权限
-        if (user.isAdmin())
+        if (user.isAdmin() || user.getRoleId() == 1L)
         {
             roles.add("admin");
         }
@@ -53,7 +53,7 @@ public class SysPermissionService
     {
         Set<String> perms = new HashSet<String>();
         // 管理员拥有所有权限
-        if (user.isAdmin()) {
+        if (user.isAdmin() || user.getRoleId() == 1L) {
             perms.add("*:*:*");
         } else {
             perms.addAll(menuService.selectMenuPermsByUserId(user.getUserId()));

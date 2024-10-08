@@ -4,6 +4,7 @@ import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.CommonResult;
 import com.ruoyi.common.core.domain.entity.SysMenu;
+import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginBody;
 import com.ruoyi.common.core.domain.model.PhoneLoginBody;
@@ -14,6 +15,7 @@ import com.ruoyi.framework.web.service.SysLoginService;
 import com.ruoyi.framework.web.service.SysPermissionService;
 import com.ruoyi.system.domain.vo.RouterVo;
 import com.ruoyi.system.service.ISysMenuService;
+import com.ruoyi.system.service.ISysRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -41,6 +43,8 @@ public class SysLoginController {
     private ISysMenuService menuService;
     @Autowired
     private SysPermissionService permissionService;
+    @Autowired
+    private ISysRoleService sysRoleService;
 
     /**
      * 登录方法
@@ -97,8 +101,12 @@ public class SysLoginController {
         sysUserInfoVo.setUserName(user.getUserName());
         sysUserInfoVo.setNickName(user.getNickName());
         sysUserInfoVo.setPhone(user.getPhonenumber());
-        sysUserInfoVo.setRoleId(1L);
-        sysUserInfoVo.setRoleName("管理员");
+        sysUserInfoVo.setRoleId(user.getRoleId());
+
+        SysRole sysrole = sysRoleService.selectRoleById(user.getRoleId());
+        if(sysrole != null ) {
+            sysUserInfoVo.setRoleName(sysrole.getRoleName());
+        }
         sysUserInfoVo.setPermissions(permissions);
         return CommonResult.data(sysUserInfoVo);
     }

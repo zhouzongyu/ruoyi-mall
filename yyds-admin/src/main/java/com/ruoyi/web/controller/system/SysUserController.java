@@ -197,7 +197,7 @@ public class SysUserController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysUserEditParam sysUserEditParam)
     {
-        SysUser user = userService.selectUserById(sysUserEditParam.getId());
+        SysUser user = userService.selectUserById(sysUserEditParam.getUserId());
         if(user == null) {
             return AjaxResult.error("用户不存");
         }

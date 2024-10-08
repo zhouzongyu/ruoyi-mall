@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class SysUserEditParam {
     @ApiModelProperty(value = "id", required = true, position = 1)
     @NotNull(message = "id不能为空")
-    private Long id;
+    private Long userId;
 
     @NotBlank(message = "账号名不能为空")
     @ApiModelProperty(value = "账号名", required = true)
