@@ -44,6 +44,7 @@ public class MryFirmwareService {
     public List<MryFirmware> selectList(MryFirmwareQuery query, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<MryFirmware> qw = new QueryWrapper<>();
+        qw.orderByDesc("create_time");
         return mryFirmwareMapper.selectList(qw);
     }
 

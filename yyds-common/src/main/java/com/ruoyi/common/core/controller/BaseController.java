@@ -182,9 +182,9 @@ public class BaseController
     /**
      * 获取登录部门id
      */
-    public Long getDeptId()
+    public Long getRoleId()
     {
-        return getLoginUser().getDeptId();
+        return getLoginUser().getRoleId();
     }
 
     /**

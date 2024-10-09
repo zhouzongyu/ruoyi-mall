@@ -36,15 +36,15 @@ public class SecurityUtils
     /**
      * 获取部门ID
      **/
-    public static Long getDeptId()
+    public static Long getRoleId()
     {
         try
         {
-            return getLoginUser().getDeptId();
+            return getLoginUser().getRoleId();
         }
         catch (Exception e)
         {
-            throw new ServiceException("获取部门ID异常", HttpStatus.UNAUTHORIZED);
+            throw new ServiceException("获取角色ID异常", HttpStatus.UNAUTHORIZED);
         }
     }
     
