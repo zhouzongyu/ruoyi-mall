@@ -20,6 +20,9 @@ public class MryFirmware {
     @ApiModelProperty("ID")
     private Integer id;
 
+    @ApiModelProperty("产品ID")
+    private String productId;
+
     @ApiModelProperty("版本号")
     @Excel(name = "版本号")
     private String version;

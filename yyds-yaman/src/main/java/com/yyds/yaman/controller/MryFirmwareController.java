@@ -47,9 +47,11 @@ public class MryFirmwareController extends BaseController {
     @ApiOperation("分页查询固件版本列表" )
     @PreAuthorize("@ss.hasPermi('yaman/firmware:list')" )
     @GetMapping("/list" )
-    public CommonResult<PageVo<MryFirmwareVO>> list(@RequestParam(value = "pageNum", defaultValue = "1" ) int pageNum,
-                                                    @RequestParam(value = "pageSize", defaultValue = "10" ) int pageSize) {
-        List<MryFirmware> list = service.selectList(null, pageNum, pageSize);
+    public CommonResult<PageVo<MryFirmwareVO>> list(
+            MryFirmwareQuery query,
+            @RequestParam(value = "pageNum", defaultValue = "1" ) int pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "10" ) int pageSize) {
+        List<MryFirmware> list = service.selectList(query, pageNum, pageSize);
         List<MryFirmwareVO> firmwareList = list.stream().map(item -> {
             MryFirmwareVO mryProductVO = new MryFirmwareVO();
             mryProductVO.setId(item.getId());

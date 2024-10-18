@@ -27,5 +27,8 @@ public class MryFirmwareAddParam {
     @ApiModelProperty("程序包名称")
     private String fileName;
 
+    @ApiModelProperty("归属产品")
+    private String productId;
+
 
 }

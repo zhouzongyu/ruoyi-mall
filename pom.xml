@@ -276,7 +276,9 @@
         <module>yyds-quartz</module>
         <module>yyds-generator</module>
         <module>yyds-common</module>
+<!--
         <module>yyds-mall</module>
+-->
         <module>yyds-yaman</module>
     </modules>
     <packaging>pom</packaging>

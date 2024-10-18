@@ -1,7 +1,6 @@
 package com.yyds.yaman.service;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.HumpNamedUtils;
 import com.yyds.yaman.domain.MryNews;
 import com.yyds.yaman.pojo.query.MryNewsQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +46,14 @@ public class MryNewsService {
     public List<MryNews> selectList(MryNewsQuery query, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<MryNews> qw = new QueryWrapper<>();
+        //处理排序 升序
+        if (StringUtils.isNotBlank(query.getColumn()) && query.getAsc()) {
+            qw.orderByAsc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
+        }
+        //处理排序 降序
+        if (StringUtils.isNotBlank(query.getColumn()) && !query.getAsc()) {
+            qw.orderByDesc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
+        }
         qw.lambda().eq(MryNews::getDeleteFlag, 0);
         String title = query.getTitle();
         if (!StringUtils.isEmpty(title)) {

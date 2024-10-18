@@ -49,11 +49,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             m.delete_flag = 0
             <if test="userName != null  and userName != ''"> and m.user_name like concat('%', #{userName}, '%')</if>
-            <if test="phone != null  and phone != ''"> and m.phone = #{phone}</if>
+            <if test="phone != null  and phone != ''"> and m.phone like concat('%', #{phone}, '%')</if>
             <if test="deviceStatus != null  and deviceStatus != ''"> and m.has_bind_device = #{deviceStatus}</if>
-            <if test="vipNumber != null  and vipNumber != ''"> and m.vip_number = #{vipNumber}</if>
-            <if test="deviceSn != null  and deviceSn != '' "> and d.sn = #{deviceSn}</if>
-            <if test="productMode != null  and productMode != ''"> and p.model = #{productMode}</if>
+            <if test="vipNumber != null  and vipNumber != ''"> and m.vip_number like concat('%', #{vipNumber}, '%')</if>
+            <if test="sn != null  and sn != '' "> and d.sn like concat('%', #{sn}, '%') </if>
+            <if test="productMode != null  and productMode != ''"> and p.model like concat('%', #{productMode}, '%')</if>
         </where>
          order by m.create_time desc
     </select>

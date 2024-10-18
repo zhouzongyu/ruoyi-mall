@@ -22,7 +22,7 @@ public class MryMemberQuery {
     private String vipNumber;
 
     @ApiModelProperty("设备SN")
-    private String deviceSn;
+    private String sn;
 
     @ApiModelProperty("产品型号")
     private String productMode;

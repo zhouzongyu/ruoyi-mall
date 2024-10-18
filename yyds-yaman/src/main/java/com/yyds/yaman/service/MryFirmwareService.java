@@ -2,15 +2,13 @@ package com.yyds.yaman.service;
 
 
  import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
+ import com.ruoyi.common.utils.HumpNamedUtils;
  import com.yyds.yaman.domain.MryFirmware;
  import com.yyds.yaman.pojo.query.MryFirmwareQuery;
  import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import com.yyds.yaman.mapper.MryFirmwareMapper;
@@ -43,9 +41,18 @@ public class MryFirmwareService {
      */
     public List<MryFirmware> selectList(MryFirmwareQuery query, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        QueryWrapper<MryFirmware> qw = new QueryWrapper<>();
-        qw.orderByDesc("create_time");
-        return mryFirmwareMapper.selectList(qw);
+        QueryWrapper<MryFirmware> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_time");
+        //处理排序 升序
+        if (StringUtils.isNotBlank(query.getColumn()) && query.getAsc()) {
+            queryWrapper.orderByAsc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
+        }
+        //处理排序 降序
+        if (StringUtils.isNotBlank(query.getColumn()) && !query.getAsc()) {
+            queryWrapper.orderByDesc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
+        }
+
+        return mryFirmwareMapper.selectList(queryWrapper);
     }
 
     /**

@@ -12,6 +12,7 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.CommonResult;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.common.utils.HumpNamedUtils;
 import com.yyds.yaman.domain.MryProduct;
 import com.yyds.yaman.domain.MryProductUsageFunctions;
 import com.yyds.yaman.mapper.MryProductMapper;
@@ -73,6 +74,14 @@ public class MryProductService {
             qw.eq("type", type);
         }
         qw.orderByDesc("create_time");
+        //处理排序 升序
+        if (StringUtils.isNotBlank(query.getColumn()) && query.getAsc()) {
+            qw.orderByAsc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
+        }
+        //处理排序 降序
+        if (StringUtils.isNotBlank(query.getColumn()) && !query.getAsc()) {
+            qw.orderByDesc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
+        }
         return mryProductMapper.selectList(qw);
     }
 
