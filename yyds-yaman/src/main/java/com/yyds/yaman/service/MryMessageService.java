@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.HumpNamedUtils;
 import com.yyds.yaman.domain.MryMessage;
 import com.yyds.yaman.pojo.query.MryMessageQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,18 +62,21 @@ public class MryMessageService {
             qw.eq("msg_content", msgContent);
         }
         if (query.getStartTime() != null && query.getEndTime() != null) {
-            try {
-
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//                LocalDateTime startTime = LocalDateTime.parse(query.getStartTime()  + " 00:00:00", formatter);
-//                LocalDateTime endTime = LocalDateTime.parse(query.getEndTime()  + " 23:59:59", formatter);
-                qw.between("publish_time", query.getStartTime() + " 00:00:00", query.getEndTime()  + " 23:59:59");
-            } catch (Exception exception) {
-                 throw new ServiceException("时间格式参数错误");
-            }
+            qw.between("publish_time", query.getStartTime() + " 00:00:00", query.getEndTime()  + " 23:59:59");
 
         }
-        qw.orderByDesc("publish_time");
+        if (StringUtils.isEmpty(query.getColumn())){
+            qw.orderByDesc("publish_time");
+        } else {
+            //处理排序 升序
+            if (StringUtils.isNotBlank(query.getColumn()) && query.getAsc()) {
+                qw.orderByAsc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
+            }
+            //处理排序 降序
+            if (StringUtils.isNotBlank(query.getColumn()) && !query.getAsc()) {
+                qw.orderByDesc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
+            }
+        }
         return mryMessageMapper.selectList(qw);
     }
 

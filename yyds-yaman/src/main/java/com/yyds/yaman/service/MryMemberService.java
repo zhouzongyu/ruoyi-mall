@@ -134,7 +134,7 @@ public class MryMemberService {
 
     public List<MryMember> getMemberListByAreaIds(List<String> areaIds){
         QueryWrapper<MryMember> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(MryMember::getDeleteFlag, 0);
+        queryWrapper.lambda().eq(MryMember::getDeleteFlag, 0).in(MryMember::getProvince, areaIds);
         return mryMemberMapper.selectList(queryWrapper);
     }
 

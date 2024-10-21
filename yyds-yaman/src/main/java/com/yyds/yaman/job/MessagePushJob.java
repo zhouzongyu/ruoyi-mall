@@ -48,7 +48,7 @@ public class MessagePushJob {
                  members =   memberService.getMemberList();
 
             } else {
-                String[] areaIds =  mryMessage.getAreaCodes().split(",");
+                String[] areaIds =  mryMessage.getAreaNames().split(",");
                 members = memberService.getMemberListByAreaIds(Arrays.asList(areaIds));
             }
 

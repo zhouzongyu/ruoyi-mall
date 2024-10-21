@@ -42,7 +42,9 @@ public class MryFirmwareService {
     public List<MryFirmware> selectList(MryFirmwareQuery query, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<MryFirmware> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("create_time");
+        if (StringUtils.isEmpty(query.getColumn())){
+            queryWrapper.orderByDesc("create_time");
+        }
         //处理排序 升序
         if (StringUtils.isNotBlank(query.getColumn()) && query.getAsc()) {
             queryWrapper.orderByAsc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));

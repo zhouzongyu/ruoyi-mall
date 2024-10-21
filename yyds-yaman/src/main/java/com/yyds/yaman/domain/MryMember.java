@@ -50,7 +50,7 @@ public class MryMember {
     private String address;
 
     //1-油性肌肤 2-混合性肌肤 3-中性肌肤 4-干性肌肤 5-敏感性肌肤
-    @ApiModelProperty("用户肤质 1-油性肌肤 2-混合性肌肤 3-中性肌肤 4-干性肌肤 5-敏感性肌肤")
+    @ApiModelProperty("用户肤质 1-油性肌肤 2-混油肤质 3-中性肌肤 4-干性肌肤 5-敏感性肌肤 6-混干肤质")
     @Excel(name = "用户肤质")
     private Integer skinType;
 

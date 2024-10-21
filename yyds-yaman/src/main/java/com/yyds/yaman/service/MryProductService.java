@@ -73,7 +73,10 @@ public class MryProductService {
         if (type != null) {
             qw.eq("type", type);
         }
-        qw.orderByDesc("create_time");
+        if (StringUtils.isEmpty(query.getColumn())){
+            qw.orderByDesc("create_time");
+        }
+
         //处理排序 升序
         if (StringUtils.isNotBlank(query.getColumn()) && query.getAsc()) {
             qw.orderByAsc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
