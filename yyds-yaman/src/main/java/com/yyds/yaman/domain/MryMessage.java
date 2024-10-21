@@ -51,4 +51,6 @@ public class MryMessage {
     @Excel(name = "删除标识")
     private Integer deleteFlag;
 
+    private Integer pushStatus;
+
 }

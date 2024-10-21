@@ -13,15 +13,13 @@ import java.net.UnknownHostException;
 /**
  * 启动程序
  *
- * @author ruoyi
  */
+@EnableScheduling
 @SpringBootApplication(
         exclude = {DataSourceAutoConfiguration.class},
         scanBasePackages = {"com.ruoyi", "com.yyds"}
 )
 @Slf4j
-//@EnableConfigurationProperties(WechatPayData.class)
-@EnableScheduling
 public class RuoYiApplication {
     public static void main(String[] args) throws UnknownHostException {
         // System.setProperty("spring.devtools.restart.enabled", "false");

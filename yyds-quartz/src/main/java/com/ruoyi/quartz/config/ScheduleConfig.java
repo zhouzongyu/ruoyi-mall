@@ -11,10 +11,9 @@ import java.util.Properties;
 /**
  * 定时任务配置
  * 
- * @author ruoyi
+ * @author zzy
  */
 @Configuration
-@ConditionalOnProperty(prefix = "scheduling", name = "enabled", havingValue = "true")
 public class ScheduleConfig
 {
     @Bean

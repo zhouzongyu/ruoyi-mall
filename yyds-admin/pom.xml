@@ -63,13 +63,6 @@
             <version>${yyds.version}</version>
         </dependency>
 
-
-     <!--   <dependency>
-            <groupId>com.yyds</groupId>
-            <artifactId>yyds-mall</artifactId>
-            <version>${yyds.version}</version>
-        </dependency>-->
-
         <dependency>
             <groupId>com.yyds</groupId>
             <artifactId>yyds-yaman</artifactId>
@@ -109,17 +102,7 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
-        <!--     <dependency>
-                 <groupId>com.github.xiaoymin</groupId>
-                 <artifactId>swagger-bootstrap-ui</artifactId>
-                 <version>1.9.6</version>
-             </dependency>
 
-             <dependency>
-                 <groupId>com.google.guava</groupId>
-                 <artifactId>guava</artifactId>
-                 <version>23.0</version>
-             </dependency>-->
     </dependencies>
 
     <build>

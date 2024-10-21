@@ -131,4 +131,16 @@ public class MryMemberService {
         queryWrapper.eq("vip_number", vipNumber);
         return mryMemberMapper.selectOne(queryWrapper);
     }
+
+    public List<MryMember> getMemberListByAreaIds(List<String> areaIds){
+        QueryWrapper<MryMember> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(MryMember::getDeleteFlag, 0);
+        return mryMemberMapper.selectList(queryWrapper);
+    }
+
+    public List<MryMember> getMemberList(){
+        QueryWrapper<MryMember> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(MryMember::getDeleteFlag, 0);
+        return mryMemberMapper.selectList(queryWrapper);
+    }
 }

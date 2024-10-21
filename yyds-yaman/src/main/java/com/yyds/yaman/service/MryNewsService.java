@@ -46,6 +46,8 @@ public class MryNewsService {
     public List<MryNews> selectList(MryNewsQuery query, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         QueryWrapper<MryNews> qw = new QueryWrapper<>();
+        qw.orderByDesc("create_time");
+
         //处理排序 升序
         if (StringUtils.isNotBlank(query.getColumn()) && query.getAsc()) {
             qw.orderByAsc(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));

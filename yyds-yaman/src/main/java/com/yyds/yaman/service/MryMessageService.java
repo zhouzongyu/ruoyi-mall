@@ -62,10 +62,11 @@ public class MryMessageService {
         }
         if (query.getStartTime() != null && query.getEndTime() != null) {
             try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDateTime startTime = LocalDateTime.parse(query.getStartTime()  + " 00:00:00", formatter);
-                LocalDateTime endTime = LocalDateTime.parse(query.getEndTime()  + " 23:59:59", formatter);
-                qw.between("create_time", startTime, endTime);
+
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//                LocalDateTime startTime = LocalDateTime.parse(query.getStartTime()  + " 00:00:00", formatter);
+//                LocalDateTime endTime = LocalDateTime.parse(query.getEndTime()  + " 23:59:59", formatter);
+                qw.between("publish_time", query.getStartTime() + " 00:00:00", query.getEndTime()  + " 23:59:59");
             } catch (Exception exception) {
                  throw new ServiceException("时间格式参数错误");
             }
@@ -109,6 +110,14 @@ public class MryMessageService {
 
     public int deleteById(Integer id) {
         return mryMessageMapper.deleteById(id);
+    }
+
+
+    public List<MryMessage> queryPaddingMessageList() {
+       QueryWrapper<MryMessage> queryWrapper = new QueryWrapper<>();
+       queryWrapper.lambda().eq(MryMessage::getDeleteFlag, 0).eq(MryMessage::getMsgStatus, 1)
+               .eq(MryMessage::getPushStatus,0);
+       return mryMessageMapper.selectList(queryWrapper);
     }
 
 }

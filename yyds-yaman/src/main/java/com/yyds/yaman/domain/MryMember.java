@@ -78,6 +78,12 @@ public class MryMember {
 
     private Integer deleteFlag;
 
+    private String province;
+
+    private String city;
+
+    private String area;
+
 //    @TableField(exist = false)
 //    private List<MryDevice> deviceList;
 
