@@ -30,6 +30,10 @@ public class MryFirmwareVO  {
 
     @ApiModelProperty("CRC32")
     private String crc32;
+
+    @ApiModelProperty("产品型号")
+    private String productModel;
+
    /** 发布时间 */
    @ApiModelProperty("发布时间")
    private LocalDateTime createTime;

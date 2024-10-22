@@ -4,6 +4,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  *  固件版本 查询 对象
  *
@@ -12,12 +15,15 @@ import lombok.Data;
 @ApiModel(description="固件版本编辑实体类")
 @Data
 public class MryFirmwareEditParam {
+    @NotNull(message = "ID不能为空")
     @ApiModelProperty("ID")
     private Integer id;
 
+    @NotBlank(message = "版本号不能为空")
     @ApiModelProperty("版本号")
     private String version;
 
+    @NotBlank(message = "CRC32不能为空")
     @ApiModelProperty("CRC32")
     private String crc32;
 
@@ -30,6 +36,9 @@ public class MryFirmwareEditParam {
     @ApiModelProperty("程序包名称")
     private String fileName;
 
-    @ApiModelProperty("归属产品")
-    private String productId;
+    @NotBlank(message = "产品型号不能为空")
+
+    @ApiModelProperty("产品型号")
+    private String productModel;
+
 }

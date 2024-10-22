@@ -49,8 +49,6 @@ public class SysUserController extends BaseController
     @Autowired
     private ISysRoleService roleService;
 
-    @Autowired
-    private ISysPostService postService;
 
     @Autowired
     private ISysMenuService menuService;
@@ -71,6 +69,7 @@ public class SysUserController extends BaseController
             sysUserVo.setPhone(item.getPhonenumber());
             sysUserVo.setRoleId(item.getRoleId());
             sysUserVo.setStatus(item.getStatus());
+            sysUserVo.setCreateTime(item.getCreateTime());
             sysUserVo.setRoleName(roleService.selectRoleById(item.getRoleId()).getRoleName());
             sysUserVo.setMeuns(menuService.getMenuFunctionListByRoleId(item.getRoleId()));
             return sysUserVo;

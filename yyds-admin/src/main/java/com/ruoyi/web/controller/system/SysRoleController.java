@@ -69,6 +69,7 @@ public class SysRoleController extends BaseController {
             SysRoleVo sysRoleVo = new SysRoleVo();
             sysRoleVo.setRoleId(item.getRoleId());
             sysRoleVo.setRoleName(item.getRoleName());
+
             return sysRoleVo;
         }).collect(Collectors.toList());
         return CommonResult.data(roleList);
@@ -86,6 +87,7 @@ public class SysRoleController extends BaseController {
             SysRoleVo sysRoleVo = new SysRoleVo();
             sysRoleVo.setRoleId(item.getRoleId());
             sysRoleVo.setRoleName(item.getRoleName());
+            sysRoleVo.setCreateTime(item.getCreateTime());
             sysRoleVo.setMeuns(menuService.getMenuFunctionListByRoleId(item.getRoleId()));
             return sysRoleVo;
         }).collect(Collectors.toList());

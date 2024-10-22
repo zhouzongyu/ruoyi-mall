@@ -61,6 +61,7 @@ public class MryFirmwareController extends BaseController {
             mryProductVO.setFileName(item.getFileName());
             mryProductVO.setCrc32(item.getCrc32());
             mryProductVO.setCreateTime(item.getCreateTime());
+            mryProductVO.setProductModel(item.getProductModel());
             return mryProductVO;
         }).collect(Collectors.toList());
 
@@ -105,6 +106,7 @@ public class MryFirmwareController extends BaseController {
         mryFirmwareEntity.setCrc32(mryFirmwareAddParam.getCrc32());
         mryFirmwareEntity.setDescription(mryFirmwareAddParam.getDescription());
         mryFirmwareEntity.setCreateTime(LocalDateTime.now());
+        mryFirmwareEntity.setProductModel(mryFirmwareAddParam.getProductModel());
         int rows = service.insert(mryFirmwareEntity);
         return rows > 0 ? CommonResult.data("添加固件版本成功") : CommonResult.error("添加固件版本失败");
     }
@@ -123,6 +125,7 @@ public class MryFirmwareController extends BaseController {
         mryFirmware.setDescription(mryFirmwareEditParam.getDescription());
         mryFirmware.setFilePath(mryFirmwareEditParam.getFilePath());
         mryFirmware.setFileName(mryFirmwareEditParam.getFileName());
+        mryFirmware.setProductModel(mryFirmwareEditParam.getProductModel());
         int rows = service.update(mryFirmware);
         return rows > 0 ? CommonResult.data("修改成功") : CommonResult.error("修改失败");
     }

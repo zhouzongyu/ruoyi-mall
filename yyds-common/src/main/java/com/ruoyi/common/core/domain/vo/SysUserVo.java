@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -34,6 +36,9 @@ public class SysUserVo {
 
     @ApiModelProperty(value = "用户状态 0=正常,1=停用")
     private String status;
+
+    @ApiModelProperty(value = "创建时间")
+    private LocalDateTime createTime;
 
     @ApiModelProperty(value = "权限菜单列表")
     private List<SysMenuVo> meuns;
