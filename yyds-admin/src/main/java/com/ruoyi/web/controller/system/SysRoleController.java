@@ -82,7 +82,7 @@ public class SysRoleController extends BaseController {
                                                 @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        List<SysRole> list = roleService.selectRoleList(sysRolePageParam, pageable);
+        List<SysRole> list = roleService.selectRolePage(sysRolePageParam, pageable);
         List<SysRoleVo> roles = list.stream().map(item -> {
             SysRoleVo sysRoleVo = new SysRoleVo();
             sysRoleVo.setRoleId(item.getRoleId());

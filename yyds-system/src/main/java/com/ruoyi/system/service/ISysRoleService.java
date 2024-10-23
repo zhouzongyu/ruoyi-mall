@@ -18,7 +18,7 @@ import java.util.Set;
 public interface ISysRoleService
 {
 
-    public List<SysRole> selectRoleList(SysRolePageParam query,Pageable pageable);
+    public List<SysRole> selectRolePage(SysRolePageParam query,Pageable pageable);
     /**
          * 根据条件分页查询角色数据
          *

@@ -29,7 +29,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        left join sys_user u on u.user_id = ur.user_id
 	        left join sys_dept d on u.dept_id = d.dept_id
     </sql>
-    
+
+	<select id="selectRolePage" parameterType="com.ruoyi.common.core.domain.query.SysRolePageParam" resultMap="SysRoleResult">
+		<include refid="selectRoleVo"/>
+		<where> r.del_flag = '0'
+			<choose>
+				<when test="column != null and column != ''">
+					order by ${column} ${asc ? 'asc' : 'desc'}
+				</when>
+				<otherwise>
+					order by create_time desc
+				</otherwise>
+			</choose>
+		</where>
+	</select>
     <select id="selectRoleList" parameterType="SysRole" resultMap="SysRoleResult">
 		<include refid="selectRoleVo"/>
 		where r.del_flag = '0'

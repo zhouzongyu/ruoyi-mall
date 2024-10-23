@@ -59,7 +59,7 @@ public class MryMessageService {
         }
         String msgContent = query.getMsgContent();
         if (!StringUtils.isEmpty(msgContent)) {
-            qw.eq("msg_content", msgContent);
+            qw.like("msg_content", msgContent);
         }
         if (query.getStartTime() != null && query.getEndTime() != null) {
             qw.between("publish_time", query.getStartTime() + " 00:00:00", query.getEndTime()  + " 23:59:59");

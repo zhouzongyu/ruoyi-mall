@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.ruoyi.common.core.domain.vo.SysMenuVo;
+import com.ruoyi.system.mapper.SysUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.Constants;
@@ -44,6 +45,9 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
     @Autowired
     private SysRoleMenuMapper roleMenuMapper;
+
+    @Autowired
+    private SysUserMapper sysUserMapper;
 
     @Override
     public List<SysMenuVo> getMenuFunctionListByRoleId(Long roleId) {
@@ -81,8 +85,9 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Override
     public List<SysMenu> selectMenuList(SysMenu menu, Long userId) {
         List<SysMenu> menuList = null;
+        SysUser sysUser = sysUserMapper.selectUserById(userId);
         // 管理员显示所有菜单信息
-        if (SysUser.isAdmin(userId)) {
+        if (SysUser.isAdmin(userId) || (sysUser!= null &&  sysUser.isAdmin(sysUser.getRoleId())) ){
             menuList = menuMapper.selectMenuList(menu);
         } else {
             menu.getParams().put("userId", userId);

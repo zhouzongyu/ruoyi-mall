@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.common.core.domain.entity.SysRole;
+import com.ruoyi.common.core.domain.query.SysRolePageParam;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -20,7 +21,7 @@ public interface SysRoleMapper extends BaseMapper<SysRole>
      * @return 角色数据集合信息
      */
     public List<SysRole> selectRoleList(SysRole role);
-
+    public List<SysRole> selectRolePage(SysRolePageParam query);
     /**
      * 根据用户ID查询角色
      * 

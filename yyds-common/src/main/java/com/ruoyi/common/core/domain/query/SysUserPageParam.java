@@ -1,10 +1,8 @@
 package com.ruoyi.common.core.domain.query;
 
-import com.ruoyi.common.annotation.Excel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 @Data
 public class SysUserPageParam {
     @ApiModelProperty(value = "用户ID")
@@ -26,4 +24,19 @@ public class SysUserPageParam {
 
     @ApiModelProperty(value = "用户状态 0=正常,1=停用")
     private String status;
+
+    /**
+     * 排序的列字段
+     */
+    private String column;
+
+    /**
+     * 排序规则默认降序 降序:false 升序:true
+     */
+    private Boolean asc;
+
+    public Boolean getAsc() {
+        return asc == null ? false : asc;
+    }
+
 }

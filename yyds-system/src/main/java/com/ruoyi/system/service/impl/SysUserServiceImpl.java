@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.ruoyi.common.core.domain.query.SysUserPageParam;
 import com.ruoyi.common.core.page.CommonPageRequest;
+import com.ruoyi.common.utils.HumpNamedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,70 +63,15 @@ public class SysUserServiceImpl implements ISysUserService
     private ISysConfigService configService;
 
     @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
     public List<SysUser> selectUserPage(SysUserPageParam query, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        SysUser sysUser = new SysUser();
-        if (StringUtils.isNotEmpty(query.getUserName())) {
-            sysUser.setUserName(query.getUserName());
+        if(StringUtils.isNotEmpty(query.getColumn())) {
+            query.setColumn(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
         }
-
-        if (StringUtils.isNotEmpty(query.getNickName())) {
-            sysUser.setNickName(query.getNickName());
-        }
-
-        if (StringUtils.isNotEmpty(query.getStatus())) {
-            sysUser.setStatus(query.getStatus());
-        }
-        if (StringUtils.isNotEmpty(query.getPhone())) {
-            sysUser.setPhonenumber(query.getPhone());
-        }
-
-        if (query.getRoleId() != null) {
-            sysUser.setRoleId(query.getRoleId());
-        }
-        return userMapper.selectUserList(sysUser);
+        return userMapper.selectUserList(query);
 
     }
 
-    /**
-     * 根据条件分页查询用户列表
-     * 
-     * @param user 用户信息
-     * @return 用户信息集合信息
-     */
-    @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
-    public List<SysUser> selectUserList(SysUser user)
-    {
-        return userMapper.selectUserList(user);
-    }
-
-    /**
-     * 根据条件分页查询已分配用户角色列表
-     * 
-     * @param user 用户信息
-     * @return 用户信息集合信息
-     */
-    @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
-    public List<SysUser> selectAllocatedList(SysUser user)
-    {
-        return userMapper.selectAllocatedList(user);
-    }
-
-    /**
-     * 根据条件分页查询未分配用户角色列表
-     * 
-     * @param user 用户信息
-     * @return 用户信息集合信息
-     */
-    @Override
-    @DataScope(deptAlias = "d", userAlias = "u")
-    public List<SysUser> selectUnallocatedList(SysUser user)
-    {
-        return userMapper.selectUnallocatedList(user);
-    }
 
     /**
      * 通过用户名查询用户
@@ -272,9 +218,9 @@ public class SysUserServiceImpl implements ISysUserService
     {
         if (!SysUser.isAdmin(SecurityUtils.getUserId()))
         {
-            SysUser user = new SysUser();
-            user.setUserId(userId);
-            List<SysUser> users = SpringUtils.getAopProxy(this).selectUserList(user);
+            SysUserPageParam sysUserPageParam = new SysUserPageParam();
+            sysUserPageParam.setUserId(userId);
+            List<SysUser> users = SpringUtils.getAopProxy(this).selectUserPage(sysUserPageParam,0 ,10);
             if (StringUtils.isEmpty(users))
             {
                 throw new ServiceException("没有权限访问用户数据！");
@@ -435,32 +381,6 @@ public class SysUserServiceImpl implements ISysUserService
         ur.setRoleId(user.getRoleId());
         userRoleMapper.insert(ur);
 
-    }
-
-    /**
-     * 新增用户岗位信息
-     * 
-     * @param user 用户对象
-     */
-    public void insertUserPost(SysUser user)
-    {
-        Long[] posts = user.getPostIds();
-        if (StringUtils.isNotNull(posts))
-        {
-            // 新增用户与岗位管理
-            List<SysUserPost> list = new ArrayList<SysUserPost>();
-            for (Long postId : posts)
-            {
-                SysUserPost up = new SysUserPost();
-                up.setUserId(user.getUserId());
-                up.setPostId(postId);
-                list.add(up);
-            }
-            if (list.size() > 0)
-            {
-                userPostMapper.batchUserPost(list);
-            }
-        }
     }
 
     /**

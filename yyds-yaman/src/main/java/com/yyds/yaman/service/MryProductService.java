@@ -67,7 +67,7 @@ public class MryProductService {
         }
         String model = query.getModel();
         if (model != null) {
-            qw.eq("model", model);
+            qw.like("model", model);
         }
         Integer type = query.getType();
         if (type != null) {

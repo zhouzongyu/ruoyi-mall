@@ -135,17 +135,7 @@ public class SysUserController extends BaseController
     @GetMapping(value = {  "/{userId}" })
     public CommonResult<SysUserVo> getInfo(@PathVariable(value = "userId", required = true) Long userId)
     {
-        userService.checkUserDataScope(userId);
-//        AjaxResult ajax = AjaxResult.success();
-//        List<SysRole> roles = roleService.selectRoleAll();
-//        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-//        ajax.put("posts", postService.selectPostAll());
-//        if (StringUtils.isNotNull(userId))
-//        {
-//            ajax.put(AjaxResult.DATA_TAG, userService.selectUserById(userId));
-//            ajax.put("postIds", postService.selectPostListByUserId(userId));
-//            ajax.put("roleIds", roleService.selectRoleListByUserId(userId));
-//        }
+
         SysUser sysUser = userService.selectUserById(userId);
         SysUserVo sysUserVo = new SysUserVo();
         sysUserVo.setUserId(sysUser.getUserId());

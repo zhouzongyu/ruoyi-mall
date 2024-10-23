@@ -3,6 +3,7 @@ package com.ruoyi.system.mapper;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ruoyi.common.core.domain.query.SysUserPageParam;
 import org.apache.ibatis.annotations.Param;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import org.apache.ibatis.annotations.Select;
@@ -12,31 +13,14 @@ import org.apache.ibatis.annotations.Select;
  * 
  * @author ruoyi
  */
-public interface SysUserMapper extends BaseMapper<SysUser>
-{
+public interface SysUserMapper extends BaseMapper<SysUser>{
     /**
      * 根据条件分页查询用户列表
      * 
      * @param sysUser 用户信息
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectUserList(SysUser sysUser);
-
-    /**
-     * 根据条件分页查询未已配用户角色列表
-     * 
-     * @param user 用户信息
-     * @return 用户信息集合信息
-     */
-    public List<SysUser> selectAllocatedList(SysUser user);
-
-    /**
-     * 根据条件分页查询未分配用户角色列表
-     * 
-     * @param user 用户信息
-     * @return 用户信息集合信息
-     */
-    public List<SysUser> selectUnallocatedList(SysUser user);
+    public List<SysUser> selectUserList(SysUserPageParam sysUserPageParam);
 
     /**
      * 通过用户名查询用户

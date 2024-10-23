@@ -10,6 +10,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.query.SysRolePageParam;
 import com.ruoyi.common.core.page.CommonPageRequest;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.HumpNamedUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
@@ -51,10 +52,12 @@ public class SysRoleServiceImpl  implements ISysRoleService
 
 
     @Override
-    public List<SysRole> selectRoleList(SysRolePageParam query, Pageable pageable) {
+    public List<SysRole> selectRolePage(SysRolePageParam query, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        SysRole role = new SysRole();
-        return roleMapper.selectRoleList(role);
+        if(StringUtils.isNotEmpty(query.getColumn())) {
+            query.setColumn(HumpNamedUtils.hump2LowerColumnName(query.getColumn()));
+        }
+        return roleMapper.selectRolePage(query);
     }
 
     /**
