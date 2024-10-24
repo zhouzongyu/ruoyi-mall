@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *  固件版本 查询 对象
@@ -29,7 +30,7 @@ public class MryFirmwareEditParam {
     private String crc32;
 
     @NotBlank(message = "版本描述不能为空")
-    @Max(value = 300, message = "版本描述长度不能超过300")
+    @Size(max = 300, message = "版本描述长度不能超过300")
     @ApiModelProperty("版本描述")
     private String description;
 
@@ -40,7 +41,6 @@ public class MryFirmwareEditParam {
     private String fileName;
 
     @NotBlank(message = "产品型号不能为空")
-
     @ApiModelProperty("产品型号")
     private String productModel;
 

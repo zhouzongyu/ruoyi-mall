@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
@@ -27,12 +28,12 @@ public class MryNewsEditParam {
     private String id;
 
     @NotBlank(message = "标题不能为空")
-    @Max(value = 30, message = "标题长度不能超过30")
+    @Size(max = 30, message = "标题不能超过30个字符")
     @ApiModelProperty("标题")
     private String title;
 
     @NotBlank(message = "正文不能为空")
-    @Max(value = 300, message = "标题长度不能超过300")
+    @Size(max = 300, message = "正文内容不能超过300个字符")
     @ApiModelProperty("正文")
     private String content;
 

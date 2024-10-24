@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 /**
@@ -20,11 +21,11 @@ import java.time.LocalDate;
 public class MryMessageAddParam {
     @ApiModelProperty("消息标题")
     @NotBlank(message = "消息标题不能为空")
-    @Max(value = 30, message = "消息标题长度不能超过30")
+    @Size(max = 30, message = "消息标题不能超过30个字符")
     private String msgTitle;
 
     @NotBlank(message = "消息内容不能为空")
-    @Max(value = 300, message = "消息内容长度不能超过300")
+    @Size(max = 300, message = "消息内容不能超过300个字符")
     @ApiModelProperty("消息内容")
     private String msgContent;
 

@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
@@ -83,7 +84,7 @@ public class MryMessageController extends BaseController {
     @PreAuthorize("@ss.hasPermi('yaman:message:add')")
     @Log(title = "新增消息", businessType = BusinessType.INSERT)
     @PostMapping
-    public CommonResult add(@Autowired @RequestBody MryMessageAddParam mryMessageAddParam) {
+    public CommonResult add(@Validated @RequestBody MryMessageAddParam mryMessageAddParam) {
         MryMessage mryMessage = new MryMessage();
         mryMessage.setMsgTitle(mryMessageAddParam.getMsgTitle());
         mryMessage.setMsgContent(mryMessageAddParam.getMsgContent());
@@ -99,7 +100,7 @@ public class MryMessageController extends BaseController {
     @PreAuthorize("@ss.hasPermi('yaman:message:edit')")
     @Log(title = "修改消息", businessType = BusinessType.UPDATE)
     @PutMapping
-    public CommonResult edit(@Autowired @RequestBody MryMessageEditParam mryMessageEditParam) {
+    public CommonResult edit(@Validated @RequestBody MryMessageEditParam mryMessageEditParam) {
         MryMessage mryMessage = service.selectById(mryMessageEditParam.getId());
         if(mryMessage == null) {
             return CommonResult.error("消息记录不存在");
