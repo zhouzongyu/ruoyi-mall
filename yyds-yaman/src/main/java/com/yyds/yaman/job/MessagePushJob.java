@@ -9,7 +9,6 @@ import com.yyds.yaman.service.MryMemberService;
 import com.yyds.yaman.service.MryMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -68,6 +67,7 @@ public class MessagePushJob {
     private void sendMessageToUser(MryMessage mryMessage , MryMember mryMember) {
         MryMemberMessage mryMemberMessage = new MryMemberMessage();
         mryMemberMessage.setUserId(mryMember.getId());
+        mryMemberMessage.setMessageId(mryMessage.getId());
         mryMemberMessage.setMsgTitle(mryMessage.getMsgTitle());
         mryMemberMessage.setMsgContent(mryMessage.getMsgContent());
         mryMemberMessage.setSendStatus("1");

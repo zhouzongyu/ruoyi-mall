@@ -83,7 +83,7 @@ public class MryMessageController extends BaseController {
     @PreAuthorize("@ss.hasPermi('yaman:message:add')")
     @Log(title = "新增消息", businessType = BusinessType.INSERT)
     @PostMapping
-    public CommonResult add(@RequestBody MryMessageAddParam mryMessageAddParam) {
+    public CommonResult add(@Autowired @RequestBody MryMessageAddParam mryMessageAddParam) {
         MryMessage mryMessage = new MryMessage();
         mryMessage.setMsgTitle(mryMessageAddParam.getMsgTitle());
         mryMessage.setMsgContent(mryMessageAddParam.getMsgContent());
@@ -99,7 +99,7 @@ public class MryMessageController extends BaseController {
     @PreAuthorize("@ss.hasPermi('yaman:message:edit')")
     @Log(title = "修改消息", businessType = BusinessType.UPDATE)
     @PutMapping
-    public CommonResult edit(@RequestBody MryMessageEditParam mryMessageEditParam) {
+    public CommonResult edit(@Autowired @RequestBody MryMessageEditParam mryMessageEditParam) {
         MryMessage mryMessage = service.selectById(mryMessageEditParam.getId());
         if(mryMessage == null) {
             return CommonResult.error("消息记录不存在");

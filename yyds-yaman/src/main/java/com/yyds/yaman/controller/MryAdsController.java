@@ -27,6 +27,8 @@ import com.yyds.yaman.domain.MryAds;
 import com.yyds.yaman.service.MryAdsService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 
+import javax.validation.Valid;
+
 /**
  * 运营中心-推广链接接口列表
  *
@@ -81,7 +83,7 @@ public class MryAdsController extends BaseController {
     @PreAuthorize("@ss.hasPermi('yaman:ads:add')")
     @Log(title = "推广链接", businessType = BusinessType.INSERT)
     @PostMapping
-    public CommonResult add(@RequestBody MryAdsAddParam mryAdsAddParam) {
+    public CommonResult add(@Valid @RequestBody MryAdsAddParam mryAdsAddParam) {
         MryAds mryAds = new MryAds();
         mryAds.setPicUrl(mryAdsAddParam.getPicUrl());
         mryAds.setLickUrl(mryAdsAddParam.getLickUrl());
@@ -95,7 +97,7 @@ public class MryAdsController extends BaseController {
     @PreAuthorize("@ss.hasPermi('yaman:ads:edit')")
     @Log(title = "推广链接", businessType = BusinessType.UPDATE)
     @PutMapping
-    public CommonResult edit(@RequestBody MryAdsEditParam mryAdsEditParam) {
+    public CommonResult edit(@Valid @RequestBody MryAdsEditParam mryAdsEditParam) {
 
         MryAds mryAds = service.selectById(mryAdsEditParam.getId());
         if (mryAds == null) {

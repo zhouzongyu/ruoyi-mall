@@ -12,6 +12,11 @@ public class MryMemberMessage {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 
+    /**
+     * 消息id
+     */
+    private Integer messageId;
+
     private String userId;
 
     /**

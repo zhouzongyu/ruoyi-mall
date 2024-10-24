@@ -12,7 +12,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.HumpNamedUtils;
+import com.yyds.yaman.domain.MryMemberMessage;
 import com.yyds.yaman.domain.MryMessage;
+import com.yyds.yaman.mapper.MryMemberMessageMapper;
 import com.yyds.yaman.pojo.query.MryMessageQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +31,9 @@ import com.yyds.yaman.mapper.MryMessageMapper;
 public class MryMessageService {
     @Autowired
     private MryMessageMapper mryMessageMapper;
+
+    @Autowired
+    private MryMemberMessageMapper memberMessageMapper;
 
 
     /**
@@ -66,7 +71,7 @@ public class MryMessageService {
 
         }
         if (StringUtils.isEmpty(query.getColumn())){
-            qw.orderByDesc("publish_time");
+            qw.orderByDesc("create_time");
         } else {
             //处理排序 升序
             if (StringUtils.isNotBlank(query.getColumn()) && query.getAsc()) {
@@ -113,7 +118,12 @@ public class MryMessageService {
     }
 
     public int deleteById(Integer id) {
-        return mryMessageMapper.deleteById(id);
+        int  rows =  mryMessageMapper.deleteById(id);
+        if(rows >0) {
+          //关联小程序消息也同步删除
+            memberMessageMapper.delete(new QueryWrapper<MryMemberMessage>().lambda().eq(MryMemberMessage::getMessageId, id));
+        }
+        return rows;
     }
 
 

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -20,10 +21,12 @@ import java.time.LocalDateTime;
 @Data
 public class MryNewsAddParam {
     @NotBlank(message = "标题不能为空")
+    @Max(value = 30, message = "标题长度不能超过30")
     @ApiModelProperty("标题")
     private String title;
 
     @NotBlank(message = "正文不能为空")
+    @Max(value = 300, message = "标题长度不能超过300")
     @ApiModelProperty("正文")
     private String content;
 

@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -27,6 +28,8 @@ public class MryFirmwareEditParam {
     @ApiModelProperty("CRC32")
     private String crc32;
 
+    @NotBlank(message = "版本描述不能为空")
+    @Max(value = 300, message = "版本描述长度不能超过300")
     @ApiModelProperty("版本描述")
     private String description;
 
