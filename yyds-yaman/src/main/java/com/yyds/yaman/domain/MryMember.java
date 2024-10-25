@@ -27,6 +27,7 @@ public class MryMember {
 
     @ApiModelProperty("用户名")
     @Excel(name = "用户名")
+    @TableField(value = "user_name")
     private String userName;
 
     @ApiModelProperty("手机号")
@@ -35,10 +36,12 @@ public class MryMember {
 
     @ApiModelProperty("会员号")
     @Excel(name = "会员号")
+    @TableField(value = "vip_number")
     private String vipNumber;
 
     @ApiModelProperty("出生日期")
     @Excel(name = "出生日期")
+    @TableField(value = "birth_date")
     private String birthDate;
 
     @ApiModelProperty("性别")
@@ -52,6 +55,7 @@ public class MryMember {
     //1-油性肌肤 2-混合性肌肤 3-中性肌肤 4-干性肌肤 5-敏感性肌肤
     @ApiModelProperty("用户肤质 1-油性肌肤 2-混油肤质 3-中性肌肤 4-干性肌肤 5-敏感性肌肤 6-混干肤质")
     @Excel(name = "用户肤质")
+    @TableField(value = "skin_type")
     private Integer skinType;
 
     @ApiModelProperty("备注")
@@ -71,9 +75,11 @@ public class MryMember {
     private String unionId;
 
     @ApiModelProperty("创建时间")
+    @TableField(value = "create_time")
     private LocalDateTime createTime;
 
     @ApiModelProperty("更新时间")
+    @TableField(value = "update_time")
     private LocalDateTime updateTime;
 
     private Integer deleteFlag;

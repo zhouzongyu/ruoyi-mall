@@ -59,6 +59,7 @@ public class MryMemberService {
         mryMemberDetailVo.setPhone(mryMember.getPhone());
         mryMemberDetailVo.setVipNumber(mryMember.getVipNumber());
         mryMemberDetailVo.setRemark(mryMember.getRemark());
+        mryMemberDetailVo.setSkinType(mryMember.getSkinType());
         mryMemberDetailVo.setDevices(deviceService.selectDeviceDetailListByUserId(mryMember.getId()));
 
         return mryMemberDetailVo;
