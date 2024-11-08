@@ -68,6 +68,9 @@
             <groupId>com.yyds</groupId>
             <artifactId>yyds-system</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
     </dependencies>
 </project>

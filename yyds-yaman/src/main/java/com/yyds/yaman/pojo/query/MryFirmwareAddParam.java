@@ -35,6 +35,7 @@ public class MryFirmwareAddParam {
     @ApiModelProperty("产品型号")
     private String productModel;
 
+    @NotBlank(message = "请先上传程序包")
     @ApiModelProperty("程序包下载地址")
     private String filePath;
 

@@ -16,26 +16,6 @@
     </description>
 
     <dependencies>
-
-        <!-- spring-boot-devtools， 在部分情况可能导致 类型异常或者 linkerror -->
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional> &lt;!&ndash; 表示依赖不会传递 &ndash;&gt;
-        </dependency>-->
-
-        <!-- swagger3-->
-      <!--  <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-models</artifactId>
-            <version>1.6.2</version>
-        </dependency>-->
-
          <!-- Mysql驱动包 -->
         <dependency>
             <groupId>mysql</groupId>

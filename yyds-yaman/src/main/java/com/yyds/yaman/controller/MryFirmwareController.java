@@ -45,7 +45,7 @@ public class MryFirmwareController extends BaseController {
     private MryFirmwareService service;
 
     @ApiOperation("分页查询固件版本列表" )
-    @PreAuthorize("@ss.hasPermi('yaman/firmware:list')" )
+    @PreAuthorize("@ss.hasPermi('yaman:firmware:list')" )
     @GetMapping("/list" )
     public CommonResult<PageVo<MryFirmwareVO>> list(
             MryFirmwareQuery query,
@@ -88,14 +88,14 @@ public class MryFirmwareController extends BaseController {
 //    }
 
     @ApiOperation("获取固件版本详细信息" )
-    @PreAuthorize("@ss.hasPermi('yaman/firmware:query')" )
+    @PreAuthorize("@ss.hasPermi('yaman:firmware:query')" )
     @GetMapping(value = "/{id}" )
     public ResponseEntity<MryFirmware> getInfo(@PathVariable("id" ) Integer id) {
         return ResponseEntity.ok(service.selectById(id));
     }
 
     @ApiOperation("新增固件版本" )
-    @PreAuthorize("@ss.hasPermi('yaman/firmware:add')" )
+    @PreAuthorize("@ss.hasPermi('yaman:firmware:add')" )
     @Log(title = "固件版本", businessType = BusinessType.INSERT)
     @PostMapping
     public CommonResult add(@Validated @RequestBody MryFirmwareAddParam mryFirmwareAddParam) {
@@ -112,7 +112,7 @@ public class MryFirmwareController extends BaseController {
     }
 
     @ApiOperation("修改固件版本" )
-    @PreAuthorize("@ss.hasPermi('yaman/firmware:edit')" )
+    @PreAuthorize("@ss.hasPermi('yaman:firmware:edit')" )
     @Log(title = "修改固件版本", businessType = BusinessType.UPDATE)
     @PutMapping
     public CommonResult edit(@Validated @RequestBody MryFirmwareEditParam mryFirmwareEditParam) {
@@ -131,7 +131,7 @@ public class MryFirmwareController extends BaseController {
     }
 
     @ApiOperation("删除固件版本" )
-    @PreAuthorize("@ss.hasPermi('yaman/firmware:remove')" )
+    @PreAuthorize("@ss.hasPermi('yaman:firmware:remove')" )
     @Log(title = "删除固件版本", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}" )
     public CommonResult remove(@PathVariable Integer id) {

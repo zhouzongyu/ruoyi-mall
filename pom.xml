@@ -266,6 +266,11 @@
                 <artifactId>dysmsapi20170525</artifactId>
                 <version>${aliyun.sms.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -279,24 +284,6 @@
         <module>yyds-yaman</module>
     </modules>
     <packaging>pom</packaging>
-
-
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis.plus.version}</version>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>

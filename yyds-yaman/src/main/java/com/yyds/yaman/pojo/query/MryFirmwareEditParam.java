@@ -30,10 +30,11 @@ public class MryFirmwareEditParam {
     private String crc32;
 
     @NotBlank(message = "版本描述不能为空")
-    @Size(max = 300, message = "版本描述长度不能超过300")
+    @Size(max = 300, message = "版本描述长distinct m.perms from sys_menu m 度不能超过300")
     @ApiModelProperty("版本描述")
     private String description;
 
+    @NotBlank(message = "请先上传程序包")
     @ApiModelProperty("程序包下载地址")
     private String filePath;
 

@@ -4,7 +4,6 @@ package com.yyds.yaman.mapper;
 import com.yyds.yaman.pojo.vo.StatisticsMemberActiveStatsVo;
 import com.yyds.yaman.pojo.vo.StatisticsMemberVO;
 import com.yyds.yaman.pojo.vo.StatisticsNewMemberVO;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
