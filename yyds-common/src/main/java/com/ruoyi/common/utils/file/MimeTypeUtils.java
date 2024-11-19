@@ -40,7 +40,7 @@ public class MimeTypeUtils
             // pdf
             "pdf",
             //
-            "hex"
+            "hex", "bin"
     };
 
     public static String getExtension(String prefix)
